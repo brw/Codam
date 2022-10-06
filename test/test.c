@@ -87,4 +87,7 @@ int	main()
 	assert(ft_strncmp(strncmp_str1, strncmp_str2, 6) == strncmp(strncmp_str1, strncmp_str2, 6));
 	assert(ft_strncmp(strncmp_str1, strncmp_str2, 7) == strncmp(strncmp_str1, strncmp_str2, 7));
 	assert(ft_strncmp(strncmp_str1, strncmp_str2, 0) == strncmp(strncmp_str1, strncmp_str2, 0));
+
+	char memset_str1[] = "Hello World!";
+	assert(ft_memset(memset_str1, 'o', 6) == memset(memset_str1, 'o', 6));
 }

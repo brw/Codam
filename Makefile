@@ -4,8 +4,9 @@ TEST_NAME := test_libft
 # SRCS := ft_isalpha.c
 SRCS := $(wildcard *.c)
 TEST_SRC := test/test.c
-TEST_OBJ := $(patsubst %.c, %.o, $(TEST_SRC))
+TEST_OBJ := $(patsubst test/%.c, %.o, $(TEST_SRC))
 OBJS := $(patsubst %.c, %.o, $(SRCS))
+OBJS_DIR := obj
 # TEST_SRCS := $(wildcard test/*.c)
 # TEST_OBJS := $(patsubst %.c, %.o, $(TEST_SRCS))
 # TEST_NAMES := $(basename $(TEST_SRCS))
@@ -17,10 +18,11 @@ $(NAME): $(OBJS)
 	ar rcsu $@ $^
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) -o $@ $^
+	@mkdir -p obj
+	$(CC) -c $(CFLAGS) -o $(OBJS_DIR)/$@ $^
 
 clean:
-	rm -f $(OBJS) $(TEST_OBJ)
+	rm -f $(OBJS_DIR)/$(OBJS) $(TEST_OBJ)
 
 fclean: clean
 	rm -f $(NAME) $(TEST_NAME)
