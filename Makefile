@@ -1,25 +1,48 @@
 NAME := libft.a
+TEST_NAME := test_libft
 # HEADERFILES := libft.h
-# OBJ := ft_isalpha.o
-# SRC := ft_isalpha.c
-SRC := $(wildcard *.c)
-OBJ := $(patsubst %.c, %.o, $(SRC))
+# SRCS := ft_isalpha.c
+SRCS := $(wildcard *.c)
+TEST_SRC := test/test.c
+TEST_OBJ := $(patsubst %.c, %.o, $(TEST_SRC))
+OBJS := $(patsubst %.c, %.o, $(SRCS))
+# TEST_SRCS := $(wildcard test/*.c)
+# TEST_OBJS := $(patsubst %.c, %.o, $(TEST_SRCS))
+# TEST_NAMES := $(basename $(TEST_SRCS))
 CFLAGS ?= -Wall -Wextra -Werror
 
-$(NAME): $(OBJ)
-	ar rcsu $(NAME) $(OBJ)
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	ar rcsu $@ $^
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) -o $@ $^
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJS) $(TEST_OBJ)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(TEST_NAME)
 
-test: $(NAME)
-	$(CC) $(CFLAGS) main.c $(NAME)
-	./a.out
+# clean:
+# 	rm -f $(OBJS) $(TEST_OBJS)
+#
+# fclean: clean
+# 	rm -f $(NAME) $(TEST_NAMES)
+#
+# $(TEST_NAMES): $(TEST_OBJS) $(NAME)
+# 	$(CC) -o $@ $^
+#
+# test: $(TEST_NAMES) $(TEST_OBJS)
+# 	$(foreach test, $(TEST_NAMES), ./test/test.sh $(test);)
 
-.PHONY: clean fclean
+$(TEST_NAME): $(TEST_OBJ) $(NAME)
+	$(CC) -o $@ $^
+
+test: $(TEST_NAME)
+	./$<
+
+re: fclean all
+
+.PHONY: all clean fclean test re
