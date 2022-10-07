@@ -1,27 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_memset.c                                        :+:    :+:            */
+/*   ft_bzero.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bvan-den <bvan-den@codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/07 16:56:23 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/07 16:56:30 by bvan-den      ########   odam.nl         */
+/*   Created: 2022/10/07 16:53:04 by bvan-den      #+#    #+#                 */
+/*   Updated: 2022/10/07 16:53:05 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <stddef.h>
 
-void *ft_memset(void *b, int c, size_t len)
+void	ft_bzero(void *s, size_t n)
 {
-	unsigned char	*s;
-
-	s = (unsigned char *)b;
-	while (len > 0)
-	{
-		*s = (unsigned char) c;
-		s++;
-		len--;
-	}
-	return (b);
+	ft_memset(s, 0, n);
 }

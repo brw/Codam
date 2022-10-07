@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 14:24:09 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/06 16:33:36 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/10/07 16:29:25 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void 	*ft_memset(void *b, int c, size_t len);
+void	ft_bzero(void *s, size_t n);
 
 #endif

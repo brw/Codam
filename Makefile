@@ -23,7 +23,6 @@ $(OBJS_DIR)/%.o: %.c
 
 clean:
 	rm -f $(OBJS) $(TEST_OBJ)
-	rmdir $(OBJS_DIR)
 
 fclean: clean
 	rm -f $(NAME) $(TEST_NAME)
