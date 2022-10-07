@@ -55,7 +55,7 @@ int	main()
 	char strchr_str1[] = "Hello World!";
 	char strchr_str2[] = "";
 	char strchr_str3[] = "Test";
-	char strchr_str4[] = "Test\0Test";
+	char strchr_str4[] = "Test\0Te\0st";
 	char strchr_c1 = 'o';
 	char strchr_c2 = '\0';
 	assert(ft_strchr(strchr_str1, strchr_c1) == strchr(strchr_str1, strchr_c1));
