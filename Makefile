@@ -2,11 +2,11 @@ NAME := libft.a
 TEST_NAME := test_libft
 # HEADERFILES := libft.h
 # SRCS := ft_isalpha.c
-SRCS := $(wildcard *.c)
-TEST_SRC := test/test.c
-TEST_OBJ := $(patsubst test/%.c, %.o, $(TEST_SRC))
-OBJS := $(patsubst %.c, %.o, $(SRCS))
 OBJS_DIR := obj
+SRCS := $(wildcard ft*.c)
+TEST_SRC := test.c
+TEST_OBJ := $(patsubst %.c, $(OBJS_DIR)/%.o, $(TEST_SRC))
+OBJS := $(patsubst %.c, $(OBJS_DIR)/%.o, $(SRCS))
 # TEST_SRCS := $(wildcard test/*.c)
 # TEST_OBJS := $(patsubst %.c, %.o, $(TEST_SRCS))
 # TEST_NAMES := $(basename $(TEST_SRCS))
@@ -17,12 +17,13 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	ar rcsu $@ $^
 
-%.o: %.c
+$(OBJS_DIR)/%.o: %.c
 	@mkdir -p obj
-	$(CC) -c $(CFLAGS) -o $(OBJS_DIR)/$@ $^
+	$(CC) -c $(CFLAGS) -o $@ $^
 
 clean:
-	rm -f $(OBJS_DIR)/$(OBJS) $(TEST_OBJ)
+	rm -f $(OBJS) $(TEST_OBJ)
+	rmdir $(OBJS_DIR)
 
 fclean: clean
 	rm -f $(NAME) $(TEST_NAME)
