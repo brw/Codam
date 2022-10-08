@@ -4,6 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 
+int	sign(int x)
+{
+	return (x > 0) - (x < 0);
+}
+
 int	main()
 {
 	assert(ft_isalpha('a') == isalpha('a'));
@@ -80,22 +85,32 @@ int	main()
 	char strncmp_str2[] = "Hello!";
 	char strncmp_str3[] = "Hello";
 	char strncmp_str4[] = "";
-	assert(ft_strncmp(strncmp_str1, strncmp_str2, 20) == strncmp(strncmp_str1, strncmp_str2, 20));
-	assert(ft_strncmp(strncmp_str1, strncmp_str3, 20) == strncmp(strncmp_str1, strncmp_str3, 20));
-	assert(ft_strncmp(strncmp_str1, strncmp_str4, 20) == strncmp(strncmp_str1, strncmp_str4, 20));
-	assert(ft_strncmp(strncmp_str1, strncmp_str2, 5) == strncmp(strncmp_str1, strncmp_str2, 5));
-	assert(ft_strncmp(strncmp_str1, strncmp_str2, 6) == strncmp(strncmp_str1, strncmp_str2, 6));
-	assert(ft_strncmp(strncmp_str1, strncmp_str2, 7) == strncmp(strncmp_str1, strncmp_str2, 7));
-	assert(ft_strncmp(strncmp_str1, strncmp_str2, 0) == strncmp(strncmp_str1, strncmp_str2, 0));
+	assert(sign(ft_strncmp(strncmp_str1, strncmp_str2, 20)) == sign(strncmp(strncmp_str1, strncmp_str2, 20)));
+	assert(sign(ft_strncmp(strncmp_str1, strncmp_str3, 20)) == sign(strncmp(strncmp_str1, strncmp_str3, 20)));
+	assert(sign(ft_strncmp(strncmp_str1, strncmp_str4, 20)) == sign(strncmp(strncmp_str1, strncmp_str4, 20)));
+	assert(sign(ft_strncmp(strncmp_str1, strncmp_str2, 5)) == sign(strncmp(strncmp_str1, strncmp_str2, 5)));
+	assert(sign(ft_strncmp(strncmp_str1, strncmp_str2, 6)) == sign(strncmp(strncmp_str1, strncmp_str2, 6)));
+	assert(sign(ft_strncmp(strncmp_str1, strncmp_str2, 7)) == sign(strncmp(strncmp_str1, strncmp_str2, 7)));
+	assert(sign(ft_strncmp(strncmp_str1, strncmp_str2, 0)) == sign(strncmp(strncmp_str1, strncmp_str2, 0)));
 
 	char memset_str1[] = "Hello World!";
 	char memset_str2[] = "Hello World!";
 	assert(ft_memset(memset_str1, 'o', 6) == memset(memset_str1, 'o', 6));
-	assert(ft_memset(memset_str2, 'o', 0) == memset(memset_str2, 'o', 0));
+	assert(ft_memset(memset_str2, 'o', (0)) == memset(memset_str2, 'o', (0)));
 
 	char bzero_str1[] = "Hello World!";
 	char bzero_str2[] = "Hello World!";
 	ft_bzero(bzero_str1, 6);
 	bzero(bzero_str2, 6);
 	assert(!strcmp(bzero_str1, bzero_str2));
+
+	char memcpy_str1[] = "Hello World!";
+	char memcpy_str2[] = "Test123";
+	char memcpy_str3[] = "Test123";
+	ft_memcpy(memcpy_str1, memcpy_str2, 6);
+	memcpy(memcpy_str1, memcpy_str3, 6);
+	assert(!strcmp(memcpy_str2, memcpy_str3));
+	ft_memcpy(memcpy_str1, memcpy_str2, 0);
+	memcpy(memcpy_str1, memcpy_str3, 0);
+	assert(!strcmp(memcpy_str2, memcpy_str3));
 }
