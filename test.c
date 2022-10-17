@@ -125,4 +125,24 @@ int	main()
 	assert(sign(ft_memcmp(memcmp_str1, memcmp_str2, 6)) == sign(memcmp(memcmp_str1, memcmp_str2, 6)));
 	assert(sign(ft_memcmp(memcmp_str1, memcmp_str2, 7)) == sign(memcmp(memcmp_str1, memcmp_str2, 7)));
 	assert(sign(ft_memcmp(memcmp_str1, memcmp_str2, 0)) == sign(memcmp(memcmp_str1, memcmp_str2, 0)));
+
+	char	memmove_str1[] = "Hello World!";
+	char	memmove_str2[] = "Test123";
+	char	memmove_str3[] = "Test123";
+	char	memmove_str4[] = "Hello World!";
+	char	memmove_str5[] = "Hello World!";
+	char	memmove_str6[] = "Hello World!";
+	char	memmove_str7[] = "Hello World!";
+	ft_memmove(memmove_str2, memmove_str1, 6);
+	memmove(memmove_str3, memmove_str1, 6);
+	assert(!strcmp(memmove_str2, memmove_str3));
+	ft_memmove(memmove_str2, memmove_str1, 0);
+	memmove(memmove_str3, memmove_str1, 0);
+	assert(!strcmp(memmove_str2, memmove_str3));
+	ft_memmove(memmove_str4, memmove_str4 + 4, 6);
+	memmove(memmove_str5, memmove_str5 + 4, 6);
+	assert(!strcmp(memmove_str4, memmove_str5));
+	ft_memmove(memmove_str6 + 4, memmove_str6, 6);
+	memmove(memmove_str7 + 4, memmove_str7, 6);
+	assert(!strcmp(memmove_str6, memmove_str7));
 }
