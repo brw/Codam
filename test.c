@@ -145,4 +145,14 @@ int	main()
 	ft_memmove(memmove_str6 + 4, memmove_str6, 6);
 	memmove(memmove_str7 + 4, memmove_str7, 6);
 	assert(!strcmp(memmove_str6, memmove_str7));
+
+	char	strlcpy_str1[] = "Hello World!";
+	char	strlcpy_str2[] = "Test123";
+	char	strlcpy_str3[] = "Test123";
+	ft_strlcpy(strlcpy_str2, strlcpy_str1, 6);
+	strlcpy(strlcpy_str3, strlcpy_str1, 6);
+	assert(!strcmp(strlcpy_str2, strlcpy_str3));
+	ft_strlcpy(strlcpy_str2, strlcpy_str1, 0);
+	strlcpy(strlcpy_str3, strlcpy_str1, 0);
+	assert(!strcmp(strlcpy_str2, strlcpy_str3));
 }
