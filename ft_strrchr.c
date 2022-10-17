@@ -19,8 +19,7 @@ char	*ft_strrchr(const char *s, int c)
 
 	ch = (char)c;
 	if (ch == '\0')
-		return ft_strchr(s, '\0');
-
+		return (ft_strchr(s, '\0'));
 	res = NULL;
 	while (*s)
 	{
