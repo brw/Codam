@@ -107,11 +107,11 @@ int	main()
 	char	memcpy_str1[] = "Hello World!";
 	char	memcpy_str2[] = "Test123";
 	char	memcpy_str3[] = "Test123";
-	ft_memcpy(memcpy_str1, memcpy_str2, 6);
-	memcpy(memcpy_str1, memcpy_str3, 6);
+	ft_memcpy(memcpy_str2, memcpy_str1, 6);
+	memcpy(memcpy_str3, memcpy_str1, 6);
 	assert(!strcmp(memcpy_str2, memcpy_str3));
-	ft_memcpy(memcpy_str1, memcpy_str2, 0);
-	memcpy(memcpy_str1, memcpy_str3, 0);
+	ft_memcpy(memcpy_str2, memcpy_str1, 0);
+	memcpy(memcpy_str3, memcpy_str1, 0);
 	assert(!strcmp(memcpy_str2, memcpy_str3));
 
 	char	memcmp_str1[] = "Hello World!";
