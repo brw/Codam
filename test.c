@@ -3,6 +3,13 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <assert.h>
+
+#define clean_errno() (errno == 0 ? "None" : strerror(errno))
+#define log_error(M, ...) fprintf(stderr, "[ERROR] (%s:%d: errno: %s) " M "\n", __FILE__, __LINE__, clean_errno(), ##__VA_ARGS__)
+#define assertf(A, M, ...) if(!(A)) {log_error(M, ##__VA_ARGS__); assert(A); }
 
 int	sign(int x)
 {
@@ -171,4 +178,8 @@ int	main()
 	assert(ft_strnstr(strnstr_haystack, strnstr_needle4, 15) == strnstr(strnstr_haystack, strnstr_needle4, 15));
 	assert(ft_strnstr(strnstr_haystack, strnstr_needle5, 15) == strnstr(strnstr_haystack, strnstr_needle5, 15));
 	assert(ft_strnstr(strnstr_haystack, strnstr_needle5, 10) == strnstr(strnstr_haystack, strnstr_needle5, 10));
+
+    char  *atoi_str[] = { "12345+6789", "-12345-6789", "  12345", "  -12345", "  +12345", "  - 12345", "  + 12345", "abc12345", "abc+12345", "abc-12345", " \t\n\f\v\r 12345", " +-12345", " =-12345" };
+    for (size_t i = 0; i < sizeof(atoi_str) / sizeof(atoi_str[0]); i++)
+        assertf(ft_atoi(atoi_str[i]) == atoi(atoi_str[i]), "Failed with input: %s", atoi_str[i]);
 }
