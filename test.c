@@ -185,8 +185,24 @@ int	main()
 
     void    *p;
     char    zero[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-
     p = ft_calloc(2, 4);
     assert(!memcmp(p, zero, 8));
     free(p);
+
+    char    strdup_src1[] = "Hello World!";
+    char    strdup_src2[] = "";
+    char    *strdup_dest1;
+    char    *strdup_dest2;
+    char    *strdup_dest3;
+    char    *strdup_dest4;
+    strdup_dest1 = ft_strdup(strdup_src1);
+    strdup_dest2 = strdup(strdup_src1);
+    assert(!strcmp(strdup_dest1, strdup_dest2));
+    free(strdup_dest1);
+    free(strdup_dest2);
+    strdup_dest3 = ft_strdup(strdup_src2);
+    strdup_dest4 = strdup(strdup_src2);
+    assert(!strcmp(strdup_dest3, strdup_dest4));
+    free(strdup_dest3);
+    free(strdup_dest4);
 }

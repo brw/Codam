@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 14:24:09 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/19 21:45:38 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/10/19 21:54:12 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 int		ft_atoi(const char *str);
 int		ft_isspace(int c);
 void	*ft_calloc(size_t count, size_t size);
+char	*ft_strdup(const char *s1);
 
 #endif
