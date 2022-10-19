@@ -182,4 +182,11 @@ int	main()
     char  *atoi_str[] = { "12345+6789", "-12345-6789", "  12345", "  -12345", "  +12345", "  - 12345", "  + 12345", "abc12345", "abc+12345", "abc-12345", " \t\n\f\v\r 12345", " +-12345", " =-12345" };
     for (size_t i = 0; i < sizeof(atoi_str) / sizeof(atoi_str[0]); i++)
         assertf(ft_atoi(atoi_str[i]) == atoi(atoi_str[i]), "Failed with input: %s", atoi_str[i]);
+
+    void    *p;
+    char    zero[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+    p = ft_calloc(2, 4);
+    assert(!memcmp(p, zero, 8));
+    free(p);
 }
