@@ -155,4 +155,20 @@ int	main()
 	ft_strlcpy(strlcpy_str2, strlcpy_str1, 0);
 	strlcpy(strlcpy_str3, strlcpy_str1, 0);
 	assert(!strcmp(strlcpy_str2, strlcpy_str3));
+
+	char	strnstr_haystack[] = "Hello World!\0Hellooo";
+	char	strnstr_needle1[] = "Hello";
+	char	strnstr_needle2[] = "";
+	char	strnstr_needle3[] = "!";
+	char	strnstr_needle4[] = "Helloo";
+	char	strnstr_needle5[] = "World!";
+	assert(ft_strnstr(strnstr_haystack, strnstr_needle1, 15) == strnstr(strnstr_haystack, strnstr_needle1, 15));
+	assert(ft_strnstr(strnstr_haystack, strnstr_needle1, 4) == strnstr(strnstr_haystack, strnstr_needle1, 4));
+	assert(ft_strnstr(strnstr_haystack, strnstr_needle1, 5) == strnstr(strnstr_haystack, strnstr_needle1, 5));
+	assert(ft_strnstr(strnstr_haystack, strnstr_needle1, 6) == strnstr(strnstr_haystack, strnstr_needle1, 6));
+	assert(ft_strnstr(strnstr_haystack, strnstr_needle2, 15) == strnstr(strnstr_haystack, strnstr_needle2, 15));
+	assert(ft_strnstr(strnstr_haystack, strnstr_needle3, 15) == strnstr(strnstr_haystack, strnstr_needle3, 15));
+	assert(ft_strnstr(strnstr_haystack, strnstr_needle4, 15) == strnstr(strnstr_haystack, strnstr_needle4, 15));
+	assert(ft_strnstr(strnstr_haystack, strnstr_needle5, 15) == strnstr(strnstr_haystack, strnstr_needle5, 15));
+	assert(ft_strnstr(strnstr_haystack, strnstr_needle5, 10) == strnstr(strnstr_haystack, strnstr_needle5, 10));
 }
