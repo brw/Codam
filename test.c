@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <assert.h>
+#include <limits.h>
 
 #define clean_errno() (errno == 0 ? "None" : strerror(errno))
 #define log_error(M, ...) fprintf(stderr, "[ERROR] (%s:%d: errno: %s) " M "\n", __FILE__, __LINE__, clean_errno(), ##__VA_ARGS__)
@@ -121,10 +122,10 @@ int	main()
 	memcpy(memcpy_str3, memcpy_str1, 0);
 	assert(!strcmp(memcpy_str2, memcpy_str3));
 
-	char	memcmp_str1[] = "Hello World!";
-	char	memcmp_str2[] = "Hello!";
-	char	memcmp_str3[] = "Hello";
-	char	memcmp_str4[] = "";
+	char	memcmp_str1[20] = "Hello World!";
+	char	memcmp_str2[20] = "Hello!";
+	char	memcmp_str3[20] = "Hello";
+	char	memcmp_str4[20] = "";
 	assert(sign(ft_memcmp(memcmp_str1, memcmp_str2, 20)) == sign(memcmp(memcmp_str1, memcmp_str2, 20)));
 	assert(sign(ft_memcmp(memcmp_str1, memcmp_str3, 20)) == sign(memcmp(memcmp_str1, memcmp_str3, 20)));
 	assert(sign(ft_memcmp(memcmp_str1, memcmp_str4, 20)) == sign(memcmp(memcmp_str1, memcmp_str4, 20)));
@@ -205,4 +206,7 @@ int	main()
     assert(!strcmp(strdup_dest3, strdup_dest4));
     free(strdup_dest3);
     free(strdup_dest4);
+
+    char    substr_str1[] = "Hello World!";
+    assert(!strcmp(ft_substr(substr_str1, 1, SIZE_MAX), substr_str1));
 }
