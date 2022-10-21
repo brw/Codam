@@ -208,5 +208,15 @@ int	main()
     free(strdup_dest4);
 
     char    substr_str1[] = "Hello World!";
-    assert(!strcmp(ft_substr(substr_str1, 1, SIZE_MAX), substr_str1));
+    char    substr_str2[] = "";
+    assert(!strcmp(ft_substr(substr_str1, 0, 5), "Hello"));
+    assert(!strcmp(ft_substr(substr_str1, 2, SIZE_MAX), substr_str1 + 2));
+    assert(!strcmp(ft_substr(substr_str1, 0, 0), ""));
+    assert(!strcmp(ft_substr(substr_str1, 20, 0), ""));
+    assert(!strcmp(ft_substr(substr_str1, 20, 20), ""));
+    assert(!strcmp(ft_substr(substr_str2, 0, 5), ""));
+    assert(!strcmp(ft_substr(substr_str2, 2, SIZE_MAX), ""));
+    assert(!strcmp(ft_substr(substr_str2, 0, 0), ""));
+    assert(!strcmp(ft_substr(substr_str2, 20, 0), ""));
+    assert(!strcmp(ft_substr(substr_str2, 20, 20), ""));
 }
