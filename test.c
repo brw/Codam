@@ -228,4 +228,23 @@ int	main()
     assert(!strcmp(ft_strjoin(strjoin_str1, ""), "Hello"));
     assert(!strcmp(ft_strjoin("", strjoin_str1), "Hello"));
     assert(!strcmp(ft_strjoin("", ""), ""));
+
+    char    strtrim_str1[] = "ttestHello World!testt";
+    char    strtrim_str2[] = "eessesetesetestHello World!";
+    char    strtrim_str3[] = "Hello World!esetetestsetess";
+    char    strtrim_str4[] = "";
+    char    strtrim_str5[] = "        ";
+    char    strtrim_set1[] = "est";
+    char    strtrim_set2[] = "";
+    char    strtrim_set3[] = " ";
+    assert(!strcmp(ft_strtrim(strtrim_str1, strtrim_set1), "Hello World!"));
+    assert(!strcmp(ft_strtrim(strtrim_str2, strtrim_set1), "Hello World!"));
+    assert(!strcmp(ft_strtrim(strtrim_str3, strtrim_set1), "Hello World!"));
+    assert(!strcmp(ft_strtrim(strtrim_str1, strtrim_set2), strtrim_str1));
+    assert(!strcmp(ft_strtrim(strtrim_str4, strtrim_set1), strtrim_str4));
+    assert(!strcmp(ft_strtrim(strtrim_str4, strtrim_set2), strtrim_str4));
+    assert(!strcmp(ft_strtrim(strtrim_str4, strtrim_set3), strtrim_str4));
+    assert(!strcmp(ft_strtrim(strtrim_str5, strtrim_set1), strtrim_str5));
+    assert(!strcmp(ft_strtrim(strtrim_str5, strtrim_set2), strtrim_str5));
+    assert(!strcmp(ft_strtrim(strtrim_str5, strtrim_set3), ""));
 }
