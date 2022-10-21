@@ -219,4 +219,13 @@ int	main()
     assert(!strcmp(ft_substr(substr_str2, 0, 0), ""));
     assert(!strcmp(ft_substr(substr_str2, 20, 0), ""));
     assert(!strcmp(ft_substr(substr_str2, 20, 20), ""));
+
+    char    strjoin_str1[] = "Hello";
+    char    strjoin_str2[] = " ";
+    char    strjoin_str3[] = "World!";
+    assert(!strcmp(ft_strjoin(strjoin_str1, strjoin_str3), "HelloWorld!"));
+    assert(!strcmp(ft_strjoin(ft_strjoin(strjoin_str1, strjoin_str2), strjoin_str3), "Hello World!"));
+    assert(!strcmp(ft_strjoin(strjoin_str1, ""), "Hello"));
+    assert(!strcmp(ft_strjoin("", strjoin_str1), "Hello"));
+    assert(!strcmp(ft_strjoin("", ""), ""));
 }
