@@ -247,4 +247,14 @@ int	main()
     assert(!strcmp(ft_strtrim(strtrim_str5, strtrim_set1), strtrim_str5));
     assert(!strcmp(ft_strtrim(strtrim_str5, strtrim_set2), strtrim_str5));
     assert(!strcmp(ft_strtrim(strtrim_str5, strtrim_set3), ""));
+
+	size_t	i;
+	char	**arr;
+	arr = ft_split("lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse", ' ');
+	i = 0;
+	while (arr[i] != NULL)
+	{
+		printf("ar[%lu]: %s\n", i, arr[i]);
+		i++;
+	}
 }
