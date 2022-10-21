@@ -19,18 +19,18 @@ int	sign(int x)
 
 int	main()
 {
-	assert(ft_isalpha('a') == isalpha('a'));
-	assert(ft_isalpha('m') == isalpha('m'));
-	assert(ft_isalpha('z') == isalpha('z'));
-	assert(ft_isalpha(' ') == isalpha(' '));
-	assert(ft_isalpha('0') == isalpha('0'));
-	assert(ft_isalpha(EOF) == isalpha(EOF));
+	assert(sign(ft_isalpha('a')) == sign(isalpha('a')));
+	assert(sign(ft_isalpha('m')) == sign(isalpha('m')));
+	assert(sign(ft_isalpha('z')) == sign(isalpha('z')));
+	assert(sign(ft_isalpha(' ')) == sign(isalpha(' ')));
+	assert(sign(ft_isalpha('0')) == sign(isalpha('0')));
+	assert(sign(ft_isalpha(EOF)) == sign(isalpha(EOF)));
 
-	assert(ft_isdigit('0') == isdigit('0'));
-	assert(ft_isdigit('9') == isdigit('9'));
-	assert(ft_isdigit('\0') == isdigit('\0'));
-	assert(ft_isdigit(' ') == isdigit(' '));
-	assert(ft_isdigit(EOF) == isdigit(EOF));
+	assert(sign(ft_isdigit('0')) == sign(isdigit('0')));
+	assert(sign(ft_isdigit('9')) == sign(isdigit('9')));
+	assert(sign(ft_isdigit('\0')) == sign(isdigit('\0')));
+	assert(sign(ft_isdigit(' ')) == sign(isdigit(' ')));
+	assert(sign(ft_isdigit(EOF)) == sign(isdigit(EOF)));
 
 	assert(ft_toupper('a') == toupper('a'));
 	assert(ft_toupper('A') == toupper('A'));
@@ -40,25 +40,25 @@ int	main()
 	assert(ft_tolower('a') == tolower('a'));
 	assert(ft_tolower(';') == tolower(';'));
 
-	assert(ft_isalnum('a') == isalnum('a'));
-	assert(ft_isalnum('0') == isalnum('0'));
-	assert(ft_isalnum('z') == isalnum('z'));
-	assert(ft_isalnum('9') == isalnum('9'));
-	assert(ft_isalnum('\0') == isalnum('\0'));
-	assert(ft_isalnum(' ') == isalnum(' '));
-	assert(ft_isalnum(EOF) == isalnum(EOF));
+	assert(sign(ft_isalnum('a')) == sign(isalnum('a')));
+	assert(sign(ft_isalnum('0')) == sign(isalnum('0')));
+	assert(sign(ft_isalnum('z')) == sign(isalnum('z')));
+	assert(sign(ft_isalnum('9')) == sign(isalnum('9')));
+	assert(sign(ft_isalnum('\0')) == sign(isalnum('\0')));
+	assert(sign(ft_isalnum(' ')) == sign(isalnum(' ')));
+	assert(sign(ft_isalnum(EOF)) == sign(isalnum(EOF)));
 
-	assert(ft_isascii(0) == isascii(0));
-	assert(ft_isascii(127) == isascii(127));
-	assert(ft_isascii(128) == isascii(128));
-	assert(ft_isascii(-1) == isascii(-1));
-	assert(ft_isascii(1000) == isascii(1000));
+	assert(sign(ft_isascii(0)) == sign(isascii(0)));
+	assert(sign(ft_isascii(127)) == sign(isascii(127)));
+	assert(sign(ft_isascii(128)) == sign(isascii(128)));
+	assert(sign(ft_isascii(-1)) == sign(isascii(-1)));
+	assert(sign(ft_isascii(1000)) == sign(isascii(1000)));
 
-	assert(ft_isprint('a') == isprint('a'));
-	assert(ft_isprint(' ') == isprint(' '));
-	assert(ft_isprint('~') == isprint('~'));
-	assert(ft_isprint('\0') == isprint('\0'));
-	assert(ft_isprint(127) == isprint(127));
+	assert(sign(ft_isprint('a')) == sign(isprint('a')));
+	assert(sign(ft_isprint(' ')) == sign(isprint(' ')));
+	assert(sign(ft_isprint('~')) == sign(isprint('~')));
+	assert(sign(ft_isprint('\0')) == sign(isprint('\0')));
+	assert(sign(ft_isprint(127)) == sign(isprint(127)));
 
 	char	strlen_str1[] = "Hello World!";
 	char	strlen_str2[] = "";
@@ -89,10 +89,10 @@ int	main()
 	assert(ft_strrchr(strchr_str3, strchr_c2) == strrchr(strchr_str3, strchr_c2));
 	assert(ft_strrchr(strchr_str4, strchr_c2) == strrchr(strchr_str4, strchr_c2));
 
-	char	strncmp_str1[] = "Hello World!";
-	char	strncmp_str2[] = "Hello!";
-	char	strncmp_str3[] = "Hello";
-	char	strncmp_str4[] = "";
+	char	strncmp_str1[20] = "Hello World!";
+	char	strncmp_str2[20] = "Hello!";
+	char	strncmp_str3[20] = "Hello";
+	char	strncmp_str4[20] = "";
 	assert(sign(ft_strncmp(strncmp_str1, strncmp_str2, 20)) == sign(strncmp(strncmp_str1, strncmp_str2, 20)));
 	assert(sign(ft_strncmp(strncmp_str1, strncmp_str3, 20)) == sign(strncmp(strncmp_str1, strncmp_str3, 20)));
 	assert(sign(ft_strncmp(strncmp_str1, strncmp_str4, 20)) == sign(strncmp(strncmp_str1, strncmp_str4, 20)));

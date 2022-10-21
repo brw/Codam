@@ -1,42 +1,42 @@
 NAME := libft.a
 TEST_NAME := test_libft
 # HEADERFILES := libft.h
-# SRCS := ft_isalpha.c
-OBJS_DIR := obj
-SRCS := $(wildcard ft*.c)
+# SRC := ft_isalpha.c
+OBJ_DIR := obj
+SRC := $(wildcard ft*.c)
 TEST_SRC := test.c
-TEST_OBJ := $(patsubst %.c, $(OBJS_DIR)/%.o, $(TEST_SRC))
-OBJS := $(patsubst %.c, $(OBJS_DIR)/%.o, $(SRCS))
-# TEST_SRCS := $(wildcard test/*.c)
-# TEST_OBJS := $(patsubst %.c, %.o, $(TEST_SRCS))
-# TEST_NAMES := $(basename $(TEST_SRCS))
+TEST_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(TEST_SRC))
+OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
+# TEST_SRC := $(wildcard test/*.c)
+# TEST_OBJ := $(patsubst %.c, %.o, $(TEST_SRC))
+# TEST_NAMES := $(basename $(TEST_SRC))
 CFLAGS ?= -Wall -Wextra -Werror
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJ)
 	ar rcsu $@ $^
 
-$(OBJS_DIR)/%.o: %.c
+$(OBJ_DIR)/%.o: %.c
 	@mkdir -p obj
 	$(CC) -c $(CFLAGS) -o $@ $^
 
 clean:
-	rm -f $(OBJS) $(TEST_OBJ)
+	rm -f $(OBJ) $(TEST_OBJ)
 
 fclean: clean
 	rm -f $(NAME) $(TEST_NAME)
 
 # clean:
-# 	rm -f $(OBJS) $(TEST_OBJS)
+# 	rm -f $(OBJ) $(TEST_OBJ)
 #
 # fclean: clean
 # 	rm -f $(NAME) $(TEST_NAMES)
 #
-# $(TEST_NAMES): $(TEST_OBJS) $(NAME)
+# $(TEST_NAMES): $(TEST_OBJ) $(NAME)
 # 	$(CC) -o $@ $^
 #
-# test: $(TEST_NAMES) $(TEST_OBJS)
+# test: $(TEST_NAMES) $(TEST_OBJ)
 # 	$(foreach test, $(TEST_NAMES), ./test/test.sh $(test);)
 
 $(TEST_NAME): $(TEST_OBJ) $(NAME)
@@ -46,5 +46,9 @@ test: $(TEST_NAME)
 	./$<
 
 re: fclean all
+
+so:
+	$(CC) -nostartfiles -fPIC $(CFLAGS) $(SRC)
+	gcc -nostartfiles -shared -o libft.so $(OBJ)
 
 .PHONY: all clean fclean test re
