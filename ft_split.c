@@ -59,13 +59,12 @@ char	**ft_split(char const *str, char delim)
 		while (*str == delim)
 			str++;
 		length = get_item_length(str, delim);
-		arr[index] = malloc(sizeof(char) * (length + 1));
+		arr[index] = ft_strndup(str, length);
 		if (!arr[index])
 		{
 			free_arr(arr, index);
 			return (NULL);
 		}
-		ft_strlcpy(arr[index], str, length + 1);
 		index++;
 		str += length;
 	}
