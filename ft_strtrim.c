@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/21 20:26:01 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/21 20:26:02 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/10/23 00:43:48 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 	size_t	right;
 	char	*dest;
 
+	if (!s1)
+		return (NULL);
 	left = 0;
 	right = ft_strlen(s1);
 	while (in_set(s1[left], set))

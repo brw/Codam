@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/20 22:54:42 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/22 19:49:58 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/10/23 00:40:20 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	size_t	i;
 	size_t	length;
 
+	if (!s)
+		return (NULL);
 	length = ft_strlen(s);
 	if (start > length)
 		return (ft_strdup(""));
