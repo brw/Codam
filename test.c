@@ -250,9 +250,9 @@ int	main()
 
 	size_t	i;
 	char	**arr;
-	arr = ft_split("lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse", ' ');
+	arr = ft_split("test", ' ');
 	i = 0;
-	while (arr[i] != NULL)
+	while (arr[i - 1] != NULL)
 	{
 		printf("ar[%lu]: %s\n", i, arr[i]);
 		i++;
