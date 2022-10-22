@@ -9,8 +9,9 @@ static size_t	count_items(char const *s, char delim)
 	size_t	i;
 	char	last;
 
-	count = 1;
+	count = 0;
 	i = 0;
+	last = delim;
 	while (s[i])
 	{
 		if (last == delim && s[i] != delim)
@@ -31,38 +32,42 @@ void	free_arr(char **arr, size_t index)
 	free(arr);
 }
 
-char	**ft_split(char const *s, char c)
+size_t	get_item_length(const char *s, char delim)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] && s[i] != delim)
+		i++;
+	return (i);
+}
+
+char	**ft_split(char const *str, char delim)
 {
 	char	**arr;
-	size_t	left;
-	size_t	right;
+	size_t	count;
+	size_t	length;
 	size_t	index;
 
-	left = 0;
-	right = 0;
 	index = 0;
-	s = ft_strtrim(s, &c);
-	if (!s)
-		return (NULL);
-	arr = malloc(sizeof(char *) * (count_items(s, c) + 1));
+	count = count_items(str, delim);
+	arr = malloc(sizeof(char *) * (count + 1));
 	if (!arr)
 		return (NULL);
-	while (s[right])
+	while (*str && index < count)
 	{
-		while (s[left] && s[left] == c)
-			left++;
-		right = left + 1;
-		while (s[right] && s[right] != c)
-			right++;
-		arr[index] = malloc(sizeof(char) * (right - left + 1));
+		while (*str == delim)
+			str++;
+		length = get_item_length(str, delim);
+		arr[index] = malloc(sizeof(char) * (length + 1));
 		if (!arr[index])
 		{
 			free_arr(arr, index);
 			return (NULL);
 		}
-		ft_strlcpy(arr[index], s + left, right - left + 1);
+		ft_strlcpy(arr[index], str, length + 1);
 		index++;
-		left = right + 1;
+		str += length;
 	}
 	arr[index] = NULL;
 	return (arr);
