@@ -17,7 +17,7 @@ int	sign(int x)
 	return ((x > 0) - (x < 0));
 }
 
-int	main()
+void	test_isalpha()
 {
 	assert(sign(ft_isalpha('a')) == sign(isalpha('a')));
 	assert(sign(ft_isalpha('m')) == sign(isalpha('m')));
@@ -25,21 +25,33 @@ int	main()
 	assert(sign(ft_isalpha(' ')) == sign(isalpha(' ')));
 	assert(sign(ft_isalpha('0')) == sign(isalpha('0')));
 	assert(sign(ft_isalpha(EOF)) == sign(isalpha(EOF)));
+}
 
+void	test_isdigit()
+{
 	assert(sign(ft_isdigit('0')) == sign(isdigit('0')));
 	assert(sign(ft_isdigit('9')) == sign(isdigit('9')));
 	assert(sign(ft_isdigit('\0')) == sign(isdigit('\0')));
 	assert(sign(ft_isdigit(' ')) == sign(isdigit(' ')));
 	assert(sign(ft_isdigit(EOF)) == sign(isdigit(EOF)));
+}
 
+void	test_toupper()
+{
 	assert(ft_toupper('a') == toupper('a'));
 	assert(ft_toupper('A') == toupper('A'));
 	assert(ft_toupper(';') == toupper(';'));
+}
 
+void	test_tolower()
+{
 	assert(ft_tolower('A') == tolower('A'));
 	assert(ft_tolower('a') == tolower('a'));
 	assert(ft_tolower(';') == tolower(';'));
+}
 
+void	test_isalnum()
+{
 	assert(sign(ft_isalnum('a')) == sign(isalnum('a')));
 	assert(sign(ft_isalnum('0')) == sign(isalnum('0')));
 	assert(sign(ft_isalnum('z')) == sign(isalnum('z')));
@@ -47,220 +59,319 @@ int	main()
 	assert(sign(ft_isalnum('\0')) == sign(isalnum('\0')));
 	assert(sign(ft_isalnum(' ')) == sign(isalnum(' ')));
 	assert(sign(ft_isalnum(EOF)) == sign(isalnum(EOF)));
+}
 
+void	test_isascii()
+{
 	assert(sign(ft_isascii(0)) == sign(isascii(0)));
 	assert(sign(ft_isascii(127)) == sign(isascii(127)));
 	assert(sign(ft_isascii(128)) == sign(isascii(128)));
 	assert(sign(ft_isascii(-1)) == sign(isascii(-1)));
 	assert(sign(ft_isascii(1000)) == sign(isascii(1000)));
+}
 
+void	test_isprint()
+{
 	assert(sign(ft_isprint('a')) == sign(isprint('a')));
 	assert(sign(ft_isprint(' ')) == sign(isprint(' ')));
 	assert(sign(ft_isprint('~')) == sign(isprint('~')));
 	assert(sign(ft_isprint('\0')) == sign(isprint('\0')));
 	assert(sign(ft_isprint(127)) == sign(isprint(127)));
+}
 
-	char	strlen_str1[] = "Hello World!";
-	char	strlen_str2[] = "";
-	assert(ft_strlen(strlen_str1) == strlen(strlen_str1));
-	assert(ft_strlen(strlen_str2) == strlen(strlen_str2));
+void	test_strlen()
+{
+	char	str1[] = "Hello World!";
+	char	str2[] = "";
+	assert(ft_strlen(str1) == strlen(str1));
+	assert(ft_strlen(str2) == strlen(str2));
+}
 
-	char	strchr_str1[] = "Hello World!";
-	char	strchr_str2[] = "";
-	char	strchr_str3[] = "Test";
-	char	strchr_str4[] = "Test\0Te\0st";
-	char	strchr_c1 = 'o';
-	char	strchr_c2 = '\0';
-	assert(ft_strchr(strchr_str1, strchr_c1) == strchr(strchr_str1, strchr_c1));
-	assert(ft_strchr(strchr_str2, strchr_c1) == strchr(strchr_str2, strchr_c1));
-	assert(ft_strchr(strchr_str3, strchr_c1) == strchr(strchr_str3, strchr_c1));
-	assert(ft_strchr(strchr_str4, strchr_c1) == strchr(strchr_str4, strchr_c1));
-	assert(ft_strchr(strchr_str1, strchr_c2) == strchr(strchr_str1, strchr_c2));
-	assert(ft_strchr(strchr_str2, strchr_c2) == strchr(strchr_str2, strchr_c2));
-	assert(ft_strchr(strchr_str3, strchr_c2) == strchr(strchr_str3, strchr_c2));
-	assert(ft_strchr(strchr_str4, strchr_c2) == strchr(strchr_str4, strchr_c2));
+void	test_strchr_and_strrchr()
+{
+	char	str1[] = "Hello World!";
+	char	str2[] = "";
+	char	str3[] = "Test";
+	char	str4[] = "Test\0Te\0st";
+	char	c1 = 'o';
+	char	c2 = '\0';
+	assert(ft_strchr(str1, c1) == strchr(str1, c1));
+	assert(ft_strchr(str2, c1) == strchr(str2, c1));
+	assert(ft_strchr(str3, c1) == strchr(str3, c1));
+	assert(ft_strchr(str4, c1) == strchr(str4, c1));
+	assert(ft_strchr(str1, c2) == strchr(str1, c2));
+	assert(ft_strchr(str2, c2) == strchr(str2, c2));
+	assert(ft_strchr(str3, c2) == strchr(str3, c2));
+	assert(ft_strchr(str4, c2) == strchr(str4, c2));
 
-	assert(ft_strrchr(strchr_str1, strchr_c1) == strrchr(strchr_str1, strchr_c1));
-	assert(ft_strrchr(strchr_str2, strchr_c1) == strrchr(strchr_str2, strchr_c1));
-	assert(ft_strrchr(strchr_str3, strchr_c1) == strrchr(strchr_str3, strchr_c1));
-	assert(ft_strrchr(strchr_str4, strchr_c1) == strrchr(strchr_str4, strchr_c1));
-	assert(ft_strrchr(strchr_str1, strchr_c2) == strrchr(strchr_str1, strchr_c2));
-	assert(ft_strrchr(strchr_str2, strchr_c2) == strrchr(strchr_str2, strchr_c2));
-	assert(ft_strrchr(strchr_str3, strchr_c2) == strrchr(strchr_str3, strchr_c2));
-	assert(ft_strrchr(strchr_str4, strchr_c2) == strrchr(strchr_str4, strchr_c2));
+	assert(ft_strrchr(str1, c1) == strrchr(str1, c1));
+	assert(ft_strrchr(str2, c1) == strrchr(str2, c1));
+	assert(ft_strrchr(str3, c1) == strrchr(str3, c1));
+	assert(ft_strrchr(str4, c1) == strrchr(str4, c1));
+	assert(ft_strrchr(str1, c2) == strrchr(str1, c2));
+	assert(ft_strrchr(str2, c2) == strrchr(str2, c2));
+	assert(ft_strrchr(str3, c2) == strrchr(str3, c2));
+	assert(ft_strrchr(str4, c2) == strrchr(str4, c2));
+}
 
-	char	strncmp_str1[20] = "Hello World!";
-	char	strncmp_str2[20] = "Hello!";
-	char	strncmp_str3[20] = "Hello";
-	char	strncmp_str4[20] = "";
-	assert(sign(ft_strncmp(strncmp_str1, strncmp_str2, 20)) == sign(strncmp(strncmp_str1, strncmp_str2, 20)));
-	assert(sign(ft_strncmp(strncmp_str1, strncmp_str3, 20)) == sign(strncmp(strncmp_str1, strncmp_str3, 20)));
-	assert(sign(ft_strncmp(strncmp_str1, strncmp_str4, 20)) == sign(strncmp(strncmp_str1, strncmp_str4, 20)));
-	assert(sign(ft_strncmp(strncmp_str1, strncmp_str2, 5)) == sign(strncmp(strncmp_str1, strncmp_str2, 5)));
-	assert(sign(ft_strncmp(strncmp_str1, strncmp_str2, 6)) == sign(strncmp(strncmp_str1, strncmp_str2, 6)));
-	assert(sign(ft_strncmp(strncmp_str1, strncmp_str2, 7)) == sign(strncmp(strncmp_str1, strncmp_str2, 7)));
-	assert(sign(ft_strncmp(strncmp_str1, strncmp_str2, 0)) == sign(strncmp(strncmp_str1, strncmp_str2, 0)));
+void	test_strncmp()
+{
+	char	str1[20] = "Hello World!";
+	char	str2[20] = "Hello!";
+	char	str3[20] = "Hello";
+	char	str4[20] = "";
+	assert(sign(ft_strncmp(str1, str2, 20)) == sign(strncmp(str1, str2, 20)));
+	assert(sign(ft_strncmp(str1, str3, 20)) == sign(strncmp(str1, str3, 20)));
+	assert(sign(ft_strncmp(str1, str4, 20)) == sign(strncmp(str1, str4, 20)));
+	assert(sign(ft_strncmp(str1, str2, 5)) == sign(strncmp(str1, str2, 5)));
+	assert(sign(ft_strncmp(str1, str2, 6)) == sign(strncmp(str1, str2, 6)));
+	assert(sign(ft_strncmp(str1, str2, 7)) == sign(strncmp(str1, str2, 7)));
+	assert(sign(ft_strncmp(str1, str2, 0)) == sign(strncmp(str1, str2, 0)));
+}
 
-	char	memset_str1[] = "Hello World!";
-	char	memset_str2[] = "Hello World!";
-	assert(ft_memset(memset_str1, 'o', 6) == memset(memset_str1, 'o', 6));
-	assert(ft_memset(memset_str2, 'o', (0)) == memset(memset_str2, 'o', (0)));
+void	test_memset()
+{
+	char	str1[] = "Hello World!";
+	char	str2[] = "Hello World!";
+	assert(ft_memset(str1, 'o', 6) == memset(str1, 'o', 6));
+	assert(ft_memset(str2, 'o', (0)) == memset(str2, 'o', (0)));
+}
 
-	char	bzero_str1[] = "Hello World!";
-	char	bzero_str2[] = "Hello World!";
-	ft_bzero(bzero_str1, 6);
-	bzero(bzero_str2, 6);
-	assert(!strcmp(bzero_str1, bzero_str2));
+void	test_bzero()
+{
+	char	str1[] = "Hello World!";
+	char	str2[] = "Hello World!";
+	ft_bzero(str1, 6);
+	bzero(str2, 6);
+	assert(!strcmp(str1, str2));
+}
 
-	char	memcpy_str1[] = "Hello World!";
-	char	memcpy_str2[] = "Test123";
-	char	memcpy_str3[] = "Test123";
-	ft_memcpy(memcpy_str2, memcpy_str1, 6);
-	memcpy(memcpy_str3, memcpy_str1, 6);
-	assert(!strcmp(memcpy_str2, memcpy_str3));
-	ft_memcpy(memcpy_str2, memcpy_str1, 0);
-	memcpy(memcpy_str3, memcpy_str1, 0);
-	assert(!strcmp(memcpy_str2, memcpy_str3));
+void	test_memcpy()
+{
+	char	str1[] = "Hello World!";
+	char	str2[] = "Test123";
+	char	str3[] = "Test123";
+	ft_memcpy(str2, str1, 6);
+	memcpy(str3, str1, 6);
+	assert(!strcmp(str2, str3));
+	ft_memcpy(str2, str1, 0);
+	memcpy(str3, str1, 0);
+	assert(!strcmp(str2, str3));
+}
 
-	char	memcmp_str1[20] = "Hello World!";
-	char	memcmp_str2[20] = "Hello!";
-	char	memcmp_str3[20] = "Hello";
-	char	memcmp_str4[20] = "";
-	assert(sign(ft_memcmp(memcmp_str1, memcmp_str2, 20)) == sign(memcmp(memcmp_str1, memcmp_str2, 20)));
-	assert(sign(ft_memcmp(memcmp_str1, memcmp_str3, 20)) == sign(memcmp(memcmp_str1, memcmp_str3, 20)));
-	assert(sign(ft_memcmp(memcmp_str1, memcmp_str4, 20)) == sign(memcmp(memcmp_str1, memcmp_str4, 20)));
-	assert(sign(ft_memcmp(memcmp_str1, memcmp_str2, 5)) == sign(memcmp(memcmp_str1, memcmp_str2, 5)));
-	assert(sign(ft_memcmp(memcmp_str1, memcmp_str2, 6)) == sign(memcmp(memcmp_str1, memcmp_str2, 6)));
-	assert(sign(ft_memcmp(memcmp_str1, memcmp_str2, 7)) == sign(memcmp(memcmp_str1, memcmp_str2, 7)));
-	assert(sign(ft_memcmp(memcmp_str1, memcmp_str2, 0)) == sign(memcmp(memcmp_str1, memcmp_str2, 0)));
+void	test_memcmp()
+{
+	char	str1[20] = "Hello World!";
+	char	str2[20] = "Hello!";
+	char	str3[20] = "Hello";
+	char	str4[20] = "";
+	assert(sign(ft_memcmp(str1, str2, 20)) == sign(memcmp(str1, str2, 20)));
+	assert(sign(ft_memcmp(str1, str3, 20)) == sign(memcmp(str1, str3, 20)));
+	assert(sign(ft_memcmp(str1, str4, 20)) == sign(memcmp(str1, str4, 20)));
+	assert(sign(ft_memcmp(str1, str2, 5)) == sign(memcmp(str1, str2, 5)));
+	assert(sign(ft_memcmp(str1, str2, 6)) == sign(memcmp(str1, str2, 6)));
+	assert(sign(ft_memcmp(str1, str2, 7)) == sign(memcmp(str1, str2, 7)));
+	assert(sign(ft_memcmp(str1, str2, 0)) == sign(memcmp(str1, str2, 0)));
+}
 
-	char	memmove_str1[] = "Hello World!";
-	char	memmove_str2[] = "Test123";
-	char	memmove_str3[] = "Test123";
-	char	memmove_str4[] = "Hello World!";
-	char	memmove_str5[] = "Hello World!";
-	char	memmove_str6[] = "Hello World!";
-	char	memmove_str7[] = "Hello World!";
-	ft_memmove(memmove_str2, memmove_str1, 6);
-	memmove(memmove_str3, memmove_str1, 6);
-	assert(!strcmp(memmove_str2, memmove_str3));
-	ft_memmove(memmove_str2, memmove_str1, 0);
-	memmove(memmove_str3, memmove_str1, 0);
-	assert(!strcmp(memmove_str2, memmove_str3));
-	ft_memmove(memmove_str4, memmove_str4 + 4, 6);
-	memmove(memmove_str5, memmove_str5 + 4, 6);
-	assert(!strcmp(memmove_str4, memmove_str5));
-	ft_memmove(memmove_str6 + 4, memmove_str6, 6);
-	memmove(memmove_str7 + 4, memmove_str7, 6);
-	assert(!strcmp(memmove_str6, memmove_str7));
+void	test_memmove()
+{
+	char	str1[] = "Hello World!";
+	char	str2[] = "Test123";
+	char	str3[] = "Test123";
+	char	str4[] = "Hello World!";
+	char	str5[] = "Hello World!";
+	char	str6[] = "Hello World!";
+	char	str7[] = "Hello World!";
+	ft_memmove(str2, str1, 6);
+	memmove(str3, str1, 6);
+	assert(!strcmp(str2, str3));
+	ft_memmove(str2, str1, 0);
+	memmove(str3, str1, 0);
+	assert(!strcmp(str2, str3));
+	ft_memmove(str4, str4 + 4, 6);
+	memmove(str5, str5 + 4, 6);
+	assert(!strcmp(str4, str5));
+	ft_memmove(str6 + 4, str6, 6);
+	memmove(str7 + 4, str7, 6);
+	assert(!strcmp(str6, str7));
+}
 
-	char	strlcpy_str1[] = "Hello World!";
-	char	strlcpy_str2[] = "Test123";
-	char	strlcpy_str3[] = "Test123";
-	ft_strlcpy(strlcpy_str2, strlcpy_str1, 6);
-	strlcpy(strlcpy_str3, strlcpy_str1, 6);
-	assert(!strcmp(strlcpy_str2, strlcpy_str3));
-	ft_strlcpy(strlcpy_str2, strlcpy_str1, 0);
-	strlcpy(strlcpy_str3, strlcpy_str1, 0);
-	assert(!strcmp(strlcpy_str2, strlcpy_str3));
+void	test_strlcpy()
+{
+	char	str1[] = "Hello World!";
+	char	str2[] = "Test123";
+	char	str3[] = "Test123";
+	ft_strlcpy(str2, str1, 6);
+	strlcpy(str3, str1, 6);
+	assert(!strcmp(str2, str3));
+	ft_strlcpy(str2, str1, 0);
+	strlcpy(str3, str1, 0);
+	assert(!strcmp(str2, str3));
+}
 
-	char	strlcat_dest1[13] = "Hello";
-	char	strlcat_dest2[13] = "Hello";
-	char	strlcat_dest3[13] = "Hello";
-	char	strlcat_dest4[13] = "Hello";
-	char	strlcat_dest5[20] = "Hello";
-	char	strlcat_dest6[20] = "Hello";
-	char	strlcat_src1[] = " World!";
-	assert(ft_strlcat(strlcat_dest1, strlcat_src1, 0) == strlcat(strlcat_dest2, strlcat_src1, 0));
-	assert(ft_strlcat(strlcat_dest1, strlcat_src1, 4) == strlcat(strlcat_dest2, strlcat_src1, 4));
-	assert(ft_strlcat(strlcat_dest1, strlcat_src1, 13) == strlcat(strlcat_dest2, strlcat_src1, 13));
-	assert(ft_strlcat(strlcat_dest3, strlcat_src1, 10) == strlcat(strlcat_dest4, strlcat_src1, 10));
-	assert(ft_strlcat(strlcat_dest5, strlcat_src1, 20) == strlcat(strlcat_dest6, strlcat_src1, 20));
+void	test_strlcat()
+{
+	char	dest1[13] = "Hello";
+	char	dest2[13] = "Hello";
+	char	dest3[13] = "Hello";
+	char	dest4[13] = "Hello";
+	char	dest5[20] = "Hello";
+	char	dest6[20] = "Hello";
+	char	src1[] = " World!";
+	assert(ft_strlcat(dest1, src1, 0) == strlcat(dest2, src1, 0));
+	assert(ft_strlcat(dest1, src1, 4) == strlcat(dest2, src1, 4));
+	assert(ft_strlcat(dest1, src1, 13) == strlcat(dest2, src1, 13));
+	assert(ft_strlcat(dest3, src1, 10) == strlcat(dest4, src1, 10));
+	assert(ft_strlcat(dest5, src1, 20) == strlcat(dest6, src1, 20));
+}
 
-	char	strnstr_haystack[] = "Hello World!\0Hellooo";
-	char	strnstr_needle1[] = "Hello";
-	char	strnstr_needle2[] = "";
-	char	strnstr_needle3[] = "!";
-	char	strnstr_needle4[] = "Helloo";
-	char	strnstr_needle5[] = "World!";
-	assert(ft_strnstr(strnstr_haystack, strnstr_needle1, 15) == strnstr(strnstr_haystack, strnstr_needle1, 15));
-	assert(ft_strnstr(strnstr_haystack, strnstr_needle1, 4) == strnstr(strnstr_haystack, strnstr_needle1, 4));
-	assert(ft_strnstr(strnstr_haystack, strnstr_needle1, 5) == strnstr(strnstr_haystack, strnstr_needle1, 5));
-	assert(ft_strnstr(strnstr_haystack, strnstr_needle1, 6) == strnstr(strnstr_haystack, strnstr_needle1, 6));
-	assert(ft_strnstr(strnstr_haystack, strnstr_needle2, 15) == strnstr(strnstr_haystack, strnstr_needle2, 15));
-	assert(ft_strnstr(strnstr_haystack, strnstr_needle3, 15) == strnstr(strnstr_haystack, strnstr_needle3, 15));
-	assert(ft_strnstr(strnstr_haystack, strnstr_needle4, 15) == strnstr(strnstr_haystack, strnstr_needle4, 15));
-	assert(ft_strnstr(strnstr_haystack, strnstr_needle5, 15) == strnstr(strnstr_haystack, strnstr_needle5, 15));
-	assert(ft_strnstr(strnstr_haystack, strnstr_needle5, 10) == strnstr(strnstr_haystack, strnstr_needle5, 10));
+void	test_strnstr()
+{
+	char	haystack[] = "Hello World!\0Hellooo";
+	char	needle1[] = "Hello";
+	char	needle2[] = "";
+	char	needle3[] = "!";
+	char	needle4[] = "Helloo";
+	char	needle5[] = "World!";
+	assert(ft_strnstr(haystack, needle1, 15) == strnstr(haystack, needle1, 15));
+	assert(ft_strnstr(haystack, needle1, 4) == strnstr(haystack, needle1, 4));
+	assert(ft_strnstr(haystack, needle1, 5) == strnstr(haystack, needle1, 5));
+	assert(ft_strnstr(haystack, needle1, 6) == strnstr(haystack, needle1, 6));
+	assert(ft_strnstr(haystack, needle2, 15) == strnstr(haystack, needle2, 15));
+	assert(ft_strnstr(haystack, needle3, 15) == strnstr(haystack, needle3, 15));
+	assert(ft_strnstr(haystack, needle4, 15) == strnstr(haystack, needle4, 15));
+	assert(ft_strnstr(haystack, needle5, 15) == strnstr(haystack, needle5, 15));
+	assert(ft_strnstr(haystack, needle5, 10) == strnstr(haystack, needle5, 10));
+}
 
-    char  *atoi_str[] = { "12345+6789", "-12345-6789", "  12345", "  -12345", "  +12345", "  - 12345", "  + 12345", "abc12345", "abc+12345", "abc-12345", " \t\n\f\v\r 12345", " +-12345", " =-12345" };
-    for (size_t i = 0; i < sizeof(atoi_str) / sizeof(atoi_str[0]); i++)
-        assertf(ft_atoi(atoi_str[i]) == atoi(atoi_str[i]), "Failed with input: %s", atoi_str[i]);
+void	test_atoi()
+{
+	char  *str[] = { "12345+6789", "-12345-6789", "  12345", "  -12345", "  +12345", "  - 12345", "  + 12345", "abc12345", "abc+12345", "abc-12345", " \t\n\f\v\r 12345", " +-12345", " =-12345" };
+	for (size_t i = 0; i < sizeof(str) / sizeof(str[0]); i++)
+		assertf(ft_atoi(str[i]) == atoi(str[i]), "Failed with input: %s", str[i]);
+}
 
-    void    *p;
-    char    zero[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-    p = ft_calloc(2, 4);
-    assert(!memcmp(p, zero, 8));
-    free(p);
+void	test_calloc()
+{
+	void    *p;
+	char    zero[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+	p = ft_calloc(2, 4);
+	assert(!memcmp(p, zero, 8));
+	free(p);
+}
 
-    char    strdup_src1[] = "Hello World!";
-    char    strdup_src2[] = "";
-    char    *strdup_dest1;
-    char    *strdup_dest2;
-    char    *strdup_dest3;
-    char    *strdup_dest4;
-    strdup_dest1 = ft_strdup(strdup_src1);
-    strdup_dest2 = strdup(strdup_src1);
-    assert(!strcmp(strdup_dest1, strdup_dest2));
-    free(strdup_dest1);
-    free(strdup_dest2);
-    strdup_dest3 = ft_strdup(strdup_src2);
-    strdup_dest4 = strdup(strdup_src2);
-    assert(!strcmp(strdup_dest3, strdup_dest4));
-    free(strdup_dest3);
-    free(strdup_dest4);
+void	test_strdup()
+{
+	char    src1[] = "Hello World!";
+	char    src2[] = "";
+	char    *dest1;
+	char    *dest2;
+	char    *dest3;
+	char    *dest4;
+	dest1 = ft_strdup(src1);
+	dest2 = strdup(src1);
+	assert(!strcmp(dest1, dest2));
+	free(dest1);
+	free(dest2);
+	dest3 = ft_strdup(src2);
+	dest4 = strdup(src2);
+	assert(!strcmp(dest3, dest4));
+	free(dest3);
+	free(dest4);
+}
 
-    char    substr_str1[] = "Hello World!";
-    char    substr_str2[] = "";
-    assert(!strcmp(ft_substr(substr_str1, 0, 5), "Hello"));
-    assert(!strcmp(ft_substr(substr_str1, 2, SIZE_MAX), substr_str1 + 2));
-    assert(!strcmp(ft_substr(substr_str1, 0, 0), ""));
-    assert(!strcmp(ft_substr(substr_str1, 20, 0), ""));
-    assert(!strcmp(ft_substr(substr_str1, 20, 20), ""));
-    assert(!strcmp(ft_substr(substr_str2, 0, 5), ""));
-    assert(!strcmp(ft_substr(substr_str2, 2, SIZE_MAX), ""));
-    assert(!strcmp(ft_substr(substr_str2, 0, 0), ""));
-    assert(!strcmp(ft_substr(substr_str2, 20, 0), ""));
-    assert(!strcmp(ft_substr(substr_str2, 20, 20), ""));
+void	test_substr()
+{
+	char    str1[] = "Hello World!";
+	char    str2[] = "";
+	assert(!strcmp(ft_substr(str1, 0, 5), "Hello"));
+	assert(!strcmp(ft_substr(str1, 2, SIZE_MAX), str1 + 2));
+	assert(!strcmp(ft_substr(str1, 0, 0), ""));
+	assert(!strcmp(ft_substr(str1, 20, 0), ""));
+	assert(!strcmp(ft_substr(str1, 20, 20), ""));
+	assert(!strcmp(ft_substr(str2, 0, 5), ""));
+	assert(!strcmp(ft_substr(str2, 2, SIZE_MAX), ""));
+	assert(!strcmp(ft_substr(str2, 0, 0), ""));
+	assert(!strcmp(ft_substr(str2, 20, 0), ""));
+	assert(!strcmp(ft_substr(str2, 20, 20), ""));
+}
 
-    char    strjoin_str1[] = "Hello";
-    char    strjoin_str2[] = " ";
-    char    strjoin_str3[] = "World!";
-    assert(!strcmp(ft_strjoin(strjoin_str1, strjoin_str3), "HelloWorld!"));
-    assert(!strcmp(ft_strjoin(ft_strjoin(strjoin_str1, strjoin_str2), strjoin_str3), "Hello World!"));
-    assert(!strcmp(ft_strjoin(strjoin_str1, ""), "Hello"));
-    assert(!strcmp(ft_strjoin("", strjoin_str1), "Hello"));
-    assert(!strcmp(ft_strjoin("", ""), ""));
+void	test_strjoin()
+{
+	char    str1[] = "Hello";
+	char    str2[] = " ";
+	char    str3[] = "World!";
+	assert(!strcmp(ft_strjoin(str1, str3), "HelloWorld!"));
+	assert(!strcmp(ft_strjoin(ft_strjoin(str1, str2), str3), "Hello World!"));
+	assert(!strcmp(ft_strjoin(str1, ""), "Hello"));
+	assert(!strcmp(ft_strjoin("", str1), "Hello"));
+	assert(!strcmp(ft_strjoin("", ""), ""));
+}
 
-    char    strtrim_str1[] = "ttestHello World!testt";
-    char    strtrim_str2[] = "eessesetesetestHello World!";
-    char    strtrim_str3[] = "Hello World!esetetestsetess";
-    char    strtrim_str4[] = "";
-    char    strtrim_str5[] = "        ";
-    char    strtrim_set1[] = "est";
-    char    strtrim_set2[] = "";
-    char    strtrim_set3[] = " ";
-    assert(!strcmp(ft_strtrim(strtrim_str1, strtrim_set1), "Hello World!"));
-    assert(!strcmp(ft_strtrim(strtrim_str2, strtrim_set1), "Hello World!"));
-    assert(!strcmp(ft_strtrim(strtrim_str3, strtrim_set1), "Hello World!"));
-    assert(!strcmp(ft_strtrim(strtrim_str1, strtrim_set2), strtrim_str1));
-    assert(!strcmp(ft_strtrim(strtrim_str4, strtrim_set1), strtrim_str4));
-    assert(!strcmp(ft_strtrim(strtrim_str4, strtrim_set2), strtrim_str4));
-    assert(!strcmp(ft_strtrim(strtrim_str4, strtrim_set3), strtrim_str4));
-    assert(!strcmp(ft_strtrim(strtrim_str5, strtrim_set1), strtrim_str5));
-    assert(!strcmp(ft_strtrim(strtrim_str5, strtrim_set2), strtrim_str5));
-    assert(!strcmp(ft_strtrim(strtrim_str5, strtrim_set3), ""));
+void	test_strtrim()
+{
+	char    str1[] = "ttestHello World!testt";
+	char    str2[] = "eessesetesetestHello World!";
+	char    str3[] = "Hello World!esetetestsetess";
+	char    str4[] = "";
+	char    str5[] = "        ";
+	char    set1[] = "est";
+	char    set2[] = "";
+	char    set3[] = " ";
+	assert(!strcmp(ft_strtrim(str1, set1), "Hello World!"));
+	assert(!strcmp(ft_strtrim(str2, set1), "Hello World!"));
+	assert(!strcmp(ft_strtrim(str3, set1), "Hello World!"));
+	assert(!strcmp(ft_strtrim(str1, set2), str1));
+	assert(!strcmp(ft_strtrim(str4, set1), str4));
+	assert(!strcmp(ft_strtrim(str4, set2), str4));
+	assert(!strcmp(ft_strtrim(str4, set3), str4));
+	assert(!strcmp(ft_strtrim(str5, set1), str5));
+	assert(!strcmp(ft_strtrim(str5, set2), str5));
+	assert(!strcmp(ft_strtrim(str5, set3), ""));
+}
 
+void	test_split()
+{
+}
+
+void	test_itoa()
+{
+	assert(!strcmp(ft_itoa(0), "0"));
+	assert(!strcmp(ft_itoa(123), "123"));
+	assert(!strcmp(ft_itoa(-123), "-123"));
+	assert(!strcmp(ft_itoa(INT_MIN), "-2147483648"));
+	assert(!strcmp(ft_itoa(INT_MAX), "2147483647"));
+}
+
+int	main()
+{
+	test_isalpha();
+	test_isdigit();
+	test_toupper();
+	test_tolower();
+	test_isalnum();
+	test_isascii();
+	test_isprint();
+	test_strlen();
+	test_strchr_and_strrchr();
+	test_strncmp();
+	test_memset();
+	test_bzero();
+	test_memcpy();
+	test_memcmp();
+	test_memmove();
+	test_strlcpy();
+	test_strlcat();
+	test_strnstr();
+	test_atoi();
+	test_calloc();
+	test_strdup();
+	test_substr();
+	test_strjoin();
+	test_strtrim();
+	test_split();
+	test_itoa();
 	// size_t	i;
 	// char	**arr;
 	// arr = ft_split("  ", ' ');
@@ -274,10 +385,4 @@ int	main()
 	// char	strlcat_str1[] = "Hello";
 	// char	strlcat_str2[] = "World!";
 	// printf("ft_strlcat: %lu\n", strlcat(NULL, strlcat_str2, 0));
-	
-	assert(!strcmp(ft_itoa(0), "0"));
-	assert(!strcmp(ft_itoa(123), "123"));
-	assert(!strcmp(ft_itoa(-123), "-123"));
-	assert(!strcmp(ft_itoa(INT_MIN), "-2147483648"));
-	assert(!strcmp(ft_itoa(INT_MAX), "2147483647"));
 }
