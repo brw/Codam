@@ -248,17 +248,23 @@ int	main()
     assert(!strcmp(ft_strtrim(strtrim_str5, strtrim_set2), strtrim_str5));
     assert(!strcmp(ft_strtrim(strtrim_str5, strtrim_set3), ""));
 
-	size_t	i;
-	char	**arr;
-	arr = ft_split("  ", ' ');
-	i = 0;
-	while (arr[i] != NULL)
-	{
-		printf("ar[%lu]: %s\n", i, arr[i]);
-		i++;
-	}
-	printf("ar[%lu]: %s\n", i, arr[i]);
+	// size_t	i;
+	// char	**arr;
+	// arr = ft_split("  ", ' ');
+	// i = 0;
+	// while (arr[i] != NULL)
+	// {
+	// 	printf("ar[%lu]: %s\n", i, arr[i]);
+	// 	i++;
+	// }
+	// printf("ar[%lu]: %s\n", i, arr[i]);
 	// char	strlcat_str1[] = "Hello";
 	// char	strlcat_str2[] = "World!";
 	// printf("ft_strlcat: %lu\n", strlcat(NULL, strlcat_str2, 0));
+	
+	printf("itoa: %s\n", ft_itoa(0));
+	printf("itoa: %s\n", ft_itoa(123));
+	printf("itoa: %s\n", ft_itoa(-123));
+	printf("itoa: %s\n", ft_itoa(INT_MIN));
+	printf("itoa: %s\n", ft_itoa(INT_MAX));
 }
