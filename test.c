@@ -164,6 +164,19 @@ int	main()
 	strlcpy(strlcpy_str3, strlcpy_str1, 0);
 	assert(!strcmp(strlcpy_str2, strlcpy_str3));
 
+	char	strlcat_dest1[13] = "Hello";
+	char	strlcat_dest2[13] = "Hello";
+	char	strlcat_dest3[13] = "Hello";
+	char	strlcat_dest4[13] = "Hello";
+	char	strlcat_dest5[20] = "Hello";
+	char	strlcat_dest6[20] = "Hello";
+	char	strlcat_src1[] = " World!";
+	assert(ft_strlcat(strlcat_dest1, strlcat_src1, 0) == strlcat(strlcat_dest2, strlcat_src1, 0));
+	assert(ft_strlcat(strlcat_dest1, strlcat_src1, 4) == strlcat(strlcat_dest2, strlcat_src1, 4));
+	assert(ft_strlcat(strlcat_dest1, strlcat_src1, 13) == strlcat(strlcat_dest2, strlcat_src1, 13));
+	assert(ft_strlcat(strlcat_dest3, strlcat_src1, 10) == strlcat(strlcat_dest4, strlcat_src1, 10));
+	assert(ft_strlcat(strlcat_dest5, strlcat_src1, 20) == strlcat(strlcat_dest6, strlcat_src1, 20));
+
 	char	strnstr_haystack[] = "Hello World!\0Hellooo";
 	char	strnstr_needle1[] = "Hello";
 	char	strnstr_needle2[] = "";
@@ -262,9 +275,9 @@ int	main()
 	// char	strlcat_str2[] = "World!";
 	// printf("ft_strlcat: %lu\n", strlcat(NULL, strlcat_str2, 0));
 	
-	printf("itoa: %s\n", ft_itoa(0));
-	printf("itoa: %s\n", ft_itoa(123));
-	printf("itoa: %s\n", ft_itoa(-123));
-	printf("itoa: %s\n", ft_itoa(INT_MIN));
-	printf("itoa: %s\n", ft_itoa(INT_MAX));
+	assert(!strcmp(ft_itoa(0), "0"));
+	assert(!strcmp(ft_itoa(123), "123"));
+	assert(!strcmp(ft_itoa(-123), "-123"));
+	assert(!strcmp(ft_itoa(INT_MIN), "-2147483648"));
+	assert(!strcmp(ft_itoa(INT_MAX), "2147483647"));
 }
