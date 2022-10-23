@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 00:31:02 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/23 00:31:05 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/10/23 22:19:54 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,6 @@ static size_t	count_items(char const *s, char delim)
 	return (count);
 }
 
-static void	free_arr(char **arr, size_t index)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < index)
-		free(arr[i++]);
-	free(arr);
-}
-
 static size_t	get_item_length(const char *s, char delim)
 {
 	size_t	i;
@@ -54,24 +44,44 @@ static size_t	get_item_length(const char *s, char delim)
 	return (i);
 }
 
-static void	*malloc_or_free(char **arr, const char *str, size_t index,
-		size_t length)
+static void	free_arr(char **arr, size_t index)
 {
-	arr[index] = ft_strndup(str, length);
-	if (!arr[index])
+	size_t	i;
+
+	i = 0;
+	while (i < index)
+		free(arr[i++]);
+	free(arr);
+}
+
+char	**split_str(char **arr, char const *str, char delim, size_t count)
+{
+	size_t	index;
+	size_t	length;
+
+	index = 0;
+	while (*str && index < count)
 	{
-		free_arr(arr, index);
-		return (NULL);
+		while (*str == delim)
+			str++;
+		length = get_item_length(str, delim);
+		arr[index] = ft_strndup(str, length);
+		if (!arr[index])
+		{
+			free_arr(arr, index);
+			return (NULL);
+		}
+		index++;
+		str += length;
 	}
-	return (arr[index]);
+	arr[index] = NULL;
+	return (arr);
 }
 
 char	**ft_split(char const *str, char delim)
 {
 	char	**arr;
 	size_t	count;
-	size_t	length;
-	size_t	index;
 
 	if (!str)
 		return (NULL);
@@ -79,18 +89,6 @@ char	**ft_split(char const *str, char delim)
 	arr = malloc(sizeof(char *) * (count + 1));
 	if (!arr)
 		return (NULL);
-	index = 0;
-	while (*str && index < count)
-	{
-		while (*str == delim)
-			str++;
-		length = get_item_length(str, delim);
-		arr[index] = malloc_or_free(arr, str, index, length);
-		if (!arr[index])
-			return (NULL);
-		index++;
-		str += length;
-	}
-	arr[index] = NULL;
+	arr = split_str(arr, str, delim, count);
 	return (arr);
 }
