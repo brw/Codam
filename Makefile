@@ -6,6 +6,8 @@ OBJ_DIR := obj
 SRC := $(wildcard ft_*.c)
 TEST_SRC := test.c
 TEST_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(TEST_SRC))
+BONUS_SRC := $(wildcard ft_*_bonus.c)
+BONUS_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(BONUS_SRC))
 OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
 CFLAGS ?= -Wall -Wextra -Werror
 LDFLAGS ?=
@@ -20,7 +22,7 @@ $(OBJ_DIR)/%.o: %.c
 	$(CC) -c $(CFLAGS) -o $@ $^
 
 clean:
-	rm -f $(OBJ) $(TEST_OBJ)
+	rm -f $(OBJ) $(TEST_OBJ) $(BONUS_OBJ)
 
 fclean: clean
 	rm -f $(NAME) $(TEST_NAME)
@@ -39,4 +41,6 @@ so:
 	$(CC) -nostartfiles -fPIC $(CFLAGS) $(SRC)
 	gcc -nostartfiles -shared -o libft.so $(OBJ)
 
-.PHONY: all clean fclean test re so
+bonus: $(BONUS_OBJ) all
+
+.PHONY: all clean fclean test re so bonus
