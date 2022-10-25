@@ -32,7 +32,7 @@ clean:
 fclean: clean
 	rm -f $(NAME) $(TEST_NAME)
 
-$(TEST_NAME): $(TEST_OBJ) $(NAME)
+$(TEST_NAME): $(TEST_OBJ) $(BONUS_OBJ) $(NAME)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 test: $(TEST_NAME)
