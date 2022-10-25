@@ -3,12 +3,17 @@ TEST_NAME := test_libft
 # HEADERFILES := libft.h
 # SRC := ft_isalpha.c
 OBJ_DIR := obj
-SRC := $(wildcard ft_*.c)
-TEST_SRC := test.c
-TEST_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(TEST_SRC))
 BONUS_SRC := $(wildcard ft_*_bonus.c)
 BONUS_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(BONUS_SRC))
-OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
+REGULAR_SRC := $(filter-out $(BONUS_SRC), $(wildcard ft_*.c))
+REGULAR_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(REGULAR_SRC))
+ifdef WITH_BONUS
+	OBJ = $(REGULAR_OBJ) $(BONUS_OBJ)
+else
+	OBJ = $(REGULAR_OBJ)
+endif
+TEST_SRC := test.c
+TEST_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(TEST_SRC))
 CFLAGS ?= -Wall -Wextra -Werror
 LDFLAGS ?=
 
@@ -37,10 +42,11 @@ re: fclean all
 
 retest: fclean test
 
+bonus:
+	$(MAKE) WITH_BONUS=1 all
+
 so:
 	$(CC) -nostartfiles -fPIC $(CFLAGS) $(SRC)
 	gcc -nostartfiles -shared -o libft.so $(OBJ)
-
-bonus: $(BONUS_OBJ) all
 
 .PHONY: all clean fclean test re so bonus
