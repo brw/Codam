@@ -7,6 +7,7 @@
 #include <errno.h>
 #include <assert.h>
 #include <limits.h>
+#include <unistd.h>
 
 #define clean_errno() (errno == 0 ? "None" : strerror(errno))
 #define log_error(M, ...) fprintf(stderr, "[ERROR] (%s:%d: errno: %s) " M "\n", __FILE__, __LINE__, clean_errno(), ##__VA_ARGS__)
@@ -394,8 +395,95 @@ void	test_striteri()
 	assert(!strcmp(str2, ""));
 }
 
-void	test_ft_putchar_fd()
+int	create_temp_file(char *filename)
 {
+	int	fd = mkstemp(filename);
+	unlink(filename);
+	return (fd);
+}
+
+char	*read_from_fd(int fd)
+{
+	FILE	*file;
+	long	length;
+	char	*buf;
+
+	file = fdopen(fd, "r");
+	fseek(file, 0, SEEK_END);
+	length = ftell(file);
+	rewind(file);
+	buf = malloc(sizeof(char) * (length + 1));
+	fread(buf, sizeof(char), length, file);
+	buf[length] = '\0';
+	fclose(file);
+	return (buf);
+}
+
+void	test_putchar_fd()
+{
+	char	filename1[] = "/tmp/libft_putchar_fd.XXXXXX";
+	char	filename2[] = "/tmp/libft_putchar_fd.XXXXXX";
+	int		fd;
+
+	fd = create_temp_file(filename1);
+	ft_putchar_fd('a', fd);
+	assert(!strcmp(read_from_fd(fd), "a"));
+	fd = create_temp_file(filename2);
+	ft_putchar_fd(0, fd);
+	assert(!strcmp(read_from_fd(fd), ""));
+}
+
+void	test_putstr_fd()
+{
+	char	filename1[] = "/tmp/libft_putstr_fd.XXXXXX";
+	char	filename2[] = "/tmp/libft_putstr_fd.XXXXXX";
+	char	str1[] = "Hello World!";
+	char	str2[] = "";
+	int		fd;
+
+	fd = create_temp_file(filename1);
+	ft_putstr_fd(str1, fd);
+	assert(!strcmp(read_from_fd(fd), str1));
+	fd = create_temp_file(filename2);
+	ft_putstr_fd(str2, fd);
+	assert(!strcmp(read_from_fd(fd), str2));
+}
+
+void	test_putendl_fd()
+{
+	char	filename1[] = "/tmp/libft_putendl_fd.XXXXXX";
+	char	filename2[] = "/tmp/libft_putendl_fd.XXXXXX";
+	int		fd;
+
+
+	fd = create_temp_file(filename1);
+	ft_putendl_fd("Hello World!", fd);
+	assert(!strcmp(read_from_fd(fd), "Hello World!\n"));
+	fd = create_temp_file(filename2);
+	ft_putendl_fd("", fd);
+	assert(!strcmp(read_from_fd(fd), "\n"));
+}
+
+void	test_putnbr_fd()
+{
+	char	filename1[] = "/tmp/libft_putnbr_fd.XXXXXX";
+	char	filename2[] = "/tmp/libft_putnbr_fd.XXXXXX";
+	char	filename3[] = "/tmp/libft_putnbr_fd.XXXXXX";
+	char	filename4[] = "/tmp/libft_putnbr_fd.XXXXXX";
+	int		fd;
+
+	fd = create_temp_file(filename1);
+	ft_putnbr_fd(123, fd);
+	assert(!strcmp(read_from_fd(fd), "123"));
+	fd = create_temp_file(filename2);
+	ft_putnbr_fd(-123, fd);
+	assert(!strcmp(read_from_fd(fd), "-123"));
+	fd = create_temp_file(filename3);
+	ft_putnbr_fd(INT_MIN, fd);
+	assert(!strcmp(read_from_fd(fd), "-2147483648"));
+	fd = create_temp_file(filename4);
+	ft_putnbr_fd(INT_MAX, fd);
+	assert(!strcmp(read_from_fd(fd), "2147483647"));
 }
 
 int	main()
@@ -428,6 +516,10 @@ int	main()
 	test_itoa();
 	test_strmapi();
 	test_striteri();
+	test_putchar_fd();
+	test_putstr_fd();
+	test_putendl_fd();
+	test_putnbr_fd();
 
 	// size_t	i;
 	// char	**arr;
