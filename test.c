@@ -513,6 +513,86 @@ void	test_putnbr_fd()
 	assert(!strcmp(read_from_fd(fd), "2147483647"));
 }
 
+void	test_lst_del(void *content)
+{
+	free(content);
+}
+
+void	test_lst1()
+{
+	t_list	*lst1;
+	t_list	*lst2;
+	t_list	*lst3;
+	t_list	*lst4;
+	t_list	*lst5;
+	t_list	*lst6;
+
+	lst1 = ft_lstnew(ft_strdup("Hello"));
+	assert(!strcmp(lst1->content, "Hello"));
+	assert(lst1->next == NULL);
+
+	assert(ft_lstsize(lst1) == 1);
+	assert(ft_lstsize(NULL) == 0);
+
+	lst2 = ft_lstnew(ft_strdup("World!"));
+	ft_lstadd_front(&lst2, lst1);
+	assert(!strcmp(lst1->next->content, "World!"));
+	assert(lst1->next->next == NULL);
+	assert(!strcmp(lst2->next->content, "World!"));
+	assert(lst2->next->next == NULL);
+	assert(ft_lstsize(lst1) == 2);
+
+	lst3 = ft_lstlast(lst1);
+	assert(!strcmp(lst3->content, "World!"));
+	assert(lst3->next == NULL);
+	lst4 = ft_lstlast(lst3);
+	assert(!strcmp(lst4->content, "World!"));
+	assert(lst4->next == NULL);
+
+	lst5 = NULL;
+	lst6 = ft_lstnew(ft_strdup("Test"));
+	ft_lstadd_back(&lst5, lst6);
+	assert(!strcmp(lst5->content, "Test"));
+	assert(lst5->next == NULL);
+
+	ft_lstadd_back(&lst1, lst5);
+	assert(!strcmp(lst1->next->next->content, "Test"));
+	assert(lst1->next->next->next == NULL);
+	assert(!strcmp(lst4->next->content, "Test"));
+	assert(lst4->next->next == NULL);
+
+	// ft_lstdelone(lst5, &test_lst_del);
+	ft_lstclear(&lst1, &test_lst_del);
+	assert(lst1 == NULL);
+}
+
+void	test_lst_print(void *content)
+{
+	printf("%s\n", (char *) content);
+}
+
+void	*test_lst_uppercase(void *content)
+{
+	return (ft_strmapi(content, &test_strmapi_toupper));
+}
+
+void	test_lst2()
+{
+	t_list	*lst1;
+	t_list	*lst2;
+	t_list	*lst3;
+	t_list	*res;
+	
+	lst1 = ft_lstnew("Test1");
+	lst2 = ft_lstnew("Test2");
+	lst3 = ft_lstnew("Test3");
+	ft_lstadd_back(&lst1, lst2);
+	ft_lstadd_back(&lst1, lst3);
+	res = ft_lstmap(lst1, &test_lst_uppercase, &test_lst_del);
+	ft_lstiter(lst1, &test_lst_print);
+	ft_lstiter(res, &test_lst_print);
+}
+
 int	main()
 {
 	test_isalpha();
@@ -547,6 +627,8 @@ int	main()
 	test_putstr_fd();
 	test_putendl_fd();
 	test_putnbr_fd();
+	test_lst1();
+	test_lst2();
 
 	// size_t	i;
 	// char	**arr;
