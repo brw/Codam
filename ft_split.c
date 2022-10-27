@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 00:31:02 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/23 22:19:54 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/10/27 21:05:02 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	free_arr(char **arr, size_t index)
 	free(arr);
 }
 
-char	**split_str(char **arr, char const *str, char delim, size_t count)
+static char	**split_str(char **arr, char const *str, char delim, size_t count)
 {
 	size_t	index;
 	size_t	length;
