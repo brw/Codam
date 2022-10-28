@@ -166,6 +166,13 @@ void	test_memcpy()
 	assert(!strcmp(str2, str3));
 }
 
+void	test_memchr()
+{
+	char	str1[19] = "Hello World!\0\0\0Test";
+	assert(ft_memchr(str1, 'o', 10) == memchr(str1, 'o', 10));
+	assert(ft_memchr(str1, 's', 19) == memchr(str1, 's', 19));
+}
+
 void	test_memcmp()
 {
 	char	str1[20] = "Hello World!";
@@ -608,6 +615,7 @@ int	main()
 	test_memset();
 	test_bzero();
 	test_memcpy();
+	test_memchr();
 	test_memcmp();
 	test_memmove();
 	test_strlcpy();
