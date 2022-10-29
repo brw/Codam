@@ -171,6 +171,10 @@ void	test_memchr()
 	char	str1[19] = "Hello World!\0\0\0Test";
 	assert(ft_memchr(str1, 'o', 10) == memchr(str1, 'o', 10));
 	assert(ft_memchr(str1, 's', 19) == memchr(str1, 's', 19));
+	assert(ft_memchr(str1, 'H', 0) == memchr(str1, 'H', 0));
+	assert(ft_memchr(str1, 'H', 1) == memchr(str1, 'H', 1));
+	assert(ft_memchr(str1, '\0', 13) == memchr(str1, '\0', 13));
+	assert(ft_memchr(str1, 'q', 19) == memchr(str1, 'q', 19));
 }
 
 void	test_memcmp()
