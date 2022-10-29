@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 03:32:55 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/23 03:32:56 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/10/29 19:21:19 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@ static size_t	get_length(int n)
 {
 	size_t	length;
 
+	length = 0;
 	if (n <= 0)
-		length = 1;
-	else
-		length = 0;
+		length++;
 	while (n != 0)
 	{
 		n /= 10;
@@ -38,18 +37,18 @@ char	*ft_itoa(int n)
 	size_t			length;
 
 	length = get_length(n);
-	str = malloc(sizeof(char) * length + 1);
+	str = malloc(sizeof(char) * (length + 1));
 	if (!str)
 		return (NULL);
 	if (n == 0)
 		str[0] = '0';
 	if (n < 0)
 	{
-		num = n * -1;
+		num = (unsigned int)(n * -1);
 		str[0] = '-';
 	}
 	else
-		num = n;
+		num = (unsigned int)n;
 	str[length] = '\0';
 	while (num > 0)
 	{

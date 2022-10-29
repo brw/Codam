@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/21 20:26:01 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/23 00:43:48 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/10/29 19:09:11 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,5 @@ char	*ft_strtrim(char const *s1, char const *set)
 	if (!dest)
 		return (NULL);
 	ft_strlcpy(dest, s1 + left, right - left + 1);
-	dest[right - left] = '\0';
 	return (dest);
 }

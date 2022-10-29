@@ -6,13 +6,12 @@
 /*   By: bvan-den <bvan-den@codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 00:31:02 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/27 21:05:02 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/10/29 20:09:05 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stddef.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 static size_t	count_items(char const *s, char delim)
