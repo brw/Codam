@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/17 19:33:25 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/29 19:57:26 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/10/30 13:04:19 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 	unsigned char	*dest;
 	unsigned char	*source;
 
-	if (!dst && !src)
-		return (NULL);
+	if (dst == src)
+		return (dst);
 	dest = (unsigned char *)dst;
 	source = (unsigned char *)src;
 	if (dest < source)
