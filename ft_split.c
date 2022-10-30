@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/10/30 18:53:49 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/30 18:53:49 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/10/30 20:31:05 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,17 @@ static void	free_arr(char **arr, size_t index)
 	free(arr);
 }
 
-static char	**split_str(char **arr, char const *str, char delim, size_t count)
+char	**ft_split(char const *str, char delim)
 {
+	char	**arr;
+	size_t	count;
 	size_t	index;
 	size_t	length;
 
+	count = count_items(str, delim);
+	arr = malloc(sizeof(char *) * (count + 1));
+	if (!arr)
+		return (NULL);
 	index = 0;
 	while (*str && index < count)
 	{
@@ -66,28 +72,10 @@ static char	**split_str(char **arr, char const *str, char delim, size_t count)
 		length = get_item_length(str, delim);
 		arr[index] = ft_strndup(str, length);
 		if (!arr[index])
-		{
-			free_arr(arr, index);
-			return (NULL);
-		}
+			return (free_arr(arr, index), NULL);
 		index++;
 		str += length;
 	}
 	arr[index] = NULL;
-	return (arr);
-}
-
-char	**ft_split(char const *str, char delim)
-{
-	char	**arr;
-	size_t	count;
-
-	if (!str)
-		return (NULL);
-	count = count_items(str, delim);
-	arr = malloc(sizeof(char *) * (count + 1));
-	if (!arr)
-		return (NULL);
-	arr = split_str(arr, str, delim, count);
 	return (arr);
 }

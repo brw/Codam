@@ -6,14 +6,14 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/10/30 18:53:48 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/30 18:53:48 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/10/30 21:09:49 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-t_list	*create_node(char *content, void (*del)(void *))
+static t_list	*create_node(char *content, void (*del)(void *))
 {
 	t_list	*newlst;
 

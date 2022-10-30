@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/10/30 18:53:47 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/30 18:53:47 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/10/31 18:47:16 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	t_list	*last;
 
-	last = ft_lstlast(*lst);
-	if (!last)
-		*lst = new;
-	else
+	if (*lst)
+	{
+		last = ft_lstlast(*lst);
 		last->next = new;
+	}
+	else
+		*lst = new;
 }
