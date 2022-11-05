@@ -1,8 +1,11 @@
 #include <libft.h>
 #include <unistd.h>
+#include <stdarg.h>
 
-int	ft_printf()
+int	ft_printf(const char *format, ...)
 {
-	write(1, ft_strdup("a"), 2);
-	return (0);
+	va_list	args;
+	
+	va_start(args, format);
+	va_end(args);
 }

@@ -12,7 +12,8 @@ TEST_SRC := $(notdir $(wildcard test/*.c))
 TEST_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(TEST_SRC))
 
 INCLUDES := -I./include -I./libft/include
-CFLAGS ?= -Wall -Wextra -Werror -Wconversion $(INCLUDES)
+# CFLAGS ?= -Wall -Wextra -Werror -Wconversion $(INCLUDES)
+CFLAGS ?= -Wall -Wextra -Wconversion $(INCLUDES)
 LDFLAGS ?=
 ifdef DEBUG
 	CFLAGS += -g -fsanitize=address
