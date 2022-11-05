@@ -1,0 +1,202 @@
+[
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/test_ft_printf.o test/test_ft_printf.c -Wall -Wextra -Werror -Wconversion -Iinclude",
+    "file": "-Iinclude"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_printf.o src/ft_printf.c -Wall -Wextra -Werror -Wconversion -Iinclude",
+    "file": "-Iinclude"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_atoi.o ft_atoi.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_bzero.o ft_bzero.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_calloc.o ft_calloc.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_isalnum.o ft_isalnum.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_isalpha.o ft_isalpha.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_isascii.o ft_isascii.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_isdigit.o ft_isdigit.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_islower.o ft_islower.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_isprint.o ft_isprint.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_isspace.o ft_isspace.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_isupper.o ft_isupper.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_itoa.o ft_itoa.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_memchr.o ft_memchr.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_memcmp.o ft_memcmp.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_memcpy.o ft_memcpy.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_memmove.o ft_memmove.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_memset.o ft_memset.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_putchar_fd.o ft_putchar_fd.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_putendl_fd.o ft_putendl_fd.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_putnbr_fd.o ft_putnbr_fd.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_putstr_fd.o ft_putstr_fd.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_split.o ft_split.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_strchr.o ft_strchr.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_strdup.o ft_strdup.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_striteri.o ft_striteri.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_strjoin.o ft_strjoin.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_strlcat.o ft_strlcat.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_strlcpy.o ft_strlcpy.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_strlen.o ft_strlen.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_strmapi.o ft_strmapi.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_strncmp.o ft_strncmp.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_strndup.o ft_strndup.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_strnstr.o ft_strnstr.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_strrchr.o ft_strrchr.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_strtrim.o ft_strtrim.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_substr.o ft_substr.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_tolower.o ft_tolower.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  },
+  {
+    "directory": ".",
+    "command": "cc -c -o obj/ft_toupper.o ft_toupper.c -Wall -Wextra -Werror",
+    "file": "-Werror"
+  }
+]
