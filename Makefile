@@ -23,8 +23,10 @@ ifdef WITH_BONUS
 else
 	OBJ = $(REGULAR_OBJ)
 endif
+
+TEST_DIR := test
 TEST_SRC := test.c
-TEST_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(TEST_SRC))
+TEST_OBJ := $(patsubst $(TEST_DIR)/%.c, $(OBJ_DIR)/%.o, $(TEST_DIR)/$(TEST_SRC))
 CFLAGS ?= -Wall -Wextra -Werror
 LDFLAGS ?=
 
@@ -34,6 +36,10 @@ $(NAME): $(OBJ)
 	ar rcsu $@ $^
 
 $(OBJ_DIR)/%.o: %.c
+	@mkdir -p obj
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OBJ_DIR)/%.o: $(TEST_DIR)/%.c
 	@mkdir -p obj
 	$(CC) -c -o $@ $< $(CFLAGS)
 
