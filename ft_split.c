@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/10/30 18:53:49 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/10/30 20:31:05 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/11/02 22:35:14 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@ static size_t	count_items(char const *s, char delim)
 {
 	size_t	count;
 	size_t	i;
-	char	last;
+	char	prev;
 
 	count = 0;
 	i = 0;
-	last = delim;
+	prev = delim;
 	while (s[i])
 	{
-		if (last == delim && s[i] != delim)
+		if (prev == delim && s[i] != delim)
 			count++;
-		last = s[i];
+		prev = s[i];
 		i++;
 	}
 	return (count);
