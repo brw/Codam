@@ -3,4 +3,3 @@ test_libft
 a.out
 *.dSYM
 libft.a
-test.c
