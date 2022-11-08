@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-static int	print_char(unsigned char c)
+static int	print_char(unsigned int c)
 {
 	return ((int)write(1, &c, STDOUT_FILENO));
 }
@@ -32,7 +32,7 @@ static int	print_nbr(int c)
 	else
 		num = (unsigned int)c;
 	if (num > 9)
-		written += print_nbr(num / 10);
+		written += print_nbr((int)(num / 10));
 	written += print_char(num % 10 + '0');
 	return (written);
 }
@@ -126,12 +126,12 @@ int	ft_printf(const char *fmt, ...)
 			fmt++;
 			written = print(fmt, args);
 			if (written == -1)
-				total_written += write(1, fmt, 1);
+				total_written += (int)write(1, fmt, 1);
 			else
 				total_written += written;
 		}
 		else
-			total_written += write(1, fmt, 1);
+			total_written += (int)write(1, fmt, 1);
 		fmt++;
 	}
 	va_end(args);
