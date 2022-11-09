@@ -68,6 +68,30 @@ static ssize_t	print(const char c, va_list args)
 	return (-1);
 }
 
+int	ft_vprintf(const char *fmt, va_list args)
+{
+	ssize_t	written;
+	ssize_t	total_written;
+
+	total_written = 0;
+	while (*fmt)
+	{
+		if (*fmt == '%')
+		{
+			fmt++;
+			written = print(*fmt, args);
+			if (written == -1)
+				total_written += print_char(*fmt);
+			else
+				total_written += written;
+		}
+		else
+			total_written += print_char(*fmt);
+		fmt++;
+	}
+	return ((int)total_written);
+}
+
 int	ft_printf(const char *fmt, ...)
 {
 	va_list	args;

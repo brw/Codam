@@ -3,4 +3,4 @@ test_ft_printf
 compile_commands.json
 .cache
 *.o
-test
+libft/test
