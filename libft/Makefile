@@ -34,7 +34,7 @@ VPATH := test
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar rcs $@ $^
+	ar rcsu $@ $^
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p obj
