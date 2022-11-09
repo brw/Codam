@@ -17,7 +17,7 @@ static ssize_t	print_str(const char *str)
 	return (write(STDOUT_FILENO, str, len));
 }
 
-static ssize_t	print_unbr(long num, const char *symbols, unsigned int base)
+static ssize_t	print_unbr(unsigned long num, const char *symbols, unsigned int base)
 {
 	ssize_t	written;
 
@@ -38,10 +38,10 @@ static ssize_t	print_nbr(long c, const char *symbols, unsigned int base)
 		written += print_char('-');
 		c *= -1;
 	}
-	return (print_unbr(c, symbols, base) + written);
+	return (print_unbr((unsigned long) c, symbols, base) + written);
 }
 
-static ssize_t	print_ptr(long p)
+static ssize_t	print_ptr(unsigned long p)
 {
 	write(STDOUT_FILENO, "0x", 2);
 	return (print_unbr(p, "0123456789abcdef", 16) + 2);
@@ -64,7 +64,7 @@ static ssize_t	print(const char c, va_list args)
 	else if (c == 'X')
 		return (print_unbr(va_arg(args, unsigned int), "0123456789ABCDEF", 16));
 	else if (c == 'p')
-		return (print_ptr(va_arg(args, long)));
+		return (print_ptr(va_arg(args, unsigned long)));
 	return (-1);
 }
 
