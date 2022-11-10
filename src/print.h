@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/11/10 20:20:57 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/11/10 20:48:54 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/11/10 21:17:53 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,5 @@ ssize_t	print_str(const char *str);
 ssize_t	print_unbr(unsigned long num, const char *symbols, unsigned int base);
 ssize_t	print_nbr(long c, const char *symbols, unsigned int base);
 ssize_t	print_ptr(unsigned long p);
+
 #endif
