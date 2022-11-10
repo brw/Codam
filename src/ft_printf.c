@@ -1,5 +1,5 @@
 #include <libft.h>
-#include <ft_printf.h>
+#include <stdarg.h>
 #include <unistd.h>
 
 static ssize_t	print_char(int c)
@@ -79,6 +79,8 @@ int	ft_vprintf(const char *fmt, va_list args)
 		if (*fmt == '%')
 		{
 			fmt++;
+			if (!*fmt)
+				return ((int)total_written);
 			written = print(*fmt, args);
 			if (written == -1)
 				total_written += print_char(*fmt);
@@ -105,6 +107,8 @@ int	ft_printf(const char *fmt, ...)
 		if (*fmt == '%')
 		{
 			fmt++;
+			if (!*fmt)
+				return ((int)total_written);
 			written = print(*fmt, args);
 			if (written == -1)
 				total_written += print_char(*fmt);

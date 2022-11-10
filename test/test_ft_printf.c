@@ -58,4 +58,6 @@ int	main(void)
 	test_printf("%p", (void *)LONG_MIN);
 	test_printf("%p", (void *)LONG_MAX);
 	test_printf("%%", "yeet");
+	test_printf("%%%");
+	test_printf("%%%%%");
 }
