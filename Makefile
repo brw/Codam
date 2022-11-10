@@ -5,17 +5,19 @@ LIBFT_NAME := $(LIBFT_DIR)/libft.a
 
 OBJ_DIR := obj
 SRC_DIR := src
-SRC := $(wildcard $(SRC_DIR)/*.c)
+# SRC := $(wildcard $(SRC_DIR)/*.c)
+SRC := src/ft_printf.c src/print.c
 OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(notdir $(SRC)))
 
 TEST_NAME := test_ft_printf
 TEST_DIR := test
-TEST_SRC := $(wildcard $(TEST_DIR)/*.c)
+# TEST_SRC := $(wildcard $(TEST_DIR)/*.c)
+TEST_SRC := test/test_ft_printf.c
 TEST_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(notdir $(TEST_SRC)))
 
 INCLUDES := -I./include -I./libft/include
-# CFLAGS ?= -Wall -Wextra -Werror -Wconversion $(INCLUDES)
-CFLAGS ?= -Wall -Wextra -Wconversion $(INCLUDES)
+# CFLAGS ?= -Wall -Wextra -Wconversion $(INCLUDES)
+CFLAGS ?= -Wall -Wextra -Werror -Wconversion $(INCLUDES)
 LDFLAGS ?=
 ifdef DEBUG
 	CFLAGS += -g -fsanitize=address
