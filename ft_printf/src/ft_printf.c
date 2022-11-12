@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/11/10 20:47:52 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/11/10 20:49:01 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/11/13 00:09:43 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,27 @@ static ssize_t	print(const char c, va_list args)
 {
 	if (c == '%')
 		return (print_char('%'));
-	else if (c == 'c')
+	if (c == 'c')
 		return (print_char((unsigned char)va_arg(args, int)));
-	else if (c == 's')
+	if (c == 's')
 		return (print_str(va_arg(args, const char *)));
-	else if (c == 'd' || c == 'i')
+	if (c == 'd' || c == 'i')
 		return (print_nbr(va_arg(args, int), "0123456789", 10));
-	else if (c == 'u')
+	if (c == 'u')
 		return (print_unbr(va_arg(args, unsigned int), "0123456789", 10));
-	else if (c == 'x')
+	if (c == 'x')
 		return (print_unbr(va_arg(args, unsigned int), "0123456789abcdef", 16));
-	else if (c == 'X')
+	if (c == 'X')
 		return (print_unbr(va_arg(args, unsigned int), "0123456789ABCDEF", 16));
-	else if (c == 'p')
+	if (c == 'p')
 		return (print_ptr(va_arg(args, unsigned long)));
-	return (-1);
+	return (print_char(c));
 }
 
 int	ft_vprintf(const char *fmt, va_list args)
 {
-	ssize_t	written;
 	ssize_t	total_written;
+	char	*next;
 
 	total_written = 0;
 	while (*fmt)
@@ -49,15 +49,17 @@ int	ft_vprintf(const char *fmt, va_list args)
 			fmt++;
 			if (!*fmt)
 				return ((int)total_written);
-			written = print(*fmt, args);
-			if (written == -1)
-				total_written += print_char(*fmt);
-			else
-				total_written += written;
+			total_written += print(*fmt, args);
+			fmt++;
 		}
 		else
-			total_written += print_char(*fmt);
-		fmt++;
+		{
+			next = ft_strchr(fmt, '%');
+			if (!next)
+				next = (char *)fmt + 1;
+			total_written += write(STDOUT_FILENO, fmt, (size_t)(next - fmt));
+			fmt = next;
+		}
 	}
 	return ((int)total_written);
 }
