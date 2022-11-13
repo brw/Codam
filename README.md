@@ -15,7 +15,7 @@ Codam is part of the [42 Network](https://www.42network.org/), which started wit
 
 ## Libft <img align="right" src="https://badge42.vercel.app/api/v2/claekcqmw00110fmjh5mbj39o/project/2820078">
 
-Reimplementations of a bunch of C standard library functions. These functions will be used throughout the rest of the curriculum.
+Reimplementations of a bunch of C standard library functions and some additional utility functons. These functions will be used throughout the rest of the curriculum.
 
 ## ft_printf <img align="right" src="https://badge42.vercel.app/api/v2/claekcqmw00110fmjh5mbj39o/project/2866598">
 
