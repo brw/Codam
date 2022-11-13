@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/libft.h"
+#include <libft.h>
 #include <stdlib.h>
 
 static t_list	*create_node(char *content, void (*del)(void *))
