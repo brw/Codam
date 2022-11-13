@@ -1,6 +1,5 @@
 NAME := libft.a
-TEST_NAME := test_libft
-OBJ_DIR := obj
+
 # BONUS_SRC := $(wildcard ft_*_bonus.c)
 BONUS_SRC := ft_lstadd_back_bonus.c ft_lstadd_front_bonus.c \
 			 ft_lstclear_bonus.c ft_lstdelone_bonus.c ft_lstiter_bonus.c \
@@ -16,17 +15,23 @@ REGULAR_SRC := ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
 			   ft_strlcpy.c ft_strlen.c ft_strmapi.c ft_strncmp.c ft_strndup.c \
 			   ft_strnstr.c ft_strrchr.c ft_strtrim.c ft_substr.c ft_tolower.c \
 			   ft_toupper.c
+
+OBJ_DIR := obj
 BONUS_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(BONUS_SRC))
 REGULAR_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(REGULAR_SRC))
+
 ifdef WITH_BONUS
 	OBJ = $(REGULAR_OBJ) $(BONUS_OBJ)
 else
 	OBJ = $(REGULAR_OBJ)
 endif
 
+TEST_NAME := test_libft
 TEST_SRC := test.c
 TEST_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(TEST_SRC))
-CFLAGS ?= -Wall -Wextra -Werror
+
+INCLUDES := -I./include
+CFLAGS ?= -Wall -Wextra -Werror $(INCLUDES)
 LDFLAGS ?=
 
 VPATH := test
@@ -59,7 +64,7 @@ retest: fclean test
 bonus:
 	$(MAKE) WITH_BONUS=1 all
 
-# Use with Francinette, normal bonus target fails every other time
+# Use with Francinette, normal bonus target fails most of the time (but not every time lol)
 # bonus: $(OBJ) $(BONUS_OBJ)
 # 	ar rcsu $(NAME) $^
 
