@@ -58,4 +58,4 @@ retest: fclean test
 check:
 	$(CC) $(CFLAGS) -fsyntax-only $(SRC) $(TEST_SRC)
 
-.PHONY: all clean fclean re test check
+.PHONY: all clean fclean re test retest check
