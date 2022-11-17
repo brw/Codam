@@ -1,15 +1,21 @@
 #include "get_next_line.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-#define BUFFER_SIZE 10
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 10
+#endif
 
 size_t	get_newline_pos(const char *s)
 {
 	size_t	i;
 
+	i = 0;
 	while (s[i] && s[i] != '\n')
 		i++;
+	if (!s[i])
+		return (BUFFER_SIZE + 1);
 	return (i);
 }
 
@@ -28,7 +34,6 @@ char	*ft_strjoin(char *s1, char const *s2)
 		return (NULL);
 	ft_memcpy(str, s1, s1_len + 1);
 	ft_strlcat(str, s2, s1_len + s2_len + 1);
-	free(s1);
 	return (str);
 }
 
@@ -61,20 +66,25 @@ char	*ft_strjoin(char *s1, char const *s2)
 char	*get_line(char **buf, int fd)
 {
 	char	*str;
-	char	*tmp;
+	char	tmp[BUFFER_SIZE + 1];
 	size_t	newline_pos;
-	ssize_t	written;
-	written = read(fd, tmp, BUFFER_SIZE);
-	while (written != -1)
+	ssize_t	bytes_read;
+
+	bytes_read = read(fd, tmp, BUFFER_SIZE);
+	tmp[bytes_read] = '\0';
+	while (get_newline_pos(tmp) == BUFFER_SIZE + 1 && bytes_read != 0)
 	{
 		*buf = ft_strjoin(*buf, tmp);
-		newline_pos = get_newline_pos(*buf);
-		if (newline_pos)
-			break;
-		written = read(fd, tmp, BUFFER_SIZE);
+		bytes_read = read(fd, tmp, BUFFER_SIZE);
+		tmp[bytes_read] = '\0';
 	}
-	str = ft_strndup(*buf, newline_pos);
-	*buf = *buf + newline_pos;
+	*buf = ft_strjoin(*buf, tmp);
+	printf("\n\nbytes_read: %lu, tmp: %s\n\n", bytes_read, tmp);
+	if (bytes_read == 0)
+		return (NULL);
+	newline_pos = get_newline_pos(*buf);
+	str = ft_strndup(*buf, newline_pos + 1);
+	*buf = *buf + newline_pos + 1;
 	return (str);
 }
 
@@ -83,7 +93,6 @@ char	*get_next_line(int fd)
 	static char	*buf;
 	char		*line;
 
-	buf = NULL;
 	line = get_line(&buf, fd);
 	return (line);
 }
