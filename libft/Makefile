@@ -30,9 +30,14 @@ TEST_NAME := test_libft
 TEST_SRC := test.c
 TEST_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(TEST_SRC))
 
-INCLUDES := -I./include
+INCLUDES := -I ./include
 CFLAGS ?= -Wall -Wextra -Werror $(INCLUDES)
 LDFLAGS ?=
+
+ifeq ($(shell uname), Linux)
+	CFLAGS += -I /usr/include/bsd -D LIBBSD_OVERLAY
+	LDFLAGS += -L /usr/lib -l bsd
+endif
 
 VPATH := test
 

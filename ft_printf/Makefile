@@ -15,10 +15,16 @@ TEST_DIR := test
 TEST_SRC := test/test_ft_printf.c
 TEST_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(notdir $(TEST_SRC)))
 
-INCLUDES := -I./include -I./libft/include
+INCLUDES := -I ./include -I ./libft/include
 # CFLAGS ?= -Wall -Wextra -Wconversion $(INCLUDES)
 CFLAGS ?= -Wall -Wextra -Werror -Wconversion $(INCLUDES)
 LDFLAGS ?=
+
+ifeq ($(shell uname), Linux)
+	CFLAGS += -I /usr/include/bsd -D LIBBSD_OVERLAY
+	LDFLAGS += -L /usr/lib -l bsd
+endif
+
 ifdef DEBUG
 	CFLAGS += -g -fsanitize=address
 endif

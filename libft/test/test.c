@@ -392,8 +392,8 @@ void	test_split()
 	result = ft_split(str1, ' ');
 	for (int i = 0; i < 5; i++)
 		assert(!strcmp(result[i], arr1[i]));
-	free(result);
 	assert(result[5] == NULL);
+	free(result);
 	result = ft_split(str2, ' ');
 	for (int i = 0; i < 5; i++)
 		assert(!strcmp(result[i], arr1[i]));
@@ -405,6 +405,7 @@ void	test_split()
 	free(result);
 	result = ft_split(str4, ' ');
 	assert(!strcmp(result[0], "Lorem"));
+	free(result);
 	result = ft_split(str5, ' ');
 	assert(result[0] == NULL);
 	free(result);
