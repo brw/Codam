@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/10/30 18:53:49 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/11/02 22:35:14 by bvan-den      ########   odam.nl         */
+/*   Updated: 2022/11/19 03:54:19 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ static size_t	get_item_length(const char *s, char delim)
 
 static void	free_arr(char **arr, size_t index)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < index)
-		free(arr[i++]);
+	while (index != 0)
+	{
+		free(arr[index - 1]);
+		index--;
+	}
 	free(arr);
 }
 
