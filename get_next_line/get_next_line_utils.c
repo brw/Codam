@@ -65,3 +65,13 @@ char	*ft_strndup(const char *s1, size_t len)
 	return (dest);
 }
 
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s != (char)c)
+	{
+		if (*s == '\0')
+			return (0);
+		s++;
+	}
+	return ((char *)(s));
+}

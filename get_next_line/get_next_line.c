@@ -23,10 +23,15 @@ char	*ft_strjoin(char *s1, char const *s2)
 {
 	size_t	s1_len;
 	size_t	s2_len;
+	int		should_free;
 	char	*str;
 
+	should_free = 1;
 	if (!s1)
+	{
 		s1 = "";
+		should_free = 0;
+	}
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
 	str = malloc(sizeof(char) * (s1_len + s2_len + 1));
@@ -34,6 +39,8 @@ char	*ft_strjoin(char *s1, char const *s2)
 		return (NULL);
 	ft_memcpy(str, s1, s1_len + 1);
 	ft_strlcat(str, s2, s1_len + s2_len + 1);
+	if (should_free)
+		free(s1);
 	return (str);
 }
 
@@ -63,36 +70,61 @@ char	*ft_strjoin(char *s1, char const *s2)
 // 	return (str);
 // }
 
-char	*get_line(char **buf, int fd)
+void	*ft_memmove(void *dst, const void *src, size_t len)
+{
+	if (dst == src)
+		return (dst);
+	if (dst < src)
+		ft_memcpy(dst, src, len);
+	else
+	{
+		while (len > 0)
+		{
+			((unsigned char *)dst)[len - 1] = ((unsigned char *)src)[len - 1];
+			len--;
+		}
+	}
+	return (dst);
+}
+
+char	*get_line(char (*leftover)[], int fd)
 {
 	char	*str;
 	char	tmp[BUFFER_SIZE + 1];
 	size_t	newline_pos;
 	ssize_t	bytes_read;
 
+	str = NULL;
+	if (**leftover && ft_strchr(*leftover, '\n'))
+	{
+		newline_pos = get_newline_pos(*leftover);
+		str = ft_strndup(*leftover, newline_pos + 1);
+		ft_memmove(*leftover, *leftover + newline_pos + 1, newline_pos);
+		return (str);
+	} else if (**leftover)
+		str = ft_strjoin(str, tmp);
 	bytes_read = read(fd, tmp, BUFFER_SIZE);
 	tmp[bytes_read] = '\0';
 	while (get_newline_pos(tmp) == BUFFER_SIZE + 1 && bytes_read != 0)
 	{
-		*buf = ft_strjoin(*buf, tmp);
+		str = ft_strjoin(str, tmp);
 		bytes_read = read(fd, tmp, BUFFER_SIZE);
 		tmp[bytes_read] = '\0';
 	}
-	*buf = ft_strjoin(*buf, tmp);
-	printf("\n\nbytes_read: %lu, tmp: %s\n\n", bytes_read, tmp);
 	if (bytes_read == 0)
 		return (NULL);
-	newline_pos = get_newline_pos(*buf);
-	str = ft_strndup(*buf, newline_pos + 1);
-	*buf = *buf + newline_pos + 1;
+	str = ft_strjoin(str, tmp);
+	newline_pos = get_newline_pos(str);
+	ft_memcpy(*leftover, str + newline_pos + 1, ft_strlen(str + newline_pos));
+	str[newline_pos + 1] = '\0';
 	return (str);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buf;
+	static char	leftover[BUFFER_SIZE + 1];
 	char		*line;
 
-	line = get_line(&buf, fd);
+	line = get_line(&leftover, fd);
 	return (line);
 }
