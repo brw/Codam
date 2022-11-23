@@ -87,44 +87,48 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 	return (dst);
 }
 
-char	*get_line(char (*leftover)[], int fd)
+char	*get_next_line(int fd)
 {
-	char	*str;
-	char	tmp[BUFFER_SIZE + 1];
-	size_t	newline_pos;
-	ssize_t	bytes_read;
+	static char	leftover[BUFFER_SIZE + 1];
+	char		*str;
+	char		tmp[BUFFER_SIZE + 1];
+	size_t		newline_pos;
+	ssize_t		bytes_read;
 
 	str = NULL;
-	if (**leftover && ft_strchr(*leftover, '\n'))
+	if (ft_strchr(leftover, '\n'))
 	{
-		newline_pos = get_newline_pos(*leftover);
-		str = ft_strndup(*leftover, newline_pos + 1);
-		ft_memmove(*leftover, *leftover + newline_pos + 1, newline_pos);
+		newline_pos = get_newline_pos(leftover);
+		str = ft_strndup(leftover, newline_pos + 1);
+		ft_strlcpy(leftover, leftover + newline_pos + 1, ft_strlen(leftover
+					+ newline_pos) + 1);
 		return (str);
-	} else if (**leftover)
-		str = ft_strjoin(str, tmp);
+	}
+	else
+		str = ft_strjoin(str, leftover);
 	bytes_read = read(fd, tmp, BUFFER_SIZE);
+	if (bytes_read == -1)
+	{
+		free(str);
+		return (NULL);
+	}
 	tmp[bytes_read] = '\0';
 	while (get_newline_pos(tmp) == BUFFER_SIZE + 1 && bytes_read != 0)
 	{
 		str = ft_strjoin(str, tmp);
 		bytes_read = read(fd, tmp, BUFFER_SIZE);
+		if (bytes_read == -1)
+		{
+			free(str);
+			return (NULL);
+		}
 		tmp[bytes_read] = '\0';
 	}
 	if (bytes_read == 0)
 		return (NULL);
 	str = ft_strjoin(str, tmp);
 	newline_pos = get_newline_pos(str);
-	ft_memcpy(*leftover, str + newline_pos + 1, ft_strlen(str + newline_pos));
+	ft_memcpy(leftover, str + newline_pos + 1, ft_strlen(str + newline_pos));
 	str[newline_pos + 1] = '\0';
 	return (str);
-}
-
-char	*get_next_line(int fd)
-{
-	static char	leftover[BUFFER_SIZE + 1];
-	char		*line;
-
-	line = get_line(&leftover, fd);
-	return (line);
 }
