@@ -1,9 +1,9 @@
 <p align="center">
     <a href="https://codam.nl/en">
-        <img width="480" height="auto" src="assets/codam_logo.jpg">
+        <img width="42%" alt="Codam logo" src="assets/codam_logo.jpg">
     </a>
     <a href="https://github.com/JaeSeoKim/badge42">
-        <img src="https://badge42.vercel.app/api/v2/claekcqmw00110fmjh5mbj39o/stats?cursusId=21&coalitionId=58">
+        <img width="55%" alt="42 progress badge" src="https://badge42.vercel.app/api/v2/claekcqmw00110fmjh5mbj39o/stats?cursusId=21&coalitionId=58">
     </a>
 </p>
 
