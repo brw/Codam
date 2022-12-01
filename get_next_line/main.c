@@ -9,7 +9,7 @@ int	main(void)
 	size_t	i;
 	char	*line;
 
-	fd = open("variable_nls.txt", O_RDONLY);
+	fd = open("test2.txt", O_RDONLY);
 	i = 0;
 	line = get_next_line(fd);
 	while (line)

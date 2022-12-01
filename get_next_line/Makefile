@@ -1,5 +1,6 @@
 NAME := get_next_line
 
+CC := clang
 SRC := $(wildcard *.c)
 # SRC := get_next_line.c
 OBJ_DIR := obj
