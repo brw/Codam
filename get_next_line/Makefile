@@ -6,7 +6,7 @@ SRC := $(wildcard *.c)
 OBJ_DIR := obj
 OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
 
-# CFLAGS ?= -Wall -Wextra -Werror -Wconversion -D $(BUFFER_SIZE)
+# CFLAGS ?= -Wall -Wextra -Werror -Wconversion
 CFLAGS ?= -Wall -Wextra -Wconversion
 LDFLAGS ?=
 

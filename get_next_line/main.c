@@ -6,17 +6,19 @@
 int	main(void)
 {
 	int		fd;
-	size_t	i;
+	// size_t	i;
 	char	*line;
 
-	fd = open("test2.txt", O_RDONLY);
-	i = 0;
+	fd = open("a.txt", O_RDONLY);
+	// i = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
-		printf("%lu: %s", i, line);
+		// printf("%lu: %s", i, line);
+		printf("%s", line);
 		free(line);
 		line = get_next_line(fd);
-		i++;
+		// i++;
 	}
+	printf("%s", line);
 }
