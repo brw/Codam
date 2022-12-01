@@ -9,7 +9,7 @@ int	main(void)
 	// size_t	i;
 	char	*line;
 
-	fd = open("a.txt", O_RDONLY);
+	fd = open("inputs/a.txt", O_RDONLY);
 	// i = 0;
 	line = get_next_line(fd);
 	while (line)
