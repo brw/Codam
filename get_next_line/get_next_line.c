@@ -36,17 +36,6 @@ char	*ft_strjoin(char *line, char const *buf)
 	return (str);
 }
 
-char	*init_line()
-{
-	char	*line;
-
-	line = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!line)
-		return (NULL);
-	line[0] = '\0';
-	return (line);
-}
-
 char	*create_line(int fd, char *buf, char *line)
 {
 	ssize_t	bytes_read;
@@ -77,11 +66,16 @@ char	*create_line(int fd, char *buf, char *line)
 void	trim_buf(char *buf)
 {
 	size_t	newline_pos;
+	size_t	offset;
 
 	newline_pos = get_newline_pos(buf);
+	offset = 1;
 	if (buf[newline_pos] == '\0')
-		newline_pos--;
-	ft_strlcpy(buf, buf + newline_pos + 1, ft_strlen(buf) - newline_pos + 1);
+		offset = 0;
+	ft_strlcpy(
+		buf,
+		buf + newline_pos + offset,
+		ft_strlen(buf) - newline_pos + 1);
 }
 
 char	*get_next_line(int fd)
@@ -89,7 +83,13 @@ char	*get_next_line(int fd)
 	static char	buf[BUFFER_SIZE + 1];
 	char		*line;
 
-	line = init_line();
+	line = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!line)
+	{
+		buf[0] = '\0';
+		return (NULL);
+	}
+	line[0] = '\0';
 	line = create_line(fd, buf, line);
 	if (!line)
 	{

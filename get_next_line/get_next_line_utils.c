@@ -53,17 +53,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	return (dstlen + ft_strlen(src));
 }
 
-char	*ft_strndup(const char *s1, size_t len)
-{
-	char	*dest;
-
-	dest = malloc(sizeof(char) * (len + 1));
-	if (!dest)
-		return (NULL);
-	ft_strlcpy(dest, s1, len + 1);
-	return (dest);
-}
-
 char	*ft_strchr(const char *s, int c)
 {
 	while (*s != (char)c)
