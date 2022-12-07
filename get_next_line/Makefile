@@ -1,10 +1,17 @@
 NAME := get_next_line
 
 CC := clang
-SRC := $(wildcard *.c)
-# SRC := get_next_line.c
+
+BONUS_SRC := $(wildcard *_bonus.c)
+SRC := $(filter-out $(BONUS_SRC), $(wildcard *.c))
+
 OBJ_DIR := obj
+BONUS_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(BONUS_SRC))
 OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
+
+ifdef BONUS
+	OBJ = $(BONUS_OBJ) main.c
+endif
 
 # CFLAGS ?= -Wall -Wextra -Werror -Wconversion
 CFLAGS ?= -Wall -Wextra -Wconversion
@@ -24,6 +31,9 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	$(CC) $(LDFLAGS) -o $@ $^
 
+bonus: $(BONUS_OBJ)
+	$(MAKE) BONUS=1 all
+
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
@@ -34,7 +44,7 @@ test: $(NAME)
 retest: fclean test
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJ) $(BONUS_OBJ)
 
 fclean: clean
 	rm -f $(NAME)
@@ -44,4 +54,4 @@ re: fclean all
 check:
 	$(CC) $(CFLAGS) -fsyntax-only $(SRC)
 
-.PHONY: all test retest clean fclean re check
+.PHONY: all test retest clean fclean re check bonus
