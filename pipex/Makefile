@@ -6,7 +6,7 @@ SRC := $(wildcard *.c)
 OBJ_DIR := obj
 OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
 LIBFT_DIR := libft
-LIBFT_NAME := $(LIBFT_DIR)/libft.a
+LIBFT_NAME := $(LIBFT_DIR)/libftprintf.a
 
 INCLUDES := -I ./include -I ./libft/include
 # CFLAGS ?= -Wall -Wextra -Werror -Wconversion $(INCLUDES)
@@ -20,7 +20,7 @@ endif
 
 ifdef DEBUG
 	CFLAGS += -g -fsanitize=address
-	LDFLAGS += -g fasnitize=address
+	LDFLAGS += -g -fsanitize=address
 endif
 
 all: $(NAME)
@@ -49,7 +49,7 @@ check:
 	$(CC) $(CFLAGS) -fsyntax-only $(SRC)
 
 norminette:
-	norminette: $(SRC)
+	norminette $(SRC)
 
 format:
 	c_formatter_42 $(SRC)
