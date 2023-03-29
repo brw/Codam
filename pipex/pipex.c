@@ -53,7 +53,7 @@ void	run_cmd(int nbr, int pipefd[2], char *cmdstr, int file, char **paths,
 		pid = fork();
 	if (pid != 0)
 		return ;
-	args = ft_split(cmdstr, ' ');
+	args = ft_split_args(cmdstr);
 	cmd = get_cmd_path(args[0], paths);
 	if (cmd == NULL || file == -1)
 		exit(1);
@@ -67,7 +67,6 @@ void	run_cmd(int nbr, int pipefd[2], char *cmdstr, int file, char **paths,
 	close(pipefd[1]);
 	if (execve(cmd, args, envp) == -1)
 		perror("error");
-	wait(NULL);
 	exit(errno);
 }
 

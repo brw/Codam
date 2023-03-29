@@ -25,23 +25,29 @@ endif
 
 all: $(NAME)
 
+FORCE:
+
 $(NAME): $(LIBFT_NAME) $(OBJ)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 $(OBJ_DIR)/%.o: *.c
-	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(LIBFT_NAME):
+$(OBJ): | $(OBJ_DIR)
+
+$(OBJ_DIR):
+	mkdir $(OBJ_DIR)
+
+$(LIBFT_NAME): FORCE
 	$(MAKE) -C $(LIBFT_DIR)
 
 clean:
 	rm -f $(OBJ)
-	$(MAKE) -C  $(LIBFT_DIR) clean
+	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
-	$(MAKE) -C  $(LIBFT_DIR) fclean
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 

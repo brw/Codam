@@ -27,22 +27,31 @@ endif
 
 ifdef DEBUG
 	CFLAGS += -g -fsanitize=address
+	LDFLAGS += -g -fsanitize=address
 endif
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(MAKE) -C $(LIBFT_DIR)
+FORCE:
+
+$(NAME): $(OBJ) $(LIBFT_NAME)
 	cp $(LIBFT_NAME) $(NAME)
 	ar rcs $@ $^
 
+$(LIBFT_NAME): FORCE
+	$(MAKE) -C $(LIBFT_DIR)
+
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(OBJ_DIR)/%.o: $(TEST_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OBJ): | $(OBJ_DIR)
+
+$(OBJ_DIR):
+	mkdir $(OBJ_DIR)
 
 test: $(TEST_NAME)
 
