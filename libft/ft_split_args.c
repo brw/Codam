@@ -6,14 +6,13 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/10/30 18:53:49 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/03/29 21:48:28 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/04/01 19:40:14 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 static size_t	count_items(char const *s, char delim)
 {
@@ -30,7 +29,7 @@ static size_t	count_items(char const *s, char delim)
 		{
 			prev = *s;
 			s++;
-			while(*s && *s != prev)
+			while (*s && *s != prev)
 				s++;
 		}
 		prev = *s;
@@ -39,23 +38,29 @@ static size_t	count_items(char const *s, char delim)
 	return (count);
 }
 
-static size_t	get_item_length(const char *s, char delim)
+static size_t	get_item_length(const char **s, char delim)
 {
 	size_t	i;
 
 	i = 0;
-	if (*s == '\'' || *s == '"')
+	if (**s == '\'' || **s == '"')
 	{
 		i++;
-		while (s[i] && s[i] != *s)
+		while ((*s)[i] && (*s)[i] != **s)
 			i++;
-		if (s[i])
+		if ((*s)[i])
 			i++;
 	}
 	else
 	{
-		while (s[i] && s[i] != delim)
+		while ((*s)[i] && (*s)[i] != delim)
 			i++;
+	}
+	if ((**s == '\'' && (*s)[i - 1] == '\'') ||
+		(**s == '\"' && (*s)[i - 1] == '"'))
+	{
+		(*s)++;
+		i -= 2;
 	}
 	return (i);
 }
@@ -86,7 +91,7 @@ char	**ft_split_args(char const *str)
 	{
 		while (*str == ' ')
 			str++;
-		length = get_item_length(str, ' ');
+		length = get_item_length(&str, ' ');
 		arr[index] = ft_strndup(str, length);
 		if (!arr[index])
 			return (free_arr(arr, index), NULL);
