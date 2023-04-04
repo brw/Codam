@@ -8,7 +8,7 @@
 
 void	cmd_not_found(char *cmd)
 {
-	ft_dprintf(STDERR_FILENO, "pipex: %s: command not found", cmd);
+	ft_dprintf(STDERR_FILENO, "pipex: %s: command not found\n", cmd);
 	exit(127);
 }
 
@@ -67,6 +67,7 @@ void	run_cmd(int nbr, int pipefd[2], char *cmdstr, int file, char **paths,
 	close(pipefd[1]);
 	if (execve(cmd, args, envp) == -1)
 		perror("error");
+	wait(NULL);
 	exit(errno);
 }
 
@@ -80,7 +81,11 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 5)
 		exit(1);
 	infile = open(argv[1], O_RDONLY);
+	if (infile == -1)
+		perror(ft_strjoin("pipex: ", argv[1]));
 	outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (outfile == -1)
+		perror(ft_strjoin("pipex: ", argv[4]));
 	paths = ft_split(get_path_env(envp), ':');
 	pipe(pipefd);
 	run_cmd(1, pipefd, argv[2], infile, paths, envp);
