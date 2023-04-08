@@ -1,14 +1,14 @@
 #include <errno.h>
 #include <fcntl.h>
+#include <ft_printf.h>
 #include <libft.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <ft_printf.h>
 
 void	cmd_not_found(char *cmd)
 {
-	ft_dprintf(STDERR_FILENO, "pipex: %s: command not found\n", cmd);
+	fprintf(stderr, "pipex: %s: command not found\n", cmd);
 	exit(127);
 }
 
@@ -29,13 +29,16 @@ char	*get_cmd_path(char *cmd, char **paths)
 
 	if (cmd[0] == '/' && access(cmd, X_OK) == 0)
 		return (cmd);
-	while (*paths)
+	if (paths)
 	{
-		try_path = ft_strjoin(ft_strjoin(*paths, "/"), cmd);
-		if (access(try_path, X_OK) == 0)
-			return (try_path);
-		free(try_path);
-		paths++;
+		while (*paths)
+		{
+			try_path = ft_strjoin(ft_strjoin(*paths, "/"), cmd);
+			if (access(try_path, X_OK) == 0)
+				return (try_path);
+			free(try_path);
+			paths++;
+		}
 	}
 	cmd_not_found(cmd);
 	return (NULL);
@@ -86,7 +89,11 @@ int	main(int argc, char **argv, char **envp)
 	outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile == -1)
 		perror(ft_strjoin("pipex: ", argv[4]));
-	paths = ft_split(get_path_env(envp), ':');
+	if (envp[0])
+		paths = ft_split(get_path_env(envp), ':');
+	else
+		paths = ft_split("/usr/bin/local:/usr/bin:/bin", ':');
+
 	pipe(pipefd);
 	run_cmd(1, pipefd, argv[2], infile, paths, envp);
 	run_cmd(2, pipefd, argv[3], outfile, paths, envp);

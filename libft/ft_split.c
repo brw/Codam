@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/10/30 18:53:49 by bvan-den      #+#    #+#                 */
-/*   Updated: 2022/11/19 03:54:19 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/04/05 21:40:40 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ char	**ft_split(char const *str, char delim)
 	size_t	index;
 	size_t	length;
 
+	if (!str)
+		return (NULL);
 	count = count_items(str, delim);
 	arr = malloc(sizeof(char *) * (count + 1));
 	if (!arr)
