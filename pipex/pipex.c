@@ -4,21 +4,49 @@
 #include <libft.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
-void	cmd_not_found(char *cmd)
+extern char	**environ;
+
+// TODO:
+// - error handling for fork()
+// - handle access denied
+//	- commands
+//	- infile/outfile
+// - write error handling
+// - dup error handling
+// - more error handling
+
+void	exit_error(char *obj, char *msg, char exit_code)
 {
-	fprintf(stderr, "pipex: %s: command not found\n", cmd);
-	exit(127);
+	if (!msg)
+		msg = strerror(errno);
+	if (obj)
+		fprintf(stderr, "pipex: %s: %s\n", obj, msg);
+	else
+		fprintf(stderr, "pipex: %s\n", msg);
+	if (exit_code)
+		exit(exit_code);
 }
 
-char	*get_path_env(char **envp)
+void	file_error(char *filename)
 {
-	while (*envp)
+	char	*msg;
+
+	msg = ft_strjoin("pipex: ", filename);
+	if (!msg)
+		return ;
+	perror(msg);
+}
+
+char	*get_path_env(char **env)
+{
+	while (*env)
 	{
-		if (ft_strncmp(*envp, "PATH=", 5) == 0)
-			return (*envp + 5);
-		envp++;
+		if (ft_strncmp(*env, "PATH=", 5) == 0)
+			return (*env + 5);
+		env++;
 	}
 	return (NULL);
 }
@@ -27,33 +55,36 @@ char	*get_cmd_path(char *cmd, char **paths)
 {
 	char	*try_path;
 
-	if (cmd[0] == '/' && access(cmd, X_OK) == 0)
-		return (cmd);
-	if (paths)
+	if (cmd[0] == '/' || !paths)
 	{
-		while (*paths)
-		{
-			try_path = ft_strjoin(ft_strjoin(*paths, "/"), cmd);
-			if (access(try_path, X_OK) == 0)
-				return (try_path);
-			free(try_path);
-			paths++;
-		}
+		if (access(cmd, F_OK | X_OK) == 0)
+			return (cmd);
+		else
+			exit_error(cmd, NULL, 127);
 	}
-	cmd_not_found(cmd);
+	while (*paths)
+	{
+		try_path = ft_strjoin(ft_strjoin(*paths, "/"), cmd);
+		if (access(try_path, F_OK) == 0)
+		{
+			if (access(try_path, X_OK) == -1)
+				exit_error(try_path, NULL, 126);
+			return (try_path);
+		}
+		free(try_path);
+		paths++;
+	}
+	exit_error(cmd, "command not found", 127);
 	return (NULL);
 }
 
-void	run_cmd(int nbr, int pipefd[2], char *cmdstr, int file, char **paths,
-		char **envp)
+void	run_cmd(int nbr, int pipefd[2], char *cmdstr, int file, char **paths)
 {
 	char	**args;
 	char	*cmd;
 	pid_t	pid;
 
-	pid = 0;
-	if (nbr == 1)
-		pid = fork();
+	pid = fork();
 	if (pid != 0)
 		return ;
 	args = ft_split_args(cmdstr);
@@ -61,20 +92,23 @@ void	run_cmd(int nbr, int pipefd[2], char *cmdstr, int file, char **paths,
 	if (cmd == NULL || file == -1)
 		exit(1);
 	if (nbr == 1)
+	{
 		dup2(file, STDIN_FILENO);
+		dup2(pipefd[1], STDOUT_FILENO);
+	}
 	else if (nbr == 2)
+	{
+		dup2(pipefd[0], STDIN_FILENO);
 		dup2(file, STDOUT_FILENO);
-	dup2(pipefd[nbr % 2], nbr % 2);
+	}
 	close(file);
 	close(pipefd[0]);
 	close(pipefd[1]);
-	if (execve(cmd, args, envp) == -1)
-		perror("error");
-	wait(NULL);
-	exit(errno);
+	execve(cmd, args, environ);
+	exit_error(cmd, NULL, 1);
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv)
 {
 	char	**paths;
 	int		infile;
@@ -82,22 +116,19 @@ int	main(int argc, char **argv, char **envp)
 	int		pipefd[2];
 
 	if (argc != 5)
-		exit(1);
+		exit_error(NULL, "Needs exactly 4 arguments", 1);
 	infile = open(argv[1], O_RDONLY);
 	if (infile == -1)
-		perror(ft_strjoin("pipex: ", argv[1]));
+		file_error(argv[1]);
 	outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile == -1)
-		perror(ft_strjoin("pipex: ", argv[4]));
-	if (envp[0])
-		paths = ft_split(get_path_env(envp), ':');
-	else
-		paths = ft_split("/usr/bin/local:/usr/bin:/bin", ':');
-
+		file_error(argv[4]);
+	paths = ft_split(get_path_env(environ), ':');
 	pipe(pipefd);
-	run_cmd(1, pipefd, argv[2], infile, paths, envp);
-	run_cmd(2, pipefd, argv[3], outfile, paths, envp);
+	run_cmd(1, pipefd, argv[2], infile, paths);
+	run_cmd(2, pipefd, argv[3], outfile, paths);
 	close(pipefd[0]);
 	close(pipefd[1]);
+	wait(NULL);
 	wait(NULL);
 }
