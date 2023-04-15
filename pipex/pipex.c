@@ -10,6 +10,7 @@
 extern char	**environ;
 
 // TODO:
+// - relative paths
 // - error handling for fork()
 // - handle access denied
 //	- commands
@@ -78,7 +79,7 @@ char	*get_cmd_path(char *cmd, char **paths)
 	return (NULL);
 }
 
-void	run_cmd(int nbr, int pipefd[2], char *cmdstr, int file, char **paths)
+int	run_cmd(int nbr, int pipefd[2], char *cmdstr, int file, char **paths)
 {
 	char	**args;
 	char	*cmd;
@@ -86,7 +87,7 @@ void	run_cmd(int nbr, int pipefd[2], char *cmdstr, int file, char **paths)
 
 	pid = fork();
 	if (pid != 0)
-		return ;
+		return (pid);
 	args = ft_split_args(cmdstr);
 	cmd = get_cmd_path(args[0], paths);
 	if (cmd == NULL || file == -1)
@@ -106,6 +107,7 @@ void	run_cmd(int nbr, int pipefd[2], char *cmdstr, int file, char **paths)
 	close(pipefd[1]);
 	execve(cmd, args, environ);
 	exit_error(cmd, NULL, 1);
+	return (-1);
 }
 
 int	main(int argc, char **argv)
@@ -114,6 +116,9 @@ int	main(int argc, char **argv)
 	int		infile;
 	int		outfile;
 	int		pipefd[2];
+	int		firstpid;
+	int		lastpid;
+	int		status;
 
 	if (argc != 5)
 		exit_error(NULL, "Needs exactly 4 arguments", 1);
@@ -125,10 +130,11 @@ int	main(int argc, char **argv)
 		file_error(argv[4]);
 	paths = ft_split(get_path_env(environ), ':');
 	pipe(pipefd);
-	run_cmd(1, pipefd, argv[2], infile, paths);
-	run_cmd(2, pipefd, argv[3], outfile, paths);
+	firstpid = run_cmd(1, pipefd, argv[2], infile, paths);
+	lastpid = run_cmd(2, pipefd, argv[3], outfile, paths);
 	close(pipefd[0]);
 	close(pipefd[1]);
-	wait(NULL);
-	wait(NULL);
+	waitpid(firstpid, NULL, 0);
+	waitpid(lastpid, &status, 0);
+	exit(WEXITSTATUS(status));
 }
