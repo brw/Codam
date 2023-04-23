@@ -62,7 +62,7 @@ char	*get_cmd_path(char *cmd, char **paths)
 		else
 			exit_error(cmd, NULL, 127);
 	}
-	while (*paths)
+	while (paths && *paths)
 	{
 		try_path = ft_strjoin(ft_strjoin(*paths, "/"), cmd);
 		if (access(try_path, F_OK) == 0)
@@ -78,60 +78,67 @@ char	*get_cmd_path(char *cmd, char **paths)
 	return (NULL);
 }
 
-int	run_cmd(int nbr, int pipefd[2], char *cmdstr, int file, char **paths)
+int	run_cmd(char *cmdstr, int in_fd, int out_fd, char **paths)
 {
 	char	**args;
 	char	*cmd;
 	pid_t	pid;
 
 	pid = fork();
-	if (pid != 0)
-		return (pid);
-	args = ft_split_args(cmdstr);
-	cmd = get_cmd_path(args[0], paths);
-	if (cmd == NULL || file == -1)
-		exit(1);
-	if (nbr == 1)
+	if (pid == 0)
 	{
-		dup2(file, STDIN_FILENO);
-		dup2(pipefd[1], STDOUT_FILENO);
+		args = ft_split_args(cmdstr);
+		cmd = get_cmd_path(args[0], paths);
+		if (cmd == NULL)
+			exit(1);
+		dup2(in_fd, STDIN_FILENO);
+		close(in_fd);
+		dup2(out_fd, STDOUT_FILENO);
+		close(out_fd);
+		execve(cmd, args, environ);
+		exit_error(cmd, NULL, 1);
 	}
-	else if (nbr == 2)
-	{
-		dup2(pipefd[0], STDIN_FILENO);
-		dup2(file, STDOUT_FILENO);
-	}
-	close(file);
-	close(pipefd[0]);
-	close(pipefd[1]);
-	execve(cmd, args, environ);
-	exit_error(cmd, NULL, 1);
-	return (-1);
+	return (pid);
 }
 
 int	main(int argc, char **argv)
 {
 	char	**paths;
-	int		file[2];
-	int		pipefd[2];
-	int		pid[2];
+	char	*filename[2];
+	int		pipe_fd[2];
+	int		in_fd;
+	int		out_fd;
+	int		last_pid;
 	int		status;
+	int		i;
 
-	if (argc != 5)
-		exit_error(NULL, "Needs exactly 4 arguments", 1);
-	file[0] = open(argv[1], O_RDONLY);
-	if (file[0] == -1)
-		file_error(argv[1]);
-	file[1] = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (file[1] == -1)
-		file_error(argv[4]);
+	// if (argc != 5)
+	// 	exit_error(NULL, "Needs exactly 4 arguments", 1);
+	if (argc < 5)
+		exit_error(NULL, "Needs 4 or more arguments", 1);
+	filename[0] = argv[1];
+	in_fd = open(filename[0], O_RDONLY);
+	if (in_fd == -1)
+		file_error(filename[0]);
+	filename[1] = argv[argc - 1];
+	out_fd = open(filename[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (out_fd == -1)
+		file_error(filename[1]);
+	i = 2;
 	paths = ft_split(get_path_env(environ), ':');
-	pipe(pipefd);
-	pid[0] = run_cmd(1, pipefd, argv[2], file[0], paths);
-	pid[1] = run_cmd(2, pipefd, argv[3], file[1], paths);
-	close(pipefd[0]);
-	close(pipefd[1]);
-	waitpid(pid[0], NULL, 0);
-	waitpid(pid[1], &status, 0);
+	while (i < argc - 1)
+	{
+		if (i == argc - 2)
+			pipe_fd[1] = out_fd;
+		else
+			pipe(pipe_fd);
+		last_pid = run_cmd(argv[i], in_fd, pipe_fd[1], paths);
+		close(pipe_fd[1]);
+		in_fd = pipe_fd[0];
+		i++;
+	}
+	waitpid(last_pid, &status, 0);
+	while (wait(NULL) != -1)
+		continue ;
 	exit(WEXITSTATUS(status));
 }
