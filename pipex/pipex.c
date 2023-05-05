@@ -10,9 +10,9 @@
 extern char	**environ;
 
 // TODO:
+// - figure out why it hangs with /dev/urandom
 // - error handling for fork()
 // - handle access denied
-//	- commands
 //	- infile/outfile
 // - write error handling
 // - dup error handling
@@ -84,6 +84,7 @@ int	run_cmd(char *cmdstr, int in_fd, int out_fd, char **paths)
 	char	*cmd;
 	pid_t	pid;
 
+	fprintf(stderr, "in: %d, out: %d\n", in_fd, out_fd);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -124,8 +125,8 @@ int	main(int argc, char **argv)
 	out_fd = open(filename[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (out_fd == -1)
 		file_error(filename[1]);
-	i = 2;
 	paths = ft_split(get_path_env(environ), ':');
+	i = 2;
 	while (i < argc - 1)
 	{
 		if (i == argc - 2)
