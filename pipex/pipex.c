@@ -6,10 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <pipex.h>
 
 extern char	**environ;
 
 // TODO:
+// - when supplying a path supply only the binary name argv[0] to execve
+// - fix relative paths that don't start with ./ (tmp/test)
 // - figure out why it hangs with /dev/urandom
 // - error handling for fork()
 // - handle access denied
