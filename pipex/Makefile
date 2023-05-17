@@ -1,7 +1,5 @@
 NAME := pipex
 
-CC := clang
-
 SRC := $(wildcard *.c)
 OBJ_DIR := obj
 OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))

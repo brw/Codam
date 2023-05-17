@@ -36,7 +36,7 @@ FORCE:
 
 $(NAME): $(OBJ) $(LIBFT_NAME)
 	cp $(LIBFT_NAME) $(NAME)
-	ar rcs $@ $^
+	ar rcs $@ $<
 
 $(LIBFT_NAME): FORCE
 	$(MAKE) -C $(LIBFT_DIR)
