@@ -12,7 +12,6 @@ extern char	**environ;
 
 // TODO:
 // - when supplying a path supply only the binary name argv[0] to execve
-// - fix relative paths that don't start with ./ (tmp/test)
 // - figure out why it hangs with /dev/urandom
 // - error handling for fork()
 // - handle access denied
@@ -58,7 +57,7 @@ char	*get_cmd_path(char *cmd, char **paths)
 {
 	char	*try_path;
 
-	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
+	if (ft_strchr(cmd, '/'))
 	{
 		if (access(cmd, F_OK | X_OK) == 0)
 			return (cmd);
