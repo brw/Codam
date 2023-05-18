@@ -19,6 +19,8 @@ extern char	**environ;
 // - write error handling
 // - dup error handling
 // - more error handling
+// - fix ft_fprintf to work with stderr
+// - handle escaping with backticks of spaces and quotes and everything I guess? Maybe?
 
 void	exit_error(char *obj, char *msg, char exit_code)
 {
@@ -86,7 +88,6 @@ int	run_cmd(char *cmdstr, int in_fd, int out_fd, char **paths)
 	char	*cmd;
 	pid_t	pid;
 
-	fprintf(stderr, "in: %d, out: %d\n", in_fd, out_fd);
 	pid = fork();
 	if (pid == 0)
 	{
