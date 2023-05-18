@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/10/30 18:53:49 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/05/18 14:30:52 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/05/18 16:10:08 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ static size_t	get_item_length(const char **s, char delim)
 	{
 		while ((*s)[i] && ((*s)[i] != delim || (*s)[i - 1] == '\\'))
 		{
-			fprintf(stderr, "%lu - %c - %c\n", i, (*s)[i-1], (*s)[i]);
+			// fprintf(stderr, "%lu - %c - %c\n", i, (*s)[i-1], (*s)[i]);
 			i++;
 		}
-		fprintf(stderr, "%lu - %c - %c\n", i, (*s)[i-1], (*s)[i]);
+		// fprintf(stderr, "%lu - %c - %c\n", i, (*s)[i-1], (*s)[i]);
 	}
 	if (((*s)[i - 1] == '\'' && **s == '\'') ||
 		((*s)[i - 1] == '"' && **s == '"'))
