@@ -37,7 +37,7 @@ $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
 
 $(LIBFT_NAME): FORCE
-	$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) -C $(LIBFT_DIR)
 
 clean:
 	rm -f $(OBJ)

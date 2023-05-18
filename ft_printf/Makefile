@@ -39,7 +39,7 @@ $(NAME): $(OBJ) $(LIBFT_NAME)
 	ar rcs $@ $<
 
 $(LIBFT_NAME): FORCE
-	$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) -C $(LIBFT_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) -c -o $@ $< $(CFLAGS)
