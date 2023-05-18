@@ -6,13 +6,14 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/10/30 18:53:49 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/04/01 19:40:14 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/05/18 14:30:52 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 static size_t	count_items(char const *s, char delim)
 {
@@ -53,11 +54,15 @@ static size_t	get_item_length(const char **s, char delim)
 	}
 	else
 	{
-		while ((*s)[i] && (*s)[i] != delim)
+		while ((*s)[i] && ((*s)[i] != delim || (*s)[i - 1] == '\\'))
+		{
+			fprintf(stderr, "%lu - %c - %c\n", i, (*s)[i-1], (*s)[i]);
 			i++;
+		}
+		fprintf(stderr, "%lu - %c - %c\n", i, (*s)[i-1], (*s)[i]);
 	}
-	if ((**s == '\'' && (*s)[i - 1] == '\'') ||
-		(**s == '\"' && (*s)[i - 1] == '"'))
+	if (((*s)[i - 1] == '\'' && **s == '\'') ||
+		((*s)[i - 1] == '"' && **s == '"'))
 	{
 		(*s)++;
 		i -= 2;
