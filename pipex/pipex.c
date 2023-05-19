@@ -12,7 +12,6 @@ extern char	**environ;
 
 // TODO:
 // - when supplying a path supply only the binary name argv[0] to execve
-// - figure out why it hangs with /dev/urandom
 // - error handling for fork()
 // - handle access denied
 //	- infile/outfile
@@ -97,14 +96,11 @@ int	run_cmd(char *cmdstr, int in_fd, int out_fd, int extra_fd, char **paths)
 		cmd = get_cmd_path(args[0], paths);
 		if (cmd == NULL)
 			exit(1);
-		fprintf(stderr, "out_fd - in_fd child '%s': %d - %d\n", cmd, out_fd, in_fd);
 		dup2(in_fd, STDIN_FILENO);
 		close(in_fd);
 		dup2(out_fd, STDOUT_FILENO);
 		close(extra_fd);
-		fprintf(stderr, "closed in_fd and extra_fd in child %s: %d - %d\n", cmd, in_fd, extra_fd);
 		close(out_fd);
-		fprintf(stderr, "closed out_fd in child %s: %d: \n", cmd, out_fd);
 		execve(cmd, args, environ);
 		exit_error(cmd, NULL, 1);
 	}
@@ -142,15 +138,10 @@ int	main(int argc, char **argv)
 			pipe_fd[1] = out_fd;
 		else
 			pipe(pipe_fd);
-		fprintf(stderr, "in_fd: %d, pipe_fd[0]: %d, pipe_fd[1]: %d\n", in_fd, pipe_fd[0], pipe_fd[1]);
-		fprintf(stderr, "running command\n");
 		last_pid = run_cmd(argv[i], in_fd, pipe_fd[1], pipe_fd[0], paths);
 		close(in_fd);
-		fprintf(stderr, "closed in_fd: %d\n", in_fd);
 		close(pipe_fd[1]);
-		fprintf(stderr, "closed pipe_fd[1]: %d\n", pipe_fd[1]);
 		in_fd = pipe_fd[0];
-		fprintf(stderr, "set in_fd to %d\n", pipe_fd[0]);
 		i++;
 	}
 	close(out_fd);
