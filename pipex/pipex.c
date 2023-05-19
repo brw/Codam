@@ -98,7 +98,7 @@ int	run_cmd(char *cmdstr, t_pipex pipex, char **paths)
 			exit(1);
 		dup2(pipex.in_fd, STDIN_FILENO);
 		close(pipex.in_fd);
-		dup2(pipex.out_fd, STDOUT_FILENO);
+		dup2(pipex.pipe_fd[1], STDOUT_FILENO);
 		close(pipex.pipe_fd[0]);
 		close(pipex.out_fd);
 		execve(cmd, args, environ);
