@@ -1,11 +1,13 @@
 #ifndef PIPEX_H
 
-typedef struct pipex
+typedef struct s_pipex
 {
-	int	infile_fd;
-	int	outfile_fd;
-	int	pipe_end;
-}		t_pipex;
+	char	*infile;
+	char	*outfile;
+	int		in_fd;
+	int		out_fd;
+	int		pipe_fd[2];
+}			t_pipex;
 
 # define PIPEX_H
 #endif

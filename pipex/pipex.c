@@ -11,7 +11,6 @@
 extern char	**environ;
 
 // TODO:
-// - when supplying a path supply only the binary name argv[0] to execve
 // - error handling for fork()
 // - handle access denied
 //	- infile/outfile
@@ -19,7 +18,9 @@ extern char	**environ;
 // - dup error handling
 // - more error handling
 // - fix ft_fprintf to work with stderr
-// - handle escaping with backticks of spaces and quotes and everything I guess? Maybe?
+// - handle heredoc
+// - when supplying a path supply only the binary name argv[0] to execve
+// - handle backslash escaping spaces and quotes and everything I guess? Maybe?
 // - handle semicolons, && and || (this is probably too close to Minishell)
 
 void	exit_error(char *obj, char *msg, char exit_code)
@@ -82,12 +83,11 @@ char	*get_cmd_path(char *cmd, char **paths)
 	return (NULL);
 }
 
-int	run_cmd(char *cmdstr, int in_fd, int out_fd, int extra_fd, char **paths)
+int	run_cmd(char *cmdstr, t_pipex pipex, char **paths)
 {
 	char	**args;
 	char	*cmd;
 	pid_t	pid;
-
 
 	pid = fork();
 	if (pid == 0)
@@ -96,11 +96,11 @@ int	run_cmd(char *cmdstr, int in_fd, int out_fd, int extra_fd, char **paths)
 		cmd = get_cmd_path(args[0], paths);
 		if (cmd == NULL)
 			exit(1);
-		dup2(in_fd, STDIN_FILENO);
-		close(in_fd);
-		dup2(out_fd, STDOUT_FILENO);
-		close(extra_fd);
-		close(out_fd);
+		dup2(pipex.in_fd, STDIN_FILENO);
+		close(pipex.in_fd);
+		dup2(pipex.out_fd, STDOUT_FILENO);
+		close(pipex.pipe_fd[0]);
+		close(pipex.out_fd);
 		execve(cmd, args, environ);
 		exit_error(cmd, NULL, 1);
 	}
@@ -109,42 +109,39 @@ int	run_cmd(char *cmdstr, int in_fd, int out_fd, int extra_fd, char **paths)
 
 int	main(int argc, char **argv)
 {
+	t_pipex	pipex;
 	char	**paths;
-	char	*filename[2];
-	int		pipe_fd[2];
-	int		in_fd;
-	int		out_fd;
-	int		last_pid;
-	int		status;
+	pid_t	last_pid;
 	int		i;
+	int		status;
 
 	// if (argc != 5)
 	// 	exit_error(NULL, "Needs exactly 4 arguments", 1);
 	if (argc < 5)
 		exit_error(NULL, "Needs 4 or more arguments", 1);
-	filename[0] = argv[1];
-	in_fd = open(filename[0], O_RDONLY);
-	if (in_fd == -1)
-		file_error(filename[0]);
-	filename[1] = argv[argc - 1];
-	out_fd = open(filename[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (out_fd == -1)
-		file_error(filename[1]);
+	pipex.infile = argv[1];
+	pipex.in_fd = open(pipex.infile, O_RDONLY);
+	if (pipex.in_fd == -1)
+		file_error(pipex.infile);
+	pipex.outfile = argv[argc - 1];
+	pipex.out_fd = open(pipex.outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (pipex.out_fd == -1)
+		file_error(pipex.outfile);
 	paths = ft_split(get_path_env(environ), ':');
 	i = 2;
 	while (i < argc - 1)
 	{
 		if (i == argc - 2)
-			pipe_fd[1] = out_fd;
+			pipex.pipe_fd[1] = pipex.out_fd;
 		else
-			pipe(pipe_fd);
-		last_pid = run_cmd(argv[i], in_fd, pipe_fd[1], pipe_fd[0], paths);
-		close(in_fd);
-		close(pipe_fd[1]);
-		in_fd = pipe_fd[0];
+			pipe(pipex.pipe_fd);
+		last_pid = run_cmd(argv[i], pipex, paths);
+		close(pipex.in_fd);
+		close(pipex.pipe_fd[1]);
+		pipex.in_fd = pipex.pipe_fd[0];
 		i++;
 	}
-	close(out_fd);
+	close(pipex.out_fd);
 	waitpid(last_pid, &status, 0);
 	while (wait(NULL) != -1)
 		continue ;
