@@ -126,10 +126,7 @@ int	main(int argc, char **argv)
 	pipex.outfile = argv[argc - 1];
 	pipex.out_fd = open(pipex.outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (pipex.out_fd == -1)
-	{
-		file_error(pipex.outfile);
-		exit(1);
-	}
+		exit_error(pipex.outfile, NULL, 1);
 	paths = ft_split(get_path_env(environ), ':');
 	i = 2;
 	while (i < argc - 1)
