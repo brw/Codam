@@ -2,6 +2,8 @@
 
 typedef struct s_pipex
 {
+	char	*program;
+	char	**paths;
 	char	*infile;
 	char	*outfile;
 	int		in_fd;
