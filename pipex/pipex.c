@@ -86,17 +86,17 @@ int	get_fd(t_context *ctx, t_redir *arg, int flags, mode_t mode)
 		return (arg->fd);
 }
 
-void	setup_io(t_context *ctx, t_redir *in, t_redir *out)
+void	setup_io(t_context *ctx)
 {
 	int	in_fd;
 	int	out_fd;
 
-	if (in->type == FD)
+	if (ctx->in->type == FD)
 		close(ctx->pipe_fd[1]);
-	if (out->type == FD)
+	if (ctx->out->type == FD)
 		close(ctx->pipe_fd[0]);
-	in_fd = get_fd(ctx, in, O_RDONLY, 0);
-	out_fd = get_fd(ctx, out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	in_fd = get_fd(ctx, ctx->in, O_RDONLY, 0);
+	out_fd = get_fd(ctx, ctx->out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	dup2(in_fd, STDIN_FILENO);
 	close(in_fd);
 	dup2(out_fd, STDOUT_FILENO);
@@ -114,30 +114,53 @@ void	execute_command(t_context *ctx, char *cmdstr)
 	exit_error(ctx, cmd, NULL, 1);
 }
 
-int	spawn_child(t_context *ctx, char *cmdstr, t_redir *in, t_redir *out)
+int	spawn_child(t_context *ctx, char *cmdstr)
 {
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		setup_io(ctx, in, out);
+		setup_io(ctx);
 		execute_command(ctx, cmdstr);
 	}
 	return (pid);
 }
 
+void	setup_redirs(t_context *ctx, int i, int argc, char **argv)
+{
+	if (i == 2)
+	{
+		ctx->in->type = FILENAME;
+		ctx->in->filename = argv[1];
+	}
+	else
+	{
+		ctx->in->type = FD;
+		ctx->in->fd = ctx->pipe_fd[0];
+	}
+	if (i == argc - 2)
+	{
+		ctx->out->type = FILENAME;
+		ctx->out->filename = argv[argc - 1];
+	}
+	else
+	{
+		pipe(ctx->pipe_fd);
+		ctx->out->type = FD;
+		ctx->out->fd = ctx->pipe_fd[1];
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_context	ctx;
-	t_redir		in;
-	t_redir		out;
 	pid_t		last_pid;
 	int			i;
 	int			status;
 
 	// if (argc != 5)
-	// 	exit_error(NULL, "Needs exactly 4 arguments", 1);
+	// 	exit_error(&ctx, NULL, "Needs exactly 4 arguments", 1);
 	ctx.program_name = argv[0];
 	if (argc < 5)
 		exit_error(&ctx, NULL, "Needs 4 or more arguments", 1);
@@ -145,32 +168,12 @@ int	main(int argc, char **argv)
 	i = 2;
 	while (i < argc - 1)
 	{
-		if (i == 2)
-		{
-			in.type = FILENAME;
-			in.filename = argv[1];
-		}
-		else
-		{
-			in.type = FD;
-			in.fd = ctx.pipe_fd[0];
-		}
-		if (i == argc - 2)
-		{
-			out.type = FILENAME;
-			out.filename = argv[argc - 1];
-		}
-		else
-		{
-			pipe(ctx.pipe_fd);
-			out.type = FD;
-			out.fd = ctx.pipe_fd[1];
-		}
-		last_pid = spawn_child(&ctx, argv[i], &in, &out);
-		if (in.type == FD)
-			close(in.fd);
-		if (out.type == FD)
-			close(out.fd);
+		setup_redirs(&ctx, i, argc, argv);
+		last_pid = spawn_child(&ctx, argv[i]);
+		if (ctx.in->type == FD)
+			close(ctx.in->fd);
+		if (ctx.out->type == FD)
+			close(ctx.out->fd);
 		i++;
 	}
 	waitpid(last_pid, &status, 0);
