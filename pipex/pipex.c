@@ -11,10 +11,6 @@
 extern char	**environ;
 
 // TODO:
-// - error handling for fork()
-// - write error handling
-// - dup error handling
-// - more error handling
 // - fix ft_fprintf to work with stderr
 // - handle heredoc
 // - when supplying a path supply only the binary name argv[0] to execve
@@ -27,8 +23,7 @@ void	exit_error(t_context *ctx, char *obj, char *msg, int exit_code)
 		fprintf(stderr, "%s: %s: %s\n", ctx->program_name, obj, msg);
 	else
 		fprintf(stderr, "%s: %s\n", ctx->program_name, msg);
-	if (exit_code)
-		exit(exit_code);
+	exit(exit_code);
 }
 
 char	*get_path_env(char **env)
@@ -40,6 +35,19 @@ char	*get_path_env(char **env)
 		env++;
 	}
 	return (NULL);
+}
+
+void	free_array(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
 }
 
 char	*get_cmd_path(char *cmd, t_context *ctx)
@@ -60,13 +68,16 @@ char	*get_cmd_path(char *cmd, t_context *ctx)
 		try_path = ft_strjoin(ft_strjoin(ctx->paths[i], "/"), cmd);
 		if (access(try_path, F_OK) == 0)
 		{
-			if (access(try_path, X_OK) == -1)
-				exit_error(ctx, try_path, NULL, 126);
-			return (try_path);
+			free_array(ctx->paths);
+			if (access(try_path, X_OK) == 0)
+				return (try_path);
+			free(try_path);
+			exit_error(ctx, try_path, NULL, 126);
 		}
 		free(try_path);
 		i++;
 	}
+	free_array(ctx->paths);
 	exit_error(ctx, cmd, "command not found", 127);
 	return (NULL);
 }
@@ -79,7 +90,7 @@ int	get_fd(t_context *ctx, t_redir *arg, int flags, mode_t mode)
 	{
 		fd = open(arg->filename, flags, mode);
 		if (fd == -1)
-			exit_error(ctx, arg->filename, NULL, 1);
+			exit_error(ctx, arg->filename, NULL, errno);
 		return (fd);
 	}
 	else
@@ -98,10 +109,10 @@ void	setup_io(t_context *ctx)
 	in_fd = get_fd(ctx, &ctx->in, O_RDONLY, 0);
 	out_fd = get_fd(ctx, &ctx->out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (dup2(in_fd, STDIN_FILENO) == -1)
-		exit_error(ctx, "dup2", NULL, errno);
+		exit_error(ctx, "dup2 failed", NULL, errno);
 	close(in_fd);
 	if (dup2(out_fd, STDOUT_FILENO) == -1)
-		exit_error(ctx, "dup2", NULL, errno);
+		exit_error(ctx, "dup2 failed", NULL, errno);
 	close(out_fd);
 }
 
@@ -113,7 +124,8 @@ void	execute_command(t_context *ctx, char *cmdstr)
 	args = ft_split_args(cmdstr);
 	cmd = get_cmd_path(args[0], ctx);
 	execve(cmd, args, environ);
-	exit_error(ctx, cmd, NULL, 1);
+	free_array(args);
+	exit_error(ctx, cmd, NULL, errno);
 }
 
 int	spawn_child(t_context *ctx, char *cmdstr)
@@ -121,6 +133,8 @@ int	spawn_child(t_context *ctx, char *cmdstr)
 	pid_t	pid;
 
 	pid = fork();
+	if (pid == -1)
+		exit_error(ctx, "fork failed", NULL, errno);
 	if (pid == 0)
 	{
 		setup_io(ctx);
@@ -148,7 +162,8 @@ void	setup_redirs(t_context *ctx, int i, int argc, char **argv)
 	}
 	else
 	{
-		pipe(ctx->pipe_fd);
+		if (pipe(ctx->pipe_fd) == -1)
+			exit_error(ctx, "creating pipe failed", NULL, errno);
 		ctx->out.type = FD;
 		ctx->out.fd = ctx->pipe_fd[1];
 	}
@@ -178,7 +193,8 @@ int	main(int argc, char **argv)
 			close(ctx.out.fd);
 		i++;
 	}
-	waitpid(last_pid, &status, 0);
+	if (waitpid(last_pid, &status, 0) == -1)
+		exit_error(&ctx, "waitpid failed", NULL, errno);
 	while (wait(NULL) != -1)
 		continue ;
 	exit(WEXITSTATUS(status));
