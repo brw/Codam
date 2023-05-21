@@ -3,12 +3,12 @@ NAME := pipex
 SRC := $(wildcard *.c)
 OBJ_DIR := obj
 OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
+DEP := $(OBJ:%.o=%.d)
 LIBFT_DIR := libft
 LIBFT_NAME := $(LIBFT_DIR)/libftprintf.a
 
 INCLUDES := -I ./include -I ./libft/include
-# CFLAGS ?= -Wall -Wextra -Werror -Wconversion $(INCLUDES)
-CFLAGS ?= -Wall -Wextra -Wconversion $(INCLUDES)
+CFLAGS ?= -Wall -Wextra -Werror -Wconversion -MMD $(INCLUDES)
 LDFLAGS ?=
 
 ifeq ($(shell uname), Linux)
@@ -28,7 +28,7 @@ FORCE:
 $(NAME): $(LIBFT_NAME) $(OBJ)
 	$(CC) $(LDFLAGS) -o $@ $^
 
-$(OBJ_DIR)/%.o: *.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(OBJ_DIR):
@@ -38,7 +38,7 @@ $(LIBFT_NAME): FORCE
 	@$(MAKE) -C $(LIBFT_DIR)
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJ) $(DEP)
 	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
@@ -55,5 +55,7 @@ norminette:
 
 format:
 	c_formatter_42 $(SRC)
+
+-include $(DEP)
 
 .PHONY: all clean fclean re check norminette format
