@@ -28,10 +28,8 @@ FORCE:
 $(NAME): $(LIBFT_NAME) $(OBJ)
 	$(CC) $(LDFLAGS) -o $@ $^
 
-$(OBJ_DIR)/%.o: *.c
+$(OBJ_DIR)/%.o: *.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
-
-$(OBJ): | $(OBJ_DIR)
 
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)

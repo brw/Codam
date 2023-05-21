@@ -6,12 +6,11 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/10/30 18:53:52 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/03/26 19:33:24 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/05/21 15:44:09 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
-
 # define LIBFT_H
 
 # include <stddef.h>

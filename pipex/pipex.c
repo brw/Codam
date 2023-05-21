@@ -17,9 +17,8 @@ extern char	**environ;
 // - more error handling
 // - fix ft_fprintf to work with stderr
 // - handle heredoc
+// - move file opening to child processes
 // - when supplying a path supply only the binary name argv[0] to execve
-// - handle backslash escaping spaces and quotes and everything I guess? Maybe?
-// - handle semicolons, && and || (this is probably too close to Minishell)
 
 void	exit_error(char *program, char *obj, char *msg, int exit_code)
 {

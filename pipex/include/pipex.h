@@ -1,4 +1,5 @@
 #ifndef PIPEX_H
+# define PIPEX_H
 
 typedef struct s_pipex
 {
@@ -11,5 +12,4 @@ typedef struct s_pipex
 	int		pipe_fd[2];
 }			t_pipex;
 
-# define PIPEX_H
 #endif
