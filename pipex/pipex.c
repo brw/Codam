@@ -17,29 +17,18 @@ extern char	**environ;
 // - more error handling
 // - fix ft_fprintf to work with stderr
 // - handle heredoc
-// - move file opening to child processes
 // - when supplying a path supply only the binary name argv[0] to execve
 
-void	exit_error(char *program, char *obj, char *msg, int exit_code)
+void	exit_error(t_context *ctx, char *obj, char *msg, int exit_code)
 {
 	if (!msg)
 		msg = strerror(errno);
 	if (obj)
-		fprintf(stderr, "%s: %s: %s\n", program, obj, msg);
+		fprintf(stderr, "%s: %s: %s\n", ctx->program_name, obj, msg);
 	else
-		fprintf(stderr, "%s: %s\n", program, msg);
+		fprintf(stderr, "%s: %s\n", ctx->program_name, msg);
 	if (exit_code)
 		exit(exit_code);
-}
-
-void	file_error(char *filename)
-{
-	char	*msg;
-
-	msg = ft_strjoin("pipex: ", filename);
-	if (!msg)
-		return ;
-	perror(msg);
 }
 
 char	*get_path_env(char **env)
@@ -53,7 +42,7 @@ char	*get_path_env(char **env)
 	return (NULL);
 }
 
-char	*get_cmd_path(char *cmd, t_pipex pipex)
+char	*get_cmd_path(char *cmd, t_context *ctx)
 {
 	char	*try_path;
 	int		i;
@@ -63,84 +52,127 @@ char	*get_cmd_path(char *cmd, t_pipex pipex)
 		if (access(cmd, F_OK | X_OK) == 0)
 			return (cmd);
 		else
-			exit_error(pipex.program, cmd, NULL, 127);
+			exit_error(ctx, cmd, NULL, 127);
 	}
 	i = 0;
-	while (pipex.paths && pipex.paths[i])
+	while (ctx->paths && ctx->paths[i])
 	{
-		try_path = ft_strjoin(ft_strjoin(pipex.paths[i], "/"), cmd);
+		try_path = ft_strjoin(ft_strjoin(ctx->paths[i], "/"), cmd);
 		if (access(try_path, F_OK) == 0)
 		{
 			if (access(try_path, X_OK) == -1)
-				exit_error(pipex.program, try_path, NULL, 126);
+				exit_error(ctx, try_path, NULL, 126);
 			return (try_path);
 		}
 		free(try_path);
 		i++;
 	}
-	exit_error(pipex.program, cmd, "command not found", 127);
+	exit_error(ctx, cmd, "command not found", 127);
 	return (NULL);
 }
 
-int	run_cmd(char *cmdstr, t_pipex pipex)
+int	get_fd(t_context *ctx, t_redir *arg, int flags, mode_t mode)
+{
+	int	fd;
+
+	if (arg->type == FILENAME)
+	{
+		fd = open(arg->filename, flags, mode);
+		if (fd == -1)
+			exit_error(ctx, arg->filename, NULL, 1);
+		return (fd);
+	}
+	else
+		return (arg->fd);
+}
+
+void	setup_io(t_context *ctx, t_redir *in, t_redir *out)
+{
+	int	in_fd;
+	int	out_fd;
+
+	if (in->type == FD)
+		close(ctx->pipe_fd[1]);
+	if (out->type == FD)
+		close(ctx->pipe_fd[0]);
+	in_fd = get_fd(ctx, in, O_RDONLY, 0);
+	out_fd = get_fd(ctx, out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	dup2(in_fd, STDIN_FILENO);
+	close(in_fd);
+	dup2(out_fd, STDOUT_FILENO);
+	close(out_fd);
+}
+
+void	execute_command(t_context *ctx, char *cmdstr)
 {
 	char	**args;
 	char	*cmd;
+
+	args = ft_split_args(cmdstr);
+	cmd = get_cmd_path(args[0], ctx);
+	execve(cmd, args, environ);
+	exit_error(ctx, cmd, NULL, 1);
+}
+
+int	spawn_child(t_context *ctx, char *cmdstr, t_redir *in, t_redir *out)
+{
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		args = ft_split_args(cmdstr);
-		cmd = get_cmd_path(args[0], pipex);
-		if (cmd == NULL)
-			exit(1);
-		dup2(pipex.in_fd, STDIN_FILENO);
-		dup2(pipex.pipe_fd[1], STDOUT_FILENO);
-		close(pipex.in_fd);
-		close(pipex.pipe_fd[0]);
-		close(pipex.out_fd);
-		execve(cmd, args, environ);
-		exit_error(pipex.program, cmd, NULL, errno);
+		setup_io(ctx, in, out);
+		execute_command(ctx, cmdstr);
 	}
 	return (pid);
 }
 
 int	main(int argc, char **argv)
 {
-	t_pipex	pipex;
-	pid_t	last_pid;
-	int		i;
-	int		status;
+	t_context	ctx;
+	t_redir		in;
+	t_redir		out;
+	pid_t		last_pid;
+	int			i;
+	int			status;
 
 	// if (argc != 5)
 	// 	exit_error(NULL, "Needs exactly 4 arguments", 1);
-	pipex.program = argv[0];
+	ctx.program_name = argv[0];
 	if (argc < 5)
-		exit_error(pipex.program, NULL, "Needs 4 or more arguments", 1);
-	pipex.infile = argv[1];
-	pipex.in_fd = open(pipex.infile, O_RDONLY);
-	if (pipex.in_fd == -1)
-		file_error(pipex.infile);
-	pipex.outfile = argv[argc - 1];
-	pipex.out_fd = open(pipex.outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (pipex.out_fd == -1)
-		exit_error(pipex.program, pipex.outfile, NULL, 1);
-	pipex.paths = ft_split(get_path_env(environ), ':');
+		exit_error(&ctx, NULL, "Needs 4 or more arguments", 1);
+	ctx.paths = ft_split(get_path_env(environ), ':');
 	i = 2;
 	while (i < argc - 1)
 	{
-		if (i == argc - 2)
-			pipex.pipe_fd[1] = pipex.out_fd;
+		if (i == 2)
+		{
+			in.type = FILENAME;
+			in.filename = argv[1];
+		}
 		else
-			pipe(pipex.pipe_fd);
-		last_pid = run_cmd(argv[i], pipex);
-		close(pipex.in_fd);
-		close(pipex.pipe_fd[1]);
-		pipex.in_fd = pipex.pipe_fd[0];
+		{
+			in.type = FD;
+			in.fd = ctx.pipe_fd[0];
+		}
+		if (i == argc - 2)
+		{
+			out.type = FILENAME;
+			out.filename = argv[argc - 1];
+		}
+		else
+		{
+			pipe(ctx.pipe_fd);
+			out.type = FD;
+			out.fd = ctx.pipe_fd[1];
+		}
+		last_pid = spawn_child(&ctx, argv[i], &in, &out);
+		if (in.type == FD)
+			close(in.fd);
+		if (out.type == FD)
+			close(out.fd);
 		i++;
 	}
-	close(pipex.out_fd);
 	waitpid(last_pid, &status, 0);
 	while (wait(NULL) != -1)
 		continue ;
