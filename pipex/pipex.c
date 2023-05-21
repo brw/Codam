@@ -91,15 +91,17 @@ void	setup_io(t_context *ctx)
 	int	in_fd;
 	int	out_fd;
 
-	if (ctx->in->type == FD)
+	if (ctx->in.type == FD)
 		close(ctx->pipe_fd[1]);
-	if (ctx->out->type == FD)
+	if (ctx->out.type == FD)
 		close(ctx->pipe_fd[0]);
-	in_fd = get_fd(ctx, ctx->in, O_RDONLY, 0);
-	out_fd = get_fd(ctx, ctx->out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	dup2(in_fd, STDIN_FILENO);
+	in_fd = get_fd(ctx, &ctx->in, O_RDONLY, 0);
+	out_fd = get_fd(ctx, &ctx->out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (dup2(in_fd, STDIN_FILENO) == -1)
+		exit_error(ctx, "dup2", NULL, errno);
 	close(in_fd);
-	dup2(out_fd, STDOUT_FILENO);
+	if (dup2(out_fd, STDOUT_FILENO) == -1)
+		exit_error(ctx, "dup2", NULL, errno);
 	close(out_fd);
 }
 
@@ -131,24 +133,24 @@ void	setup_redirs(t_context *ctx, int i, int argc, char **argv)
 {
 	if (i == 2)
 	{
-		ctx->in->type = FILENAME;
-		ctx->in->filename = argv[1];
+		ctx->in.type = FILENAME;
+		ctx->in.filename = argv[1];
 	}
 	else
 	{
-		ctx->in->type = FD;
-		ctx->in->fd = ctx->pipe_fd[0];
+		ctx->in.type = FD;
+		ctx->in.fd = ctx->pipe_fd[0];
 	}
 	if (i == argc - 2)
 	{
-		ctx->out->type = FILENAME;
-		ctx->out->filename = argv[argc - 1];
+		ctx->out.type = FILENAME;
+		ctx->out.filename = argv[argc - 1];
 	}
 	else
 	{
 		pipe(ctx->pipe_fd);
-		ctx->out->type = FD;
-		ctx->out->fd = ctx->pipe_fd[1];
+		ctx->out.type = FD;
+		ctx->out.fd = ctx->pipe_fd[1];
 	}
 }
 
@@ -170,10 +172,10 @@ int	main(int argc, char **argv)
 	{
 		setup_redirs(&ctx, i, argc, argv);
 		last_pid = spawn_child(&ctx, argv[i]);
-		if (ctx.in->type == FD)
-			close(ctx.in->fd);
-		if (ctx.out->type == FD)
-			close(ctx.out->fd);
+		if (ctx.in.type == FD)
+			close(ctx.in.fd);
+		if (ctx.out.type == FD)
+			close(ctx.out.fd);
 		i++;
 	}
 	waitpid(last_pid, &status, 0);

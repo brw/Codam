@@ -24,8 +24,8 @@ typedef struct ctx
 	char				*infile;
 	char				*outfile;
 	int					pipe_fd[2];
-	t_redir				*in;
-	t_redir				*out;
+	t_redir				in;
+	t_redir				out;
 }						t_context;
 
 #endif
