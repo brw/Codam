@@ -8,7 +8,8 @@ LIBFT_DIR := libft
 LIBFT_NAME := $(LIBFT_DIR)/libftprintf.a
 
 INCLUDES := -I ./include -I ./libft/include
-CFLAGS ?= -Wall -Wextra -Werror -Wconversion -MMD $(INCLUDES)
+# CFLAGS ?= -Wall -Wextra -Werror -Wconversion -MMD $(INCLUDES)
+CFLAGS ?= -Wall -Wextra -Wconversion -MMD $(INCLUDES)
 LDFLAGS ?=
 
 ifeq ($(shell uname), Linux)

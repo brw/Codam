@@ -109,10 +109,17 @@ void	setup_io(t_context *ctx)
 	in_fd = get_fd(ctx, &ctx->in, O_RDONLY, 0);
 	out_fd = get_fd(ctx, &ctx->out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (dup2(in_fd, STDIN_FILENO) == -1)
+	{
+		close(in_fd);
+		close(out_fd);
 		exit_error(ctx, "dup2 failed", NULL, errno);
+	}
 	close(in_fd);
 	if (dup2(out_fd, STDOUT_FILENO) == -1)
+	{
+		close(out_fd);
 		exit_error(ctx, "dup2 failed", NULL, errno);
+	}
 	close(out_fd);
 }
 
