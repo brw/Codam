@@ -7,6 +7,13 @@ typedef enum fd_or_filename
 	FILENAME
 }						t_fd_or_filename;
 
+typedef enum order
+{
+	FIRST,
+	MIDDLE,
+	LAST
+}						t_order;
+
 typedef struct redir
 {
 	t_fd_or_filename	type;

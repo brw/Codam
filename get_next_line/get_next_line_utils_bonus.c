@@ -6,13 +6,13 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2023/01/29 04:25:10 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/01/29 04:25:11 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/05/31 22:27:47 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-size_t	ft_strlen(const char *s)
+size_t	gnl_strlen(const char *s)
 {
 	size_t	i;
 
@@ -22,7 +22,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+void	*gnl_memcpy(void *dst, const void *src, size_t n)
 {
 	size_t	i;
 
@@ -37,12 +37,12 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	return (dst);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+size_t	gnl_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;
 
 	if (dstsize == 0)
-		return (ft_strlen(src));
+		return (gnl_strlen(src));
 	i = 0;
 	while (src[i] && i < dstsize - 1)
 	{
@@ -50,22 +50,22 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 		i++;
 	}
 	dst[i] = '\0';
-	return (ft_strlen(src));
+	return (gnl_strlen(src));
 }
 
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+size_t	gnl_strlcat(char *dst, const char *src, size_t dstsize)
 {
 	size_t	dstlen;
 
-	dstlen = ft_strlen(dst);
+	dstlen = gnl_strlen(dst);
 	if (dstsize != 0 && dstlen < dstsize)
-		ft_strlcpy(dst + dstlen, src, dstsize - dstlen);
+		gnl_strlcpy(dst + dstlen, src, dstsize - dstlen);
 	else
-		return (dstsize + ft_strlen(src));
-	return (dstlen + ft_strlen(src));
+		return (dstsize + gnl_strlen(src));
+	return (dstlen + gnl_strlen(src));
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*gnl_strchr(const char *s, int c)
 {
 	while (*s != (char)c)
 	{

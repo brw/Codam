@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <get_next_line.h>
 
 extern char	**environ;
 
@@ -14,6 +15,21 @@ extern char	**environ;
 // - fix ft_fprintf to work with stderr
 // - handle heredoc
 // - when supplying a path supply only the binary name argv[0] to execve
+
+void	free_array(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+	{
+		free(args[i]);
+		args[i] = NULL;
+		i++;
+	}
+	free(args);
+	args = NULL;
+}
 
 void	exit_error(t_context *ctx, char *obj, char *msg, int exit_code)
 {
@@ -23,6 +39,8 @@ void	exit_error(t_context *ctx, char *obj, char *msg, int exit_code)
 		fprintf(stderr, "%s: %s: %s\n", ctx->program_name, obj, msg);
 	else
 		fprintf(stderr, "%s: %s\n", ctx->program_name, msg);
+	if (ctx->paths)
+		free_array(ctx->paths);
 	exit(exit_code);
 }
 
@@ -37,17 +55,19 @@ char	*get_path_env(char **env)
 	return (NULL);
 }
 
-void	free_array(char **args)
+char	*create_try_path(t_context *ctx, int i, char *cmd)
 {
-	int	i;
+	char	*tmp;
+	char	*str;
 
-	i = 0;
-	while (args[i])
-	{
-		free(args[i]);
-		i++;
-	}
-	free(args);
+	tmp = ft_strjoin(ctx->paths[i], "/");
+	if (!tmp)
+		exit_error(ctx, "ft_strjoin", NULL, errno);
+	str = ft_strjoin(tmp, cmd);
+	free(tmp);
+	if (!str)
+		exit_error(ctx, "ft_strjoin", NULL, errno);
+	return (str);
 }
 
 char	*get_cmd_path(char *cmd, t_context *ctx)
@@ -65,19 +85,17 @@ char	*get_cmd_path(char *cmd, t_context *ctx)
 	i = 0;
 	while (ctx->paths && ctx->paths[i])
 	{
-		try_path = ft_strjoin(ft_strjoin(ctx->paths[i], "/"), cmd);
+		try_path = create_try_path(ctx, i, cmd);
 		if (access(try_path, F_OK) == 0)
 		{
 			free_array(ctx->paths);
 			if (access(try_path, X_OK) == 0)
 				return (try_path);
-			free(try_path);
 			exit_error(ctx, try_path, NULL, 126);
 		}
 		free(try_path);
 		i++;
 	}
-	free_array(ctx->paths);
 	exit_error(ctx, cmd, "command not found", 127);
 	return (NULL);
 }
@@ -110,13 +128,13 @@ void	setup_io(t_context *ctx)
 	{
 		close(in_fd);
 		close(out_fd);
-		exit_error(ctx, "dup2 failed", NULL, errno);
+		exit_error(ctx, "dup2", NULL, errno);
 	}
 	close(in_fd);
 	if (dup2(out_fd, STDOUT_FILENO) == -1)
 	{
 		close(out_fd);
-		exit_error(ctx, "dup2 failed", NULL, errno);
+		exit_error(ctx, "dup2", NULL, errno);
 	}
 	close(out_fd);
 }
@@ -127,9 +145,10 @@ void	execute_command(t_context *ctx, char *cmdstr)
 	char	*cmd;
 
 	args = ft_split_args(cmdstr);
+	if (!args)
+		exit_error(ctx, "ft_split_args", NULL, errno);
 	cmd = get_cmd_path(args[0], ctx);
 	execve(cmd, args, environ);
-	free_array(args);
 	exit_error(ctx, cmd, NULL, errno);
 }
 
@@ -139,7 +158,7 @@ int	spawn_child(t_context *ctx, char *cmdstr)
 
 	pid = fork();
 	if (pid == -1)
-		exit_error(ctx, "fork failed", NULL, errno);
+		exit_error(ctx, "fork", NULL, errno);
 	if (pid == 0)
 	{
 		setup_io(ctx);
@@ -168,10 +187,31 @@ void	setup_redirs(t_context *ctx, int i, int argc, char **argv)
 	else
 	{
 		if (pipe(ctx->pipe_fd) == -1)
-			exit_error(ctx, "creating pipe failed", NULL, errno);
+			exit_error(ctx, "failed to create pipe", NULL, errno);
 		ctx->out.type = FD;
 		ctx->out.fd = ctx->pipe_fd[1];
 	}
+}
+
+void	handle_heredoc(t_context *ctx, int argc, char **argv)
+{
+	int		tmp_fd;
+	char	*line;
+	int		i;
+
+	if (argc < 6)
+		exit_error(ctx, NULL, "Needs 5 or more arguments", 1);
+	tmp_fd = open("/tmp/pipex_heredoc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (tmp_fd == -1)
+		exit_error(ctx, "/tmp/pipex_heredoc_tmp", NULL, errno);
+	i = 3;
+	while(i < argc - 1)
+	{
+
+		i++;
+	}
+	get_next_line(tmp_fd);
+	unlink("/tmp/pipex_heredoc_tmp");
 }
 
 int	main(int argc, char **argv)
@@ -184,6 +224,9 @@ int	main(int argc, char **argv)
 	// if (argc != 5)
 	// 	exit_error(&ctx, NULL, "Needs exactly 4 arguments", 1);
 	ctx.program_name = argv[0];
+	ctx.paths = NULL;
+	if (ft_strncmp(argv[1], "here_doc", 9) == 0)
+		handle_heredoc(&ctx, argc, argv);
 	if (argc < 5)
 		exit_error(&ctx, NULL, "Needs 4 or more arguments", 1);
 	ctx.paths = ft_split(get_path_env(environ), ':');
@@ -198,9 +241,9 @@ int	main(int argc, char **argv)
 			close(ctx.out.fd);
 		i++;
 	}
-	if (waitpid(last_pid, &status, 0) == -1)
-		exit_error(&ctx, "waitpid failed", NULL, errno);
+	waitpid(last_pid, &status, 0);
 	while (wait(NULL) != -1)
 		continue ;
+	free_array(ctx.paths);
 	exit(WEXITSTATUS(status));
 }

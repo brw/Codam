@@ -1,13 +1,18 @@
 NAME := pipex
 
-SRC := $(wildcard *.c)
+
+SRC := $(wildcard *.c) $(wildcard $(GET_NEXT_LINE_DIR)/*.c)
 OBJ_DIR := obj
 OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
 DEP := $(OBJ:%.o=%.d)
+
 LIBFT_DIR := libft
 LIBFT_NAME := $(LIBFT_DIR)/libftprintf.a
 
-INCLUDES := -I ./include -I ./libft/include
+GET_NEXT_LINE_DIR := get_next_line
+GET_NEXT_LINE_NAME := $(GET_NEXT_LINE_DIR)/get_next_line.a
+
+INCLUDES := -I ./include -I $(LIBFT_DIR)/include -I $(GET_NEXT_LINE_DIR)/include
 # CFLAGS ?= -Wall -Wextra -Werror -Wconversion -MMD $(INCLUDES)
 CFLAGS ?= -Wall -Wextra -Wconversion -MMD $(INCLUDES)
 LDFLAGS ?=
@@ -26,7 +31,7 @@ all: $(NAME)
 
 FORCE:
 
-$(NAME): $(LIBFT_NAME) $(OBJ)
+$(NAME): $(LIBFT_NAME) $(GET_NEXT_LINE_NAME) $(OBJ)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
@@ -38,13 +43,18 @@ $(OBJ_DIR):
 $(LIBFT_NAME): FORCE
 	@$(MAKE) -C $(LIBFT_DIR)
 
+$(GET_NEXT_LINE_NAME): FORCE
+	@$(MAKE) -C $(GET_NEXT_LINE_DIR)
+
 clean:
 	rm -f $(OBJ) $(DEP)
 	$(MAKE) -C $(LIBFT_DIR) clean
+	$(MAKE) -C $(GET_NEXT_LINE_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C $(LIBFT_DIR) fclean
+	$(MAKE) -C $(GET_NEXT_LINE_DIR) fclean
 
 re: fclean all
 
