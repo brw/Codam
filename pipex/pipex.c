@@ -102,8 +102,6 @@ void	setup_io(t_context *ctx)
 	int	in_fd;
 	int	out_fd;
 
-	if (ctx->in.type == FD)
-		close(ctx->pipe_fd[1]);
 	if (ctx->out.type == FD)
 		close(ctx->pipe_fd[0]);
 	in_fd = get_fd(ctx, &ctx->in, O_RDONLY, 0);
