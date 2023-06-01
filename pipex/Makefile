@@ -6,7 +6,7 @@
 #    By: bvan-den <bvan-den@student.codam.nl>        +#+                       #
 #                                                   +#+                        #
 #    Created: 2023/06/01 21:52:09 by bvan-den      #+#    #+#                  #
-#    Updated: 2023/06/01 22:21:44 by bvan-den      ########   odam.nl          #
+#    Updated: 2023/06/01 22:23:57 by bvan-den      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,8 @@ SRC_DIR := src
 BONUS_SRC := src/execution_bonus.c src/handle_fds_bonus.c src/utils_bonus.c \
 			 src/handle_args_bonus.c src/pipex_bonus.c
 # SRC := $(filter-out $(BONUS_SRC), $(wildcard $(SRC_DIR)/*.c))
-SRC := src/execution.c src/handle_args_bonus.c src/pipex.c src/utils_bonus.c \
-	   src/execution_bonus.c src/handle_fds.c src/pipex_bonus.c \
-	   src/handle_args.c src/handle_fds_bonus.c src/utils.c
+SRC := src/execution.c src/pipex.c src/handle_fds.c src/handle_args.c \
+	   src/utils.c
 
 OBJ_DIR := obj
 ifdef BONUS
@@ -36,7 +35,9 @@ FT_PRINTF_NAME := $(FT_PRINTF_DIR)/libftprintf.a
 GET_NEXT_LINE_DIR := get_next_line
 GET_NEXT_LINE_NAME := $(GET_NEXT_LINE_DIR)/get_next_line.a
 
-INCLUDES := -I ./include -I $(FT_PRINTF_DIR)/include -I $(GET_NEXT_LINE_DIR)/include
+INCLUDES := -I ./include -I $(FT_PRINTF_DIR)/include \
+			-I $(GET_NEXT_LINE_DIR)/include \
+			-I $(FT_PRINTF_DIR)/libft/include
 CFLAGS ?= -Wall -Wextra -Werror -Wconversion -MMD $(INCLUDES)
 LDFLAGS ?=
 
