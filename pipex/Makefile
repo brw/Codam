@@ -6,7 +6,7 @@
 #    By: bvan-den <bvan-den@student.codam.nl>        +#+                       #
 #                                                   +#+                        #
 #    Created: 2023/06/01 21:52:09 by bvan-den      #+#    #+#                  #
-#    Updated: 2023/06/01 23:25:44 by bvan-den      ########   odam.nl          #
+#    Updated: 2023/06/02 01:01:14 by bvan-den      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ FT_PRINTF_NAME := $(FT_PRINTF_DIR)/libftprintf.a
 GET_NEXT_LINE_DIR := get_next_line
 GET_NEXT_LINE_NAME := $(GET_NEXT_LINE_DIR)/get_next_line.a
 
-INCLUDES := -I ./include -I $(FT_PRINTF_DIR)/include \
+INCLUDES := -I ./include \
+			-I $(FT_PRINTF_DIR)/include \
 			-I $(GET_NEXT_LINE_DIR)/include \
 			-I $(FT_PRINTF_DIR)/libft/include
 CFLAGS ?= -Wall -Wextra -Werror -Wconversion -MMD $(INCLUDES)
@@ -106,4 +107,4 @@ rebonus: fclean bonus
 
 -include $(DEP)
 
-.PHONY: all clean fclean re check norm format bonus rebonus
+.PHONY: all clean fclean re check norm format bonus rebonus FORCE
