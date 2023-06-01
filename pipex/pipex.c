@@ -1,13 +1,17 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <ft_printf.h>
+#include <get_next_line.h>
 #include <libft.h>
 #include <pipex.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <get_next_line.h>
+
+#ifdef linux
+# include <sys/wait.h>
+#endif
 
 extern char	**environ;
 

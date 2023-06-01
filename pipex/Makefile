@@ -31,7 +31,7 @@ all: $(NAME)
 
 FORCE:
 
-$(NAME): $(LIBFT_NAME) $(GET_NEXT_LINE_NAME) $(OBJ)
+$(NAME): $(OBJ) $(LIBFT_NAME) $(GET_NEXT_LINE_NAME)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)

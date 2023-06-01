@@ -4,7 +4,8 @@ NAME := get_next_line.a
 CC := clang
 
 BONUS_SRC := $(wildcard *_bonus.c)
-SRC := $(filter-out $(BONUS_SRC), $(wildcard *.c))
+MAIN := main.c
+SRC := $(filter-out $(BONUS_SRC) $(MAIN), $(wildcard *.c))
 
 OBJ_DIR := obj
 BONUS_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(BONUS_SRC))
