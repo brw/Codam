@@ -124,8 +124,6 @@ void	setup_io(t_context *ctx)
 	int	in_fd;
 	int	out_fd;
 
-	if (ctx->out.type == FD)
-		close(ctx->pipe_fd[0]);
 	in_fd = get_fd(ctx, &ctx->in, O_RDONLY, 0);
 	out_fd = get_fd(ctx, &ctx->out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (dup2(in_fd, STDIN_FILENO) == -1)
@@ -168,6 +166,8 @@ int	spawn_child(t_context *ctx, char *cmdstr)
 		setup_io(ctx);
 		execute_command(ctx, cmdstr);
 	}
+	if (ctx->out.type == FD)
+		close(ctx->out.fd);
 	return (pid);
 }
 
@@ -182,6 +182,7 @@ void	setup_redirs(t_context *ctx, int i, int argc, char **argv)
 	{
 		ctx->in.type = FD;
 		ctx->in.fd = ctx->pipe_fd[0];
+		close(ctx->pipe_fd[1]);
 	}
 	if (i == argc - 2)
 	{
