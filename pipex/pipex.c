@@ -13,6 +13,8 @@
 # include <sys/wait.h>
 #endif
 
+#define HEREDOC_TMP_FILE "/tmp/pipex_heredoc_tmp"
+
 extern char	**environ;
 
 // TODO:
@@ -178,7 +180,7 @@ void	setup_redirs(t_context *ctx, int i, int argc, char **argv)
 		ctx->in.type = FILENAME;
 		ctx->in.filename = argv[1];
 	}
-	else
+	else if (!ctx->heredoc || (ctx->heredoc && i != 3))
 	{
 		ctx->in.type = FD;
 		ctx->in.fd = ctx->pipe_fd[0];
@@ -202,53 +204,71 @@ void	handle_heredoc(t_context *ctx, int argc, char **argv)
 {
 	int		tmp_fd;
 	char	*line;
-	int		i;
+	char	*delim;
 
 	if (argc < 6)
-		exit_error(ctx, NULL, "Needs 5 or more arguments", 1);
-	tmp_fd = open("/tmp/pipex_heredoc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		exit_error(ctx, NULL, "Needs >=2 commands and output file", 1);
+	tmp_fd = open(HEREDOC_TMP_FILE, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (tmp_fd == -1)
-		exit_error(ctx, "/tmp/pipex_heredoc_tmp", NULL, errno);
-	i = 3;
-	while(i < argc - 1)
+		exit_error(ctx, HEREDOC_TMP_FILE, NULL, errno);
+	delim = argv[2];
+	while (true)
 	{
-
-		i++;
+		ft_printf("> ");
+		line = get_next_line(STDIN_FILENO);
+		if (!line || ft_strncmp(line, delim, ft_strlen(delim)) == 0)
+		{
+			free(line);
+			break ;
+		}
+		ft_putstr_fd(line, tmp_fd);
+		free(line);
 	}
-	get_next_line(tmp_fd);
-	unlink("/tmp/pipex_heredoc_tmp");
+	close(tmp_fd);
+	ctx->in.type = FILENAME;
+	ctx->in.filename = HEREDOC_TMP_FILE;
 }
 
 int	main(int argc, char **argv)
 {
 	t_context	ctx;
 	pid_t		last_pid;
-	int			i;
+	int			cmd_i;
 	int			status;
 
 	// if (argc != 5)
 	// 	exit_error(&ctx, NULL, "Needs exactly 4 arguments", 1);
 	ctx.program_name = argv[0];
 	ctx.paths = NULL;
-	if (ft_strncmp(argv[1], "here_doc", 9) == 0)
-		handle_heredoc(&ctx, argc, argv);
-	if (argc < 5)
-		exit_error(&ctx, NULL, "Needs 4 or more arguments", 1);
-	ctx.paths = ft_split(get_path_env(environ), ':');
-	i = 2;
-	while (i < argc - 1)
+	ctx.heredoc = false;
+	if (argc > 1 && ft_strncmp(argv[1], "here_doc", 9) == 0)
 	{
-		setup_redirs(&ctx, i, argc, argv);
-		last_pid = spawn_child(&ctx, argv[i]);
+		handle_heredoc(&ctx, argc, argv);
+		ctx.heredoc = true;
+		cmd_i = 3;
+	}
+	else
+	{
+		if (argc < 5)
+			exit_error(&ctx, NULL, "Needs >=2 commands and output file", 1);
+		cmd_i = 2;
+	}
+	ctx.paths = ft_split(get_path_env(environ), ':');
+	while (cmd_i < argc - 1)
+	{
+		setup_redirs(&ctx, cmd_i, argc, argv);
+		last_pid = spawn_child(&ctx, argv[cmd_i]);
 		if (ctx.in.type == FD)
 			close(ctx.in.fd);
 		if (ctx.out.type == FD)
 			close(ctx.out.fd);
-		i++;
+		cmd_i++;
 	}
 	waitpid(last_pid, &status, 0);
 	while (wait(NULL) != -1)
 		continue ;
 	free_array(ctx.paths);
+	if (ctx.heredoc == true)
+		unlink("/tmp/pipex_heredoc_tmp");
 	exit(WEXITSTATUS(status));
 }

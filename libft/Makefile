@@ -40,8 +40,12 @@ ifeq ($(shell uname), Linux)
 endif
 
 ifdef DEBUG
-	CFLAGS += -g -fsanitize=address
-	LDFLAGS += -g -fsanitize=address
+	CFLAGS += -g
+	LDFLAGS += -g
+	ifeq ($(shell uname), Darwin)
+		CFLAGS += -fsanitize=address
+		LDFLAGS += -fsanitize=address
+	endif
 endif
 
 VPATH := test

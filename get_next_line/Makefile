@@ -1,8 +1,6 @@
 # NAME := get_next_line
 NAME := get_next_line.a
 
-CC := clang
-
 BONUS_SRC := $(wildcard *_bonus.c)
 MAIN := main.c
 SRC := $(filter-out $(BONUS_SRC) $(MAIN), $(wildcard *.c))
@@ -21,8 +19,12 @@ CFLAGS ?= -Wall -Wextra -Wconversion
 LDFLAGS ?=
 
 ifdef DEBUG
-	CFLAGS += -g -fsanitize=address
-	LDFLAGS += -g -fsanitize=address
+	CFLAGS += -g
+	LDFLAGS += -g
+	ifeq ($(shell uname), Darwin)
+		CFLAGS += -fsanitize=address
+		LDFLAGS += -fsanitize=address
+	endif
 endif
 
 ifdef BUFFER_SIZE

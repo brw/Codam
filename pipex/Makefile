@@ -1,6 +1,5 @@
 NAME := pipex
 
-
 SRC := $(wildcard *.c) $(wildcard $(GET_NEXT_LINE_DIR)/*.c)
 OBJ_DIR := obj
 OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
@@ -23,8 +22,12 @@ ifeq ($(shell uname), Linux)
 endif
 
 ifdef DEBUG
-	CFLAGS += -g -fsanitize=address
-	LDFLAGS += -g -fsanitize=address
+	CFLAGS += -g
+	LDFLAGS += -g
+	ifeq ($(shell uname), Darwin)
+		CFLAGS += -fsanitize=address
+		LDFLAGS += -fsanitize=address
+	endif
 endif
 
 all: $(NAME)
