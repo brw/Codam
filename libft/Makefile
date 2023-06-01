@@ -86,4 +86,10 @@ so:
 	$(CC) -nostartfiles -fPIC $(CFLAGS) $(SRC)
 	gcc -nostartfiles -shared -o libft.so $(OBJ)
 
-.PHONY: all clean fclean test re so bonus
+check:
+	$(CC) $(CFLAGS) -fsyntax-only $(SRC) $(TEST_SRC)
+
+norm:
+	norminette $(REGULAR_SRC) $(BONUS_SRC)
+
+.PHONY: all clean fclean test re so bonus check norm

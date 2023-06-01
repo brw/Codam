@@ -39,7 +39,7 @@ $(NAME): $(OBJ) $(LIBFT_NAME)
 	ar rcs $@ $(OBJ)
 
 $(LIBFT_NAME): FORCE
-	@$(MAKE) -C $(LIBFT_DIR)
+	$(MAKE) -C $(LIBFT_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) -c -o $@ $< $(CFLAGS)
@@ -73,4 +73,8 @@ retest: fclean test
 check:
 	$(CC) $(CFLAGS) -fsyntax-only $(SRC) $(TEST_SRC)
 
-.PHONY: all clean fclean re test retest check
+norm:
+	-norminette $(SRC)
+	-$(MAKE) -C $(LIBFT_DIR) norm
+
+.PHONY: all clean fclean re test retest check norm

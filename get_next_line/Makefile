@@ -62,4 +62,7 @@ re: fclean all
 check:
 	$(CC) $(CFLAGS) -fsyntax-only $(SRC)
 
-.PHONY: all test retest clean fclean re check bonus
+norm:
+	-norminette $(SRC) $(BONUS_SRC)
+
+.PHONY: all test retest clean fclean re check bonus norm

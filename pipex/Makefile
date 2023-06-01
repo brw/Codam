@@ -1,6 +1,6 @@
 NAME := pipex
 
-SRC := $(wildcard *.c) $(wildcard $(GET_NEXT_LINE_DIR)/*.c)
+SRC := $(wildcard *.c)
 OBJ_DIR := obj
 OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
 DEP := $(OBJ:%.o=%.d)
@@ -44,10 +44,10 @@ $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
 
 $(LIBFT_NAME): FORCE
-	@$(MAKE) -C $(LIBFT_DIR)
+	$(MAKE) -C $(LIBFT_DIR)
 
 $(GET_NEXT_LINE_NAME): FORCE
-	@$(MAKE) -C $(GET_NEXT_LINE_DIR)
+	$(MAKE) -C $(GET_NEXT_LINE_DIR)
 
 clean:
 	rm -f $(OBJ) $(DEP)
@@ -63,13 +63,17 @@ re: fclean all
 
 check:
 	$(CC) $(CFLAGS) -fsyntax-only $(SRC)
+	$(MAKE) -C $(LIBFT_DIR) check
+	$(MAKE) -C $(GET_NEXT_LINE_DIR) check
 
-norminette:
-	norminette $(SRC)
+norm:
+	-norminette $(SRC)
+	-$(MAKE) -C $(LIBFT_DIR) norm
+	-$(MAKE) -C $(GET_NEXT_LINE_DIR) norm
 
 format:
 	c_formatter_42 $(SRC)
 
 -include $(DEP)
 
-.PHONY: all clean fclean re check norminette format
+.PHONY: all clean fclean re check norm format
