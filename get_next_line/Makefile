@@ -1,9 +1,12 @@
 # NAME := get_next_line
 NAME := get_next_line.a
 
-BONUS_SRC := $(wildcard *_bonus.c)
-MAIN := main.c
-SRC := $(filter-out $(BONUS_SRC) $(MAIN), $(wildcard *.c))
+# BONUS_SRC := $(wildcard *_bonus.c)
+BONUS_SRC := get_next_line_bonus.c get_next_line_utils_bonus.c
+# MAIN := main.c
+# SRC := $(filter-out $(BONUS_SRC) $(MAIN), $(wildcard *.c))
+SRC := get_next_line.c get_next_line_utils.c get_next_line_bonus.c \
+	   get_next_line_utils_bonus.c
 
 OBJ_DIR := obj
 BONUS_OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(BONUS_SRC))
@@ -63,6 +66,6 @@ check:
 	$(CC) $(CFLAGS) -fsyntax-only $(SRC)
 
 norm:
-	-norminette $(SRC) $(BONUS_SRC)
+	-@norminette $(SRC) $(BONUS_SRC)
 
 .PHONY: all test retest clean fclean re check bonus norm

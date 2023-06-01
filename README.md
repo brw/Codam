@@ -23,3 +23,6 @@ A function that upon calling it returns the next line from a file descriptor usi
 
 ## Born2beroot <a href="https://github.com/JaeSeoKim/badge42"><img align="right" src="https://badge42.vercel.app/api/v2/claekcqmw00110fmjh5mbj39o/project/2866599"></a>
 A virtual machine configured following specific rules. This repo contains the monitoring script that I had to write and the signature of the virtual disk image.
+
+## Pipex <a href="https://github.com/JaeSeoKim/badge42"><img align="right" src="https://badge42.vercel.app/api/v2/claekcqmw00110fmjh5mbj39o/project/3023883"></a>
+Recreating UNIX pipe operations, enabling command execution with file input/output redirection, supporting multiple pipes and handling heredocs.

@@ -1,5 +1,5 @@
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
 # include <errno.h>
 # include <fcntl.h>
@@ -43,6 +43,7 @@ typedef struct redir
 typedef struct ctx
 {
 	char				*program_name;
+	bool				heredoc;
 	char				**paths;
 	char				*infile;
 	char				*outfile;

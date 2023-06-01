@@ -1,8 +1,33 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                        ::::::::              #
+#    Makefile                                          :+:    :+:              #
+#                                                     +:+                      #
+#    By: bvan-den <bvan-den@student.codam.nl>        +#+                       #
+#                                                   +#+                        #
+#    Created: 2023/06/01 21:52:09 by bvan-den      #+#    #+#                  #
+#    Updated: 2023/06/01 21:56:33 by bvan-den      ########   odam.nl          #
+#                                                                              #
+# **************************************************************************** #
+
 NAME := pipex
 
-SRC := $(wildcard *.c)
+SRC_DIR := src
+# BONUS_SRC := $(wildcard $(SRC_DIR)/*_bonus.c)
+BONUS_SRC := src/execution_bonus.c src/handle_fds_bonus.c src/utils_bonus.c \
+			 src/handle_args_bonus.c src/pipex_bonus.c
+# SRC := $(filter-out $(BONUS_SRC), $(wildcard $(SRC_DIR)/*.c))
+SRC := src/execution.c src/handle_args_bonus.c src/pipex.c src/utils_bonus.c \
+	   src/execution_bonus.c src/handle_fds.c src/pipex_bonus.c \
+	   src/handle_args.c src/handle_fds_bonus.c src/utils.c
+
 OBJ_DIR := obj
-OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
+ifdef BONUS
+	OBJ := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(BONUS_SRC))
+else
+	OBJ := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
+endif
+
 DEP := $(OBJ:%.o=%.d)
 
 LIBFT_DIR := libft
@@ -12,8 +37,7 @@ GET_NEXT_LINE_DIR := get_next_line
 GET_NEXT_LINE_NAME := $(GET_NEXT_LINE_DIR)/get_next_line.a
 
 INCLUDES := -I ./include -I $(LIBFT_DIR)/include -I $(GET_NEXT_LINE_DIR)/include
-# CFLAGS ?= -Wall -Wextra -Werror -Wconversion -MMD $(INCLUDES)
-CFLAGS ?= -Wall -Wextra -Wconversion -MMD $(INCLUDES)
+CFLAGS ?= -Wall -Wextra -Werror -Wconversion -MMD $(INCLUDES)
 LDFLAGS ?=
 
 ifeq ($(shell uname), Linux)
@@ -37,7 +61,7 @@ FORCE:
 $(NAME): $(OBJ) $(LIBFT_NAME) $(GET_NEXT_LINE_NAME)
 	$(CC) $(LDFLAGS) -o $@ $^
 
-$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(OBJ_DIR):
@@ -62,17 +86,20 @@ fclean: clean
 re: fclean all
 
 check:
-	$(CC) $(CFLAGS) -fsyntax-only $(SRC)
+	$(CC) $(CFLAGS) -fsyntax-only $(SRC) $(BONUS_SRC)
 	$(MAKE) -C $(LIBFT_DIR) check
 	$(MAKE) -C $(GET_NEXT_LINE_DIR) check
 
 norm:
-	-norminette $(SRC)
-	-$(MAKE) -C $(LIBFT_DIR) norm
-	-$(MAKE) -C $(GET_NEXT_LINE_DIR) norm
+	-@norminette $(SRC) $(BONUS_SRC)
+	-@$(MAKE) -C $(LIBFT_DIR) norm
+	-@$(MAKE) -C $(GET_NEXT_LINE_DIR) norm
 
 format:
-	c_formatter_42 $(SRC)
+	c_formatter_42 $(SRC) $(BONUS_SRC)
+
+bonus:
+	$(MAKE) all BONUS=1
 
 -include $(DEP)
 

@@ -90,6 +90,6 @@ check:
 	$(CC) $(CFLAGS) -fsyntax-only $(SRC) $(TEST_SRC)
 
 norm:
-	norminette $(REGULAR_SRC) $(BONUS_SRC)
+	@norminette $(REGULAR_SRC) $(BONUS_SRC)
 
 .PHONY: all clean fclean test re so bonus check norm

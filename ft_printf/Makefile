@@ -7,7 +7,7 @@ OBJ_DIR := obj
 SRC_DIR := src
 # SRC := $(wildcard $(SRC_DIR)/*.c)
 SRC := src/ft_printf.c src/print.c
-OBJ := $(patsubst %.c, $(OBJ_DIR)/%.o, $(notdir $(SRC)))
+OBJ := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 
 TEST_NAME := test_ft_printf
 TEST_DIR := test
@@ -74,7 +74,7 @@ check:
 	$(CC) $(CFLAGS) -fsyntax-only $(SRC) $(TEST_SRC)
 
 norm:
-	-norminette $(SRC)
-	-$(MAKE) -C $(LIBFT_DIR) norm
+	-@norminette $(SRC)
+	-@$(MAKE) -C $(LIBFT_DIR) norm
 
 .PHONY: all clean fclean re test retest check norm
