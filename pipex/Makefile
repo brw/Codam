@@ -6,7 +6,7 @@
 #    By: bvan-den <bvan-den@student.codam.nl>        +#+                       #
 #                                                   +#+                        #
 #    Created: 2023/06/01 21:52:09 by bvan-den      #+#    #+#                  #
-#    Updated: 2023/06/01 21:56:33 by bvan-den      ########   odam.nl          #
+#    Updated: 2023/06/01 22:21:44 by bvan-den      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,13 +30,13 @@ endif
 
 DEP := $(OBJ:%.o=%.d)
 
-LIBFT_DIR := libft
-LIBFT_NAME := $(LIBFT_DIR)/libftprintf.a
+FT_PRINTF_DIR := ft_printf
+FT_PRINTF_NAME := $(FT_PRINTF_DIR)/libftprintf.a
 
 GET_NEXT_LINE_DIR := get_next_line
 GET_NEXT_LINE_NAME := $(GET_NEXT_LINE_DIR)/get_next_line.a
 
-INCLUDES := -I ./include -I $(LIBFT_DIR)/include -I $(GET_NEXT_LINE_DIR)/include
+INCLUDES := -I ./include -I $(FT_PRINTF_DIR)/include -I $(GET_NEXT_LINE_DIR)/include
 CFLAGS ?= -Wall -Wextra -Werror -Wconversion -MMD $(INCLUDES)
 LDFLAGS ?=
 
@@ -58,7 +58,7 @@ all: $(NAME)
 
 FORCE:
 
-$(NAME): $(OBJ) $(LIBFT_NAME) $(GET_NEXT_LINE_NAME)
+$(NAME): $(OBJ) $(FT_PRINTF_NAME) $(GET_NEXT_LINE_NAME)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
@@ -67,32 +67,32 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
 
-$(LIBFT_NAME): FORCE
-	$(MAKE) -C $(LIBFT_DIR)
+$(FT_PRINTF_NAME): FORCE
+	$(MAKE) -C $(FT_PRINTF_DIR)
 
 $(GET_NEXT_LINE_NAME): FORCE
 	$(MAKE) -C $(GET_NEXT_LINE_DIR)
 
 clean:
 	rm -f $(OBJ) $(DEP)
-	$(MAKE) -C $(LIBFT_DIR) clean
+	$(MAKE) -C $(FT_PRINTF_DIR) clean
 	$(MAKE) -C $(GET_NEXT_LINE_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
+	$(MAKE) -C $(FT_PRINTF_DIR) fclean
 	$(MAKE) -C $(GET_NEXT_LINE_DIR) fclean
 
 re: fclean all
 
 check:
 	$(CC) $(CFLAGS) -fsyntax-only $(SRC) $(BONUS_SRC)
-	$(MAKE) -C $(LIBFT_DIR) check
+	$(MAKE) -C $(FT_PRINTF_DIR) check
 	$(MAKE) -C $(GET_NEXT_LINE_DIR) check
 
 norm:
 	-@norminette $(SRC) $(BONUS_SRC)
-	-@$(MAKE) -C $(LIBFT_DIR) norm
+	-@$(MAKE) -C $(FT_PRINTF_DIR) norm
 	-@$(MAKE) -C $(GET_NEXT_LINE_DIR) norm
 
 format:
