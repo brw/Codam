@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2023/06/01 21:55:41 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/06/01 21:55:41 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/06/01 23:21:25 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	setup_io(t_context *ctx)
 	int	in_fd;
 	int	out_fd;
 
+	if (ctx->out.type == FD)
+		close(ctx->pipe_fd[0]);
 	in_fd = get_fd(ctx, &ctx->in, O_RDONLY, 0);
 	out_fd = get_fd(ctx, &ctx->out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (dup2(in_fd, STDIN_FILENO) == -1)

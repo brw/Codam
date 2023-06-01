@@ -6,7 +6,7 @@
 #    By: bvan-den <bvan-den@student.codam.nl>        +#+                       #
 #                                                   +#+                        #
 #    Created: 2023/06/01 21:52:09 by bvan-den      #+#    #+#                  #
-#    Updated: 2023/06/01 22:23:57 by bvan-den      ########   odam.nl          #
+#    Updated: 2023/06/01 23:25:44 by bvan-den      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -102,6 +102,8 @@ format:
 bonus:
 	$(MAKE) all BONUS=1
 
+rebonus: fclean bonus
+
 -include $(DEP)
 
-.PHONY: all clean fclean re check norm format
+.PHONY: all clean fclean re check norm format bonus rebonus
