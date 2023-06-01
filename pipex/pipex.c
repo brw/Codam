@@ -18,8 +18,6 @@
 extern char	**environ;
 
 // TODO:
-// - fix ft_fprintf to work with stderr
-// - handle heredoc
 // - when supplying a path supply only the binary name argv[0] to execve
 
 void	free_array(char **args)
@@ -42,9 +40,9 @@ void	exit_error(t_context *ctx, char *obj, char *msg, int exit_code)
 	if (!msg)
 		msg = strerror(errno);
 	if (obj)
-		fprintf(stderr, "%s: %s: %s\n", ctx->program_name, obj, msg);
+		ft_dprintf(STDERR_FILENO, "%s: %s: %s\n", ctx->program_name, obj, msg);
 	else
-		fprintf(stderr, "%s: %s\n", ctx->program_name, msg);
+		ft_dprintf(STDERR_FILENO, "%s: %s\n", ctx->program_name, msg);
 	if (ctx->paths)
 		free_array(ctx->paths);
 	exit(exit_code);

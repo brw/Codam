@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/11/10 20:47:52 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/03/26 18:51:24 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/06/01 20:02:59 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,27 @@
 #include <stdio.h>
 #include <unistd.h>
 
-static ssize_t	print(const char c, va_list args)
+static ssize_t	print(int fd, const char c, va_list args)
 {
 	if (c == '%')
-		return (print_char('%'));
+		return (print_char(fd, '%'));
 	if (c == 'c')
-		return (print_char((unsigned char)va_arg(args, int)));
+		return (print_char(fd, (unsigned char)va_arg(args, int)));
 	if (c == 's')
-		return (print_str(va_arg(args, const char *)));
+		return (print_str(fd, va_arg(args, const char *)));
 	if (c == 'd' || c == 'i')
-		return (print_nbr(va_arg(args, int), "0123456789", 10));
+		return (print_nbr(fd, va_arg(args, int), "0123456789", 10));
 	if (c == 'u')
-		return (print_unbr(va_arg(args, unsigned int), "0123456789", 10));
+		return (print_unbr(fd, va_arg(args, unsigned int), "0123456789", 10));
 	if (c == 'x')
-		return (print_unbr(va_arg(args, unsigned int), "0123456789abcdef", 16));
+		return (print_unbr(fd, va_arg(args, unsigned int), "0123456789abcdef",
+				16));
 	if (c == 'X')
-		return (print_unbr(va_arg(args, unsigned int), "0123456789ABCDEF", 16));
+		return (print_unbr(fd, va_arg(args, unsigned int), "0123456789ABCDEF",
+				16));
 	if (c == 'p')
-		return (print_ptr(va_arg(args, unsigned long)));
-	return (print_char(c));
+		return (print_ptr(fd, va_arg(args, unsigned long)));
+	return (print_char(fd, c));
 }
 
 int	ft_vprintf(const char *fmt, va_list args)
@@ -50,7 +52,7 @@ int	ft_vprintf(const char *fmt, va_list args)
 			fmt++;
 			if (!*fmt)
 				return ((int)total_written);
-			total_written += print(*fmt, args);
+			total_written += print(STDOUT_FILENO, *fmt, args);
 			fmt++;
 		}
 		else
@@ -89,7 +91,7 @@ int	ft_vdprintf(int fd, const char *fmt, va_list args)
 			fmt++;
 			if (!*fmt)
 				return ((int)total_written);
-			total_written += print(*fmt, args);
+			total_written += print(fd, *fmt, args);
 			fmt++;
 		}
 		else
