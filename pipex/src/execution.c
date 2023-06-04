@@ -5,8 +5,8 @@
 /*                                                    +:+                     */
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
-/*   Created: 2023/06/01 21:55:16 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/06/01 21:55:41 by bvan-den      ########   odam.nl         */
+/*   Created: 2023/06/01 21:55:41 by bvan-den      #+#    #+#                 */
+/*   Updated: 2023/06/06 04:48:38 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*get_cmd_path(char *cmd, t_context *ctx)
 		{
 			if (access(try_path, X_OK) == 0)
 				return (free_array(ctx->paths), try_path);
-			exit_error(ctx, try_path, NULL, 126);
+			free_obj_exit_error(ctx, try_path, NULL, 126);
 		}
 		free(try_path);
 		i++;

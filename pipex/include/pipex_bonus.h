@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2023/06/02 02:43:18 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/06/02 02:43:19 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/06/06 04:48:26 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void					handle_args(t_context *ctx, int argc, char **argv);
 void					setup_redirs(t_context *ctx, int argc, char **argv);
 int						spawn_child(t_context *ctx, char *cmdstr);
 void					setup_io(t_context *ctx);
+void					free_obj_exit_error(t_context *ctx, char *obj,
+							char *msg, int exit_code);
 void					exit_error(t_context *ctx, char *obj, char *msg,
 							int exit_code);
 void					free_array(char **args);
