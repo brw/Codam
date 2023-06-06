@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2023/06/01 21:55:41 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/06/06 04:57:45 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/06/07 01:03:20 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	free_obj_exit_error(t_context *ctx, char *obj, char *msg, int exit_code)
 	free(obj);
 	exit(exit_code);
 }
-
 
 void	exit_error(t_context *ctx, char *obj, char *msg, int exit_code)
 {
