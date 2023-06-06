@@ -1,6 +1,8 @@
-libftprintf.a
-test_ft_printf
-compile_commands.json
-.cache
 *.o
+*.d
+*.a
+*.dSYM
+.cache/
+compile_commands.json
+test_ft_printf
 libft/test

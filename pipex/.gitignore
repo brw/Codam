@@ -1,3 +1,9 @@
+*.o
+*.d
+*.a
+*.dSYM
+.cache/
+compile_commands.json
 pipex
 infile
 outfile
