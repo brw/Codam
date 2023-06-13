@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2023/06/01 21:55:41 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/06/06 04:48:38 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/06/13 21:30:55 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ char	*get_cmd_path(char *cmd, t_context *ctx)
 	{
 		if (access(cmd, F_OK | X_OK) == 0)
 			return (cmd);
+		else if (access(cmd, F_OK) == 0)
+			exit_error(ctx, cmd, NULL, 126);
 		else
 			exit_error(ctx, cmd, NULL, 127);
 	}
