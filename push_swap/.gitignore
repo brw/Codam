@@ -1,0 +1,7 @@
+*.o
+*.d
+*.a
+*.dSYM
+.cache/
+compile_commands.json
+push_swap
