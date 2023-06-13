@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2023/06/01 21:55:41 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/06/13 21:44:31 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/06/13 21:52:53 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	execute_command(t_context *ctx, char *cmdstr)
 	char	**args;
 	char	*cmd;
 
+	if (cmdstr[0] == '\0')
+		exit_error(ctx, "", "command not found", 127);
 	args = ft_split_args(cmdstr);
 	if (!args)
 		exit_error(ctx, "ft_split_args", NULL, errno);
