@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2023/06/01 21:55:41 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/06/01 21:55:41 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/06/15 16:50:17 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ char	*get_cmd_path(char *cmd, t_context *ctx)
 	{
 		if (access(cmd, F_OK | X_OK) == 0)
 			return (cmd);
+		else if (access(cmd, F_OK) == 0)
+			exit_error(ctx, cmd, NULL, 126);
 		else
 			exit_error(ctx, cmd, NULL, 127);
 	}
@@ -43,16 +45,14 @@ char	*get_cmd_path(char *cmd, t_context *ctx)
 	while (ctx->paths && ctx->paths[i])
 	{
 		try_path = create_try_path(ctx, i, cmd);
-		if (access(try_path, F_OK) == 0)
-		{
-			if (access(try_path, X_OK) == 0)
-				return (free_array(ctx->paths), try_path);
-			exit_error(ctx, try_path, NULL, 126);
-		}
+		if (access(try_path, F_OK | X_OK) == 0)
+			return (free_array(ctx->paths), try_path);
+		else if (access(try_path, F_OK) == 0)
+			free_obj_exit_error(ctx, try_path, NULL, 126);
 		free(try_path);
 		i++;
 	}
-	exit_error(ctx, cmd, "command not found", 127);
+	free_obj_exit_error(ctx, cmd, "command not found", 127);
 	return (NULL);
 }
 
@@ -61,8 +61,10 @@ void	execute_command(t_context *ctx, char *cmdstr)
 	char	**args;
 	char	*cmd;
 
+	if (cmdstr[0] == '\0')
+		exit_error(ctx, "", "command not found", 127);
 	args = ft_split_args(cmdstr);
-	if (!args)
+	if (!args || !args[0])
 		exit_error(ctx, "ft_split_args", NULL, errno);
 	cmd = get_cmd_path(args[0], ctx);
 	execve(cmd, args, environ);

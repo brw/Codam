@@ -6,7 +6,7 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2023/06/01 21:55:41 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/06/13 22:26:23 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/06/15 16:49:55 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*get_cmd_path(char *cmd, t_context *ctx)
 		free(try_path);
 		i++;
 	}
-	exit_error(ctx, cmd, "command not found", 127);
+	free_obj_exit_error(ctx, cmd, "command not found", 127);
 	return (NULL);
 }
 
@@ -64,7 +64,7 @@ void	execute_command(t_context *ctx, char *cmdstr)
 	if (cmdstr[0] == '\0')
 		exit_error(ctx, "", "command not found", 127);
 	args = ft_split_args(cmdstr);
-	if (!args)
+	if (!args || !args[0])
 		exit_error(ctx, "ft_split_args", NULL, errno);
 	cmd = get_cmd_path(args[0], ctx);
 	execve(cmd, args, environ);
