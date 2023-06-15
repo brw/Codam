@@ -6,7 +6,7 @@
 #    By: bvan-den <bvan-den@student.codam.nl>        +#+                       #
 #                                                   +#+                        #
 #    Created: 2023/06/01 21:52:09 by bvan-den      #+#    #+#                  #
-#    Updated: 2023/06/06 05:04:34 by bvan-den      ########   odam.nl          #
+#    Updated: 2023/06/15 16:08:36 by bvan-den      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,13 +21,14 @@ SRC := src/execution.c src/pipex.c src/handle_fds.c src/handle_args.c \
 	   src/utils.c
 
 OBJ_DIR := obj
+BONUS_OBJ := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(BONUS_SRC))
+OBJ := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 ifdef BONUS
-	OBJ := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(BONUS_SRC))
-else
-	OBJ := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
+	OBJ := $(BONUS_OBJ)
 endif
 
 DEP := $(OBJ:%.o=%.d)
+BONUS_DEP := $(BONUS_OBJ:%.o=%.d)
 
 FT_PRINTF_DIR := ft_printf
 FT_PRINTF_NAME := $(FT_PRINTF_DIR)/libftprintf.a
@@ -76,7 +77,7 @@ $(GET_NEXT_LINE_NAME): FORCE
 	$(MAKE) -C $(GET_NEXT_LINE_DIR)
 
 clean:
-	rm -f $(OBJ) $(DEP)
+	rm -f $(OBJ) $(BONUS_OBJ) $(DEP) $(BONUS_DEP)
 	$(MAKE) -C $(FT_PRINTF_DIR) clean
 	$(MAKE) -C $(GET_NEXT_LINE_DIR) clean
 
