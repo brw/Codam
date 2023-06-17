@@ -6,14 +6,14 @@
 /*   By: bvan-den <bvan-den@student.codam.nl>        +#+                      */
 /*                                                  +#+                       */
 /*   Created: 2022/10/30 18:53:49 by bvan-den      #+#    #+#                 */
-/*   Updated: 2023/06/15 16:10:54 by bvan-den      ########   odam.nl         */
+/*   Updated: 2023/06/17 20:26:10 by bvan-den      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <stddef.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 static size_t	count_items(char const *s, char delim)
 {
@@ -39,14 +39,11 @@ static size_t	count_items(char const *s, char delim)
 	return (count);
 }
 
-static size_t	get_item_length(const char **s, char delim, size_t index)
+static size_t	get_item_length(const char **s, char delim)
 {
 	size_t	i;
 
 	i = 0;
-	if (index == 0)
-		while ((*s)[i] == ' ')
-			i++;
 	if (**s == '\'' || **s == '"')
 	{
 		i++;
@@ -56,10 +53,12 @@ static size_t	get_item_length(const char **s, char delim, size_t index)
 			i++;
 	}
 	else
+	{
 		while ((*s)[i] && ((*s)[i] != delim || (*s)[i - 1] == '\\'))
 			i++;
-	if ((i > 0 && (*s)[i - 1] == '\'' && **s == '\'') ||
-		(i > 0 && (*s)[i - 1] == '"' && **s == '"'))
+	}
+	if (((*s)[i - 1] == '\'' && **s == '\'') ||
+		((*s)[i - 1] == '"' && **s == '"'))
 	{
 		(*s)++;
 		i -= 2;
@@ -91,7 +90,9 @@ char	**ft_split_args(char const *str)
 	index = 0;
 	while (*str && index < count)
 	{
-		length = get_item_length(&str, ' ', index);
+		while (*str == ' ')
+			str++;
+		length = get_item_length(&str, ' ');
 		arr[index] = ft_strndup(str, length);
 		if (!arr[index])
 			return (free_arr(arr, index), NULL);
